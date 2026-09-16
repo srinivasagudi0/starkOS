@@ -1,6 +1,6 @@
 function CommandCenter() {
   return (
-    <main>
+    <main className="command-center">
       <h1>Hello</h1>
     </main>
   )
