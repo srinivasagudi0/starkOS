@@ -29,7 +29,7 @@ body {
 
 .todays-code {
   margin-left: 30px;
-  position: fixed;
+  position: absolute;
   rotate: -24deg;
   border: 1px solid;
   transition: 0.2s ease-in-out;
