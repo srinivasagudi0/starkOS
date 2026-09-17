@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fascinate+Inline&display=swap');
+
 body {
   width: 100%;
   min-height: 100%;
@@ -16,4 +18,10 @@ body {
       #171918 43.1%,
       #171918 100%
     );
+}
+
+.title1 {
+  text-align: center;
+  font-family: "Fascinate Inline";
+  font-size: 2.1rem;
 }

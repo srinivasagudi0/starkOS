@@ -1,7 +1,10 @@
 function CommandCenter() {
   return (
     <main className="command-center">
-      <h1>Hello</h1>
+      <div className="title1">
+        <h1>Command Center</h1>
+        </div>
+      
     </main>
   )
 }
