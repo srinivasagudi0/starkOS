@@ -1,18 +1,18 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session
 from datetime import datetime
 import requests
 import os
 
 app = Flask(__name__)
 
+app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
-# during deployment need to check if this is in render and then give it a different frontrdn and backend 
 backend_url = "http://localhost:5000"
 
 
-def hackatime_callback():
-    code = request.args.get("code")
+def get_access_token(code):
     redirect_uri = f"{backend_url}/api/hackatime/callback"
+
     response = requests.post(
         "https://hackatime.hackclub.com/oauth/token",
         data={
@@ -21,38 +21,54 @@ def hackatime_callback():
             "code": code,
             "redirect_uri": redirect_uri,
             "grant_type": "authorization_code"
-        },
+        }
     )
 
     data = response.json()
-    token = data.get("access_token")
-
-    if not token: return "Sorry, something went wrong."
-
-    return token
+    return data.get("access_token")
 
 
+@app.route("/api/hackatime/callback")
+def hackatime_callback():
+    code = request.args.get("code")
+
+    if not code:
+        return jsonify({"message": "Authorization code is missing."}), 400
+
+    token = get_access_token(code)
+
+    if not token:
+        return jsonify({"message": "Hackatime couldn't connect."}), 400
+
+    session["hackatime_token"] = token
+
+    return jsonify({"message": "Hackatime connected successfully."})
 
 
 @app.route("/command-center/coded-hours")
 def coding_hours():
-    # get hackatime credentials, get today-date, fetch today hours from hackatime, fetch target hours, return today's date and hours today, percent close to target being done.
-    id = os.getenv("HACKATIME_ID")
-    secret = os.getenv("HACKATIME_SECRET")
-    today = datetime.date.today()
+    access_token = session.get("hackatime_token")
 
-    acess_token = None
+    if not access_token:
+        return jsonify({"message": "Hackatime is not connected."}), 401
+
+    today = datetime.now().date().isoformat()
 
     query = {
         "start_date": today,
-        "end_date": today,
+        "end_date": today
     }
-
-    access_token = hackatime_callback()
 
     headers = {
-        "Authorization": {acess_token}
+        "Authorization": f"Bearer {access_token}"
     }
 
-    pass
+    response = requests.get(
+        "https://hackatime.hackclub.com/api/v1/authenticated/hours",
+        params=query,
+        headers=headers
+    )
 
+    data = response.json()
+
+    return jsonify(data)
