@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request, session, redirect
 from datetime import datetime
 import requests
 import os
@@ -16,8 +16,8 @@ def get_access_token(code):
     response = requests.post(
         "https://hackatime.hackclub.com/oauth/token",
         data={
-            "client_id": os.getenv("HACKATIME_CLIENT_ID"),
-            "client_secret": os.getenv("HACKATIME_CLIENT_SECRET"),
+            "client_id": os.getenv("HACKATIME_ID"),
+            "client_secret": os.getenv("HACKATIME_SECRET"),
             "code": code,
             "redirect_uri": redirect_uri,
             "grant_type": "authorization_code"
@@ -27,6 +27,15 @@ def get_access_token(code):
     data = response.json()
     return data.get("access_token")
 
+@app.route('/api/hackatime/connect')
+def connect_hackatime():
+    return redirect(
+        "https://hackatime.hackclub.com/oauth/authorize"
+        f"?client_id={os.getenv('HACKATIME_ID')}"
+        f"&redirect_uri={backend_url}/api/hackatime/callback"
+        "&response_type=code"
+        "&scope=read"
+    )
 
 @app.route("/api/hackatime/callback")
 def hackatime_callback():
