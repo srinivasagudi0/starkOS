@@ -49,14 +49,14 @@ def hackatime_callback():
     if not token:
         return jsonify({"message": "Hackatime couldn't connect."}), 400
 
-    session["hackatime_token"] = token
+    session["HACKATIME_TOKEN"] = token
 
     return jsonify({"message": "Hackatime connected successfully."})
 
 
 @app.route("/command-center/coded-hours")
 def coding_hours():
-    access_token = session.get("hackatime_token")
+    access_token = session.get("HACKATIME_TOKEN")
 
     if not access_token:
         return jsonify({"message": "Hackatime is not connected."}), 401
