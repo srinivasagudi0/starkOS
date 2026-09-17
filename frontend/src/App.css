@@ -14,7 +14,7 @@ body {
     linear-gradient(
       155deg,
       #d7d7d4 0%,
-      #d7d7d4 43%,
+      #d7d7d487 43%,
       #171918 43.1%,
       #171918 100%
     );
@@ -24,4 +24,24 @@ body {
   text-align: center;
   font-family: "Fascinate Inline";
   font-size: 2.1rem;
+  color: rgb(3, 125, 125);
 }
+
+.todays-code {
+  margin-left: 30px;
+  position: fixed;
+  rotate: -24deg;
+  border: 1px solid;
+
+}
+
+.todays-code h1{
+  font-size: 2.5rem;
+  color: rgb(75, 101, 22);
+  margin-left:10px;
+  margin-right: 10px;
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  font-weight: 100;
+}
+
