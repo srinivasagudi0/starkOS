@@ -32,6 +32,8 @@ body {
   position: fixed;
   rotate: -24deg;
   border: 1px solid;
+  transition: 0.2s ease-in-out;
+  background-color: #beb643ec;
 
 }
 
@@ -42,6 +44,28 @@ body {
   margin-right: 10px;
   text-decoration: underline;
   text-decoration-style: dashed;
-  font-weight: 100;
+  font-weight: 300;
+  text-align: center;
+
 }
 
+.todays-code p {
+  margin-left: 15px;
+  font-weight: 900;
+  font-size: 30px;
+  font-style: italic;
+  margin-bottom: 0%;
+}
+
+.todays-code:hover {
+  border-radius: 20px;
+  background-color: rgba(218, 201, 12, 0.925);
+}
+.dash {
+  margin-top: 0%;
+  margin-bottom: 0%;
+}
+
+.under-dash {
+  margin-top: 2px;
+}
