@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 CORS(
     app,
-    origins=["https://localhost:5173"],
+    origins=["http://localhost:5173"],
     supports_credentials=True
 )
 
