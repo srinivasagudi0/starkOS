@@ -50,7 +50,7 @@ def hackatime_callback():
     return jsonify({"message": "Hackatime connected sucesfully."})
 
 def get_hackatime_api():
-    access_token = session.get("access_token")
+    access_token = session.get("hackatime_token")
     key_response = requests.get(
         "https://hackatime.hackclub.com/api/v1/authenticated/api_keys",
         headers={"Authorization": f"Bearer {access_token}"}
@@ -85,19 +85,21 @@ def hackatime_hours():
     api_key = session.get("api_key")
 
     target_hours = requests.get(
-        "https://hackatime.hackatime/api/hackatime/v1/users/current/statusbar/today",
+        "https://hackatime.hackclub.com/api/hackatime/v1/users/current/statusbar/today",
         params={"api_key": api_key}
     )
 
     data = target_hours.json()
-    target_seconds = data.get("target_seconds", 0)
-
+    target_seconds = data.get("data", {}).get("goal", {}).get("target_seconds", 0)
     
 
     data = hours.json()
     seconds = data.get("total_seconds", 0)
 
-    return jsonify({"connected": True, "hours": round(seconds/3600, 2), "target_hours": f"{target_seconds}"})
+    percent = (int(seconds)/ int(target_seconds)) * 100
+    percent = round(percent, 2)
+
+    return jsonify({"connected": True, "hours": round(seconds/3600, 2), "target_hours": f"{target_seconds / 3600}", "percent": percent}) 
 
 if __name__ == "__main__":
     app.run(debug=True)
