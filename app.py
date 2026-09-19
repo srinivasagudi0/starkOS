@@ -1,10 +1,16 @@
 from flask import Flask, jsonify, request, session, redirect
 from datetime import datetime
 import requests
+from flask_cors import CORS
 import os
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
+CORS(
+    app,
+    origins=["https://localhost:5173"],
+    supports_credentials=True
+)
 
 @app.route("/api/hackatime/connect")
 def connect_hackatime():

@@ -30,5 +30,5 @@ function CommandCenter() {
     </main>
   )
 }
-
+// hackatime fetching was a real headache but it is done
 export default CommandCenter
