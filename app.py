@@ -4,6 +4,17 @@ import requests
 import os
 
 app = Flask(__name__)
+app.secret_key = os.getenv("FLASK_SECRET_KEY")
+
+@app.route("/api/hackatime/connect")
+def connect_hackatime():
+    return redirect(
+        "https://hackatime.hackclub.com/oauth/authorize"
+        f"?client_id={os.getenv('HACKATIME_ID')}"
+        "&redirect_uri=http://localhost:5000/api/hackatime/callback"
+        "&response_type=code"
+        "&scope=profile+read"
+    )
 
 @app.route("/api/hackatime/callback")
 def hackatime_callback():
@@ -30,18 +41,18 @@ def hackatime_callback():
 
     session["hackatime_token"] = token
 
-    return 
+    return jsonify({"message": "Hackatime connected sucesfully."})
 
 
 @app.route("/hackatime/hours")
 def hackatime_hours():
-    hackatime_callback()
+
     token = session.get("hackatime_token")
 
     if not token:
         return jsonify({"connected": False, "hours": 0})
 
-    today = datetime.now().date().today().isoformat()
+    today = datetime.now().date().isoformat()
 
     response = requests.get(
         "https://hackatime.hackclub.com/api/v1/authenticated/hours",
