@@ -5,16 +5,14 @@ import os
 
 app = Flask(__name__)
 
-app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
-backend_url = "http://localhost:5000"
+def hackatime_callback():
+    code = request.args.get("code")
 
-
-def get_access_token(code):
-    redirect_uri = f"{backend_url}/api/hackatime/callback"
-
+    redirect_uri = "http://localhost:5000/apo/hackatime/callback"
     response = requests.post(
         "https://hackatime.hackclub.com/oauth/token",
+
         data={
             "client_id": os.getenv("HACKATIME_ID"),
             "client_secret": os.getenv("HACKATIME_SECRET"),
@@ -25,59 +23,38 @@ def get_access_token(code):
     )
 
     data = response.json()
-    return data.get("access_token")
-
-@app.route('/api/hackatime/connect')
-def connect_hackatime():
-    return redirect(
-        "https://hackatime.hackclub.com/oauth/authorize"
-        f"?client_id={os.getenv('HACKATIME_ID')}"
-        f"&redirect_uri={backend_url}/api/hackatime/callback"
-        "&response_type=code"
-        "&scope=read"
-    )
-
-@app.route("/api/hackatime/callback")
-def hackatime_callback():
-    code = request.args.get("code")
-
-    if not code:
-        return jsonify({"message": "Authorization code is missing."}), 400
-
-    token = get_access_token(code)
+    token = data.get("access_token")
 
     if not token:
-        return jsonify({"message": "Hackatime couldn't connect."}), 400
+        return jsonify({"message": "Hacaktime couldn't connect. Check connection settings"})
 
-    session["HACKATIME_TOKEN"] = token
+    session["hackatime_token"] = token
 
-    return jsonify({"message": "Hackatime connected successfully."})
+    return 
 
 
-@app.route("/command-center/coded-hours")
-def coding_hours():
-    access_token = session.get("HACKATIME_TOKEN")
+@app.route("/hackatime/hours")
+def hackatime_hours():
+    hackatime_callback()
+    token = session.get["hackatime_token"]
 
-    if not access_token:
-        return jsonify({"message": "Hackatime is not connected."}), 401
+    if not token:
+        return jsonify({"connected": False, "hours": 0})
 
-    today = datetime.now().date().isoformat()
-
-    query = {
-        "start_date": today,
-        "end_date": today
-    }
-
-    headers = {
-        "Authorization": f"Bearer {access_token}"
-    }
+    today = datetime.date.today().isoformat()
 
     response = requests.get(
-        "https://hackatime.hackclub.com/api/v1/authenticated/hours",
-        params=query,
-        headers=headers
+        "https://hackatime.hackclub.com/api/v1/authenticated-hours",
+        headers={
+            "Authorization": f"Beares {token}"
+        },
+        params={
+            "start_date": today,
+            "end_date": today
+        }
     )
 
     data = response.json()
+    seconds = data.get("total_second", 0)
 
-    return jsonify(data)
+    return jsonify({"connected": True, "hours": round(seconds/ 3600, 2)})
