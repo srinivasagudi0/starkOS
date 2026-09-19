@@ -36,6 +36,16 @@ function CommandCenter() {
             <h1 className="under-dash"></h1>
             <p>{date}</p>
         </div>
+
+        <section className="focus-channel">
+          <div>
+            <span>CHANNEL 02</span>
+            <h2>Focus Session</h2>
+          </div>
+          <div>
+            
+          </div>
+        </section>
       
     </main>
   )
