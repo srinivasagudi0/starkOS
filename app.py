@@ -49,6 +49,16 @@ def hackatime_callback():
 
     return jsonify({"message": "Hackatime connected sucesfully."})
 
+def get_hackatime_api():
+    access_token = session.get("access_token")
+    key_response = requests.get(
+        "https://hackatime.hackclub.com/api/v1/authenticated/api_keys",
+        headers={"Authorization": f"Bearer {access_token}"}
+    )
+    api_key = key_response.json().get("token")
+    session["api_key"] = api_key
+    return api_key
+
 
 @app.route("/hackatime/hours")
 def hackatime_hours():
@@ -60,7 +70,7 @@ def hackatime_hours():
 
     today = datetime.now().date().isoformat()
 
-    response = requests.get(
+    hours = requests.get(
         "https://hackatime.hackclub.com/api/v1/authenticated/hours",
         headers={
             "Authorization": f"Bearer {token}"
@@ -70,13 +80,24 @@ def hackatime_hours():
             "end_date": today
         }
     )
+    get_hackatime_api()
 
-    data = response.json()
+    api_key = session.get("api_key")
+
+    target_hours = requests.get(
+        "https://hackatime.hackatime/api/hackatime/v1/users/current/statusbar/today",
+        params={"api_key": api_key}
+    )
+
+    data = target_hours.json()
+    target_seconds = data.get("target_seconds", 0)
+
+    
+
+    data = hours.json()
     seconds = data.get("total_seconds", 0)
 
-    return jsonify({"connected": True, "hours": round(seconds/3600, 2)})
+    return jsonify({"connected": True, "hours": round(seconds/3600, 2), "target_hours": f"{target_seconds}"})
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-    

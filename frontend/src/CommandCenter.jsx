@@ -3,12 +3,16 @@ import { useState, useEffect } from "react"
 function CommandCenter() {
 
   const [codeHours, setCodeHours] = useState(0)
+  const [targetHours, setTargetHours] = useState(0)
+
+  
 
   useEffect(() => {
     fetch('http://localhost:5000/hackatime/hours',{credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
         setCodeHours(data.hours)
+        setTargetHours(data.target_seconds)
       })
       .catch((error) => {console.error(error)})
   }, [])
