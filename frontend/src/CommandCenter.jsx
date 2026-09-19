@@ -1,4 +1,19 @@
+import { useState, useEffect } from "react"
+
 function CommandCenter() {
+
+  const [codeHours, setCodeHours] = useState(0)
+
+  useEffect(() => {
+    fetch('http://localhost:5000/hackatime/hours',{credentials: "include"})
+      .then((response) => response.json())
+      .then((data) => {
+        setCodeHours(data.hours)
+      })
+      .catch((error) => {console.error(error)})
+  }, [])
+  
+
   return (
     <main className="command-center">
         <div className="title1">
@@ -6,7 +21,7 @@ function CommandCenter() {
         </div>
         <div className="todays-code">
             <h1>CODED HOURS</h1>
-            <p>target / target here</p>
+            <p>{codeHours} / target here</p>
             <h1 className="dash">___________________</h1>
             <h1 className="under-dash"> Date</h1>
             <p>DATE</p>
