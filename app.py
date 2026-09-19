@@ -69,3 +69,8 @@ def hackatime_hours():
     seconds = data.get("total_seconds", 0)
 
     return jsonify({"connected": True, "hours": round(seconds/ 3600, 2)})
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+    
