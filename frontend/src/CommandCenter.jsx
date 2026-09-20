@@ -5,6 +5,7 @@ function CommandCenter() {
   const [codeHours, setCodeHours] = useState(0)
   const [targetHours, setTargetHours] = useState(0)
   const [hourPercent, setPercentHour] = useState(0)
+  const [focusMins, setFocusMins] = useState(50)
 
   
 
@@ -38,17 +39,29 @@ function CommandCenter() {
         </div>
 
         <section className="focus-channel">
-          <div>
+          <div className="focus-label">
             <span>CHANNEL 02</span>
             <h2>Focus Session</h2>
           </div>
-          <div>
-            
+
+          <div className="focus-display">
+            {String(focusMins).padStart(2, "0")}.00
           </div>
+          <div className="controls-focus">
+              {[25, 50, 90].map((minutes => (
+                <button
+                  key="minutes"
+                  className={focusMins == minutes ? "selected" : ""}
+                  onClick={() => setFocusMins(minutes)}
+                >{minutes} Min</button>
+              )))}
+          </div>
+          <button className="begin-focus"></button>
         </section>
-      
+
     </main>
   )
 }
+
 // hackatime fetching was a real headache but it is done
 export default CommandCenter
