@@ -27,6 +27,25 @@ useEffect(() => {
   return () => clearInterval(timer)
 }, [isRunning])
 
+  async function toggleTimer() {
+    if (isRunning) {
+      setIsRunning(false)
+      localStorage.removeItem(focusEndTme)
+      return 
+    }
+
+    if ("Notification" in window && Notification.permmision === "default") {
+      await Notification.requestPermission()
+    }
+
+    const endTime = Date.now() + timeLeft * 1000
+
+    localStorage.setItem("focusEndTime", endTime)
+    localStorage.setItem("focusMins", focusMins)
+
+    setIsRunning(true)
+  }
+
   
 
   useEffect(() => {
@@ -79,14 +98,23 @@ useEffect(() => {
           <button
           key={minutes}
           className={focusMins === minutes ? "selected" : ""}
-          onClick={() => setFocusMins(minutes)}
+          onClick={() => {
+            setFocusMins(minutes) 
+            setTimeLeft(minutes *60)
+            setIsRunning(false)
+
+            localStorage.setItem("focusMins", minutes)
+            localStorage.removeItem("focusEndTime")
+
+
+          }}
           >
           {minutes} Min
         </button>
         ))}
         </div>
 
-      <button className="begin-focus" onClick={() => setIsRunning(!isRunning)}>
+      <button className="begin-focus" onClick={toggleTimer}>
         {isRunning ? "pause sesspon" : "Begin Session ->"}
       </button>
     </section>
