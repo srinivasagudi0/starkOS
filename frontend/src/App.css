@@ -28,7 +28,8 @@ body {
 }
 
 .todays-code {
-  margin-left: 30px;
+  margin-top: 10px;
+  margin-left: 50px;
   position: absolute;
   rotate: -24deg;
   border: 1px solid;
@@ -68,4 +69,28 @@ body {
 
 .under-dash {
   margin-top: 2px;
+}
+
+.focus-channel {
+  position: relative;
+  top: 44rem;
+  margin-left: 20px;
+  color: white;
+}
+
+.focus-label span {
+  font-size: 1.4rem;
+}
+
+.focus-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.label-line {
+  height: 1px;
+  flex: 1;
+  background-color: transparent;
+
 }

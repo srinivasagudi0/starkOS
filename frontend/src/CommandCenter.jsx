@@ -40,10 +40,11 @@ function CommandCenter() {
 
         <section className="focus-channel">
           <div className="focus-label">
-            <span>CHANNEL 02</span>
+            <span>_______CHANNEL 02________</span>
             <h2>Focus Session</h2>
           </div>
 
+          <div className="line"></div>
           <div className="focus-display">
             {String(focusMins).padStart(2, "0")}.00
           </div>
