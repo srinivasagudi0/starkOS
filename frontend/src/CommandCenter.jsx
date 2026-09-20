@@ -56,7 +56,7 @@ function CommandCenter() {
                 >{minutes} Min</button>
               )))}
           </div>
-          <button className="begin-focus"></button>
+          <button className="begin-focus">Begin Session ➡️</button>
         </section>
 
     </main>
