@@ -22,7 +22,6 @@ button {
       #171918 43.1%,
       #171918 100%
     );
-  position: hidden;
   overflow: hidden;
 }
 
@@ -78,18 +77,12 @@ button {
 }
 
 .focus-channel {
-  position: relative;
-  top: 35rem;
-  left: 1500px;
-  margin-left: 5rem;
-  width: 26%;
-  padding: 30px;
-  color: rgb(255, 255, 255);
-  border: solid 1px white;
+  width: min(420px, 86vw);
+  margin: 28rem 7vw 0 auto;
+  padding: 24px 0;
+  color: #f2f2ee;
   text-align: center;
-
   font-family: "Courier New";
-  box-sizing: border-box;
 }
 
 .focus-label {
@@ -101,60 +94,78 @@ button {
 
 .focus-label p {
   margin: 0;
-  font-size: 1.3rem;
+  font-size: 0.8rem;
   font-weight: bold;
   letter-spacing: 4px;
   white-space: nowrap;
+  color: #beb643;
 }
 
 .label-line {
   flex: 1;
   height: 1px;
+  background: #beb643;
 }
 
 .focus-channel h2 {
-  margin: 25px 0 10px;
+  margin: 24px 0 8px;
   text-align: center;
-  font-family: Georgia, 'Times New Roman', Times, serif;
-
-  font-size: 2.2rem;
-  letter-spacing: 3px;
+  font-family: "Courier New", monospace;
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 4px;
   line-height: 1;
+  text-transform: uppercase;
 }
 
 .focus-display {
-  margin: 30px 0;
+  margin: 28px 0;
   text-align: center;
-  font-family: Georgia, 'Times New Roman', Times, serif;
-  font-size: 4rem;
+  font-family: "Courier New", monospace;
+  font-size: clamp(3.5rem, 6vw, 5rem);
   font-weight: bold;
-  letter-spacing: 5px;
+  letter-spacing: -3px;
 }
 
-.control-focus {
+.controls-focus {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-
-  width: 90%;
-  margin: 0 auto 18px;
+  gap: 10px;
+  margin-bottom: 18px;
 }
 
 .controls-focus button {
-  padding: 14px 10px;
-  border: 1px solif currentColor;
-  border-radius: 0;
-  font-size: 1rem;
+  padding: 11px 8px;
+  border: 1px solid #777;
+  font-size: 0.78rem;
   color: inherit;
-  background-color: transparent;
+  background: transparent;
   font-family: inherit;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  transition: 180ms ease;
-  margin-right: 20px;
-  margin-bottom: 20px;
+  transition: 150ms ease;
 }
 
-.controls-focus button:hover {
-  transform: translateY(-4px);
+.controls-focus button:hover,
+.controls-focus button.selected {
+  color: #171918;
+  background: #beb643;
+  border-color: #beb643;
+}
+
+.begin-focus {
+  width: 100%;
+  padding: 13px 18px;
+  border: 1px solid #beb643;
+  color: #beb643;
+  background: none;
+  font: 700 0.86rem/1 "Courier New", monospace;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: 150ms ease;
+}
+
+.begin-focus:hover {
+  color: #171918;
+  background: #beb643;
 }
