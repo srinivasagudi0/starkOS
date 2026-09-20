@@ -6,6 +6,27 @@ function CommandCenter() {
   const [targetHours, setTargetHours] = useState(0)
   const [hourPercent, setPercentHour] = useState(0)
   const [focusMins, setFocusMins] = useState(50)
+  const [timeLeft, setTimeLeft]  = useState( 50 * 60) // 50 mins of 60 secs
+  const [isRunning, setIsRunning] = useState(false)
+
+useEffect(() => {
+  if (!isRunning) return
+  const timer = setInterval(() => {
+    const displayMinutes = Math.floor(timeLeft)
+    const displaySeconds = timeLeft % 60
+    setTimeLeft((previousTime) => {
+      if (previousTime <= 1) {
+        setIsRunning(false)
+        
+        return 0
+      }
+      
+      return previousTime - 1
+    })
+  }, 1000)
+
+  return () => clearInterval(timer)
+}, [isRunning])
 
   
 
@@ -48,7 +69,8 @@ function CommandCenter() {
           <h2>Focus Session</h2>
 
         <div className="focus-display">
-          {String(focusMins).padStart(2, "0")}:00
+          {String(displayMinutes).padStart(2, "0")}:00
+          {String(displaySeconds).padStart(2, "0")}.00
         </div>
 
         <div className="controls-focus">
@@ -63,11 +85,11 @@ function CommandCenter() {
         ))}
         </div>
 
-  <button className="begin-focus">
-    Begin Session →
-  </button>
-</section>
-
+      <button className="begin-focus">
+        Begin Session →
+      </button>
+    </section>
+ 
     </main>
   )
 }
