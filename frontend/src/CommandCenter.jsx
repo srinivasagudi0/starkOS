@@ -86,8 +86,8 @@ useEffect(() => {
         ))}
         </div>
 
-      <button className="begin-focus">
-        Begin Session →
+      <button className="begin-focus" onClick={() => setIsRunning(!isRunning)}>
+        {isRunning ? "pause sesspon" : "Begin Session ->"}
       </button>
     </section>
  
