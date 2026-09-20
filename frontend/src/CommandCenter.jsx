@@ -40,25 +40,33 @@ function CommandCenter() {
 
         <section className="focus-channel">
           <div className="focus-label">
-            <span>_______CHANNEL 02________</span>
-            <h2>Focus Session</h2>
+            <span className="label-line"></span>
+            <p>CHANNEL 02</p>
+            <span className="label-line"></span>
           </div>
 
-          <div className="line"></div>
-          <div className="focus-display">
-            {String(focusMins).padStart(2, "0")}.00
-          </div>
-          <div className="controls-focus">
-              {[25, 50, 90].map((minutes => (
-                <button
-                  key="minutes"
-                  className={focusMins == minutes ? "selected" : ""}
-                  onClick={() => setFocusMins(minutes)}
-                >{minutes} Min</button>
-              )))}
-          </div>
-          <button className="begin-focus">Begin Session ➡️</button>
-        </section>
+          <h2>Focus Session</h2>
+
+        <div className="focus-display">
+          {String(focusMins).padStart(2, "0")}:00
+        </div>
+
+        <div className="controls-focus">
+          {[25, 50, 90].map((minutes) => (
+          <button
+          key={minutes}
+          className={focusMins === minutes ? "selected" : ""}
+          onClick={() => setFocusMins(minutes)}
+          >
+          {minutes} Min
+        </button>
+        ))}
+        </div>
+
+  <button className="begin-focus">
+    Begin Session →
+  </button>
+</section>
 
     </main>
   )
