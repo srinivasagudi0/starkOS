@@ -12,8 +12,7 @@ function CommandCenter() {
 useEffect(() => {
   if (!isRunning) return
   const timer = setInterval(() => {
-    const displayMinutes = Math.floor(timeLeft)
-    const displaySeconds = timeLeft % 60
+    
     setTimeLeft((previousTime) => {
       if (previousTime <= 1) {
         setIsRunning(false)
@@ -24,7 +23,7 @@ useEffect(() => {
       return previousTime - 1
     })
   }, 1000)
-
+  
   return () => clearInterval(timer)
 }, [isRunning])
 
@@ -40,6 +39,8 @@ useEffect(() => {
       })
       .catch((error) => {console.error(error)})
   }, [])
+  const displayMinutes = Math.floor(timeLeft / 60)
+  const displaySeconds = timeLeft % 60
 
   const current = new Date();
   const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
@@ -69,8 +70,8 @@ useEffect(() => {
           <h2>Focus Session</h2>
 
         <div className="focus-display">
-          {String(displayMinutes).padStart(2, "0")}:00
-          {String(displaySeconds).padStart(2, "0")}.00
+          {String(displayMinutes).padStart(2, "0")}:
+          {String(displaySeconds).padStart(2, "0")}
         </div>
 
         <div className="controls-focus">
