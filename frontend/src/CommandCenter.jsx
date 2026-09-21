@@ -54,6 +54,19 @@ function CommandCenter() {
     setIsRunning(true)
   }
 
+  const [streak, setStreak] = useState(0)
+
+  useEffect(() =>{
+    fetch("http://localhost:5000/hackatime/streaks", {
+      credentials: "include"
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.ok) {setStreak(data.streak)}
+      })
+      .catch((error) => console.error(error))
+  }, [])
+
   
 
   useEffect(() => {
@@ -140,6 +153,11 @@ function CommandCenter() {
       <button className="begin-focus" onClick={toggleTimer}>
         {isRunning ? "pause session" : "Begin Session ->"}
       </button>
+    </section>
+
+    <section className="streak-station">
+        <p>Spot III || Streak'o Meter</p>
+        <div className="streak-number"></div>
     </section>
  
     </main>
