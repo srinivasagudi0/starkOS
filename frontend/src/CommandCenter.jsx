@@ -13,7 +13,7 @@ function CommandCenter() {
     if (!isRunning) return 
 
     const timer = setInterval(() => {
-      const endTime = Number(localStorage.get("focusEndTimer"))
+      const endTime = Number(localStorage.getItem("focusEndTime"))
 
       const remaining = Math.max(0, Math.ceil((endTime - Date.now()) / 1000))
 
@@ -24,23 +24,25 @@ function CommandCenter() {
         localStorage.removeItem("focusEndTime")
 
       if (
-        "Notifications" in window &&
+        "Notification" in window &&
         Notification.permission === "granted"
       ) {
-        new Notification("Focus session complete!", )
+        new Notification("Focus session complete!")
       }       
       }
-    })
-  })
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [isRunning])
 
   async function toggleTimer() {
     if (isRunning) {
       setIsRunning(false)
-      localStorage.removeItem(focusEndTme)
+      localStorage.removeItem("focusEndTime")
       return 
     }
 
-    if ("Notification" in window && Notification.permmision === "default") {
+    if ("Notification" in window && Notification.permission === "default") {
       await Notification.requestPermission()
     }
 
@@ -63,12 +65,27 @@ function CommandCenter() {
         setPercentHour(data.percent)
       })
       .catch((error) => {console.error(error)})
+      
   }, [])
   const displayMinutes = Math.floor(timeLeft / 60)
   const displaySeconds = timeLeft % 60
 
   const current = new Date();
   const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+
+  useEffect(() => {
+    const savedMinutes = Number(localStorage.getItem("focusMins"))
+    const savedEndTime = Number(localStorage.getItem("focusEndTime"))
+
+    if (savedMinutes) {setFocusMins(savedMinutes)}
+    if (savedEndTime > Date.now()) {
+      setTimeLeft(Math.ceil((savedEndTime - Date.now()) / 1000))
+      setIsRunning(true)
+    } else if (savedMinutes) {
+      setTimeLeft(savedMinutes * 60)
+    }
+  }, [])
+  
   
 
   return (
@@ -121,7 +138,7 @@ function CommandCenter() {
         </div>
 
       <button className="begin-focus" onClick={toggleTimer}>
-        {isRunning ? "pause sesspon" : "Begin Session ->"}
+        {isRunning ? "pause session" : "Begin Session ->"}
       </button>
     </section>
  

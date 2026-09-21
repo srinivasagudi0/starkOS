@@ -96,11 +96,11 @@ def hackatime_hours():
     data = hours.json()
     seconds = data.get("total_seconds", 0)
 
-    if target_seconds == 0:
+    if target_seconds > 0:
         percent = (int(seconds)/ int(target_seconds)) * 100
         percent = round(percent, 2)
     else:
-        percent = 100.00
+        percent = 0
 
     return jsonify({"connected": True, "hours": round(seconds/3600, 2), "target_hours": f"{target_seconds / 3600}", "percent": percent}) 
 
