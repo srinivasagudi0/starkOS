@@ -9,23 +9,29 @@ function CommandCenter() {
   const [timeLeft, setTimeLeft]  = useState( 50 * 60) // 50 mins of 60 secs
   const [isRunning, setIsRunning] = useState(false)
 
-useEffect(() => {
-  if (!isRunning) return
-  const timer = setInterval(() => {
-    
-    setTimeLeft((previousTime) => {
-      if (previousTime <= 1) {
+  useEffect(() => {
+    if (!isRunning) return 
+
+    const timer = setInterval(() => {
+      const endTime = Number(localStorage.get("focusEndTimer"))
+
+      const remaining = Math.max(0, Math.ceil((endTime - Date.now()) / 1000))
+
+      setTimeLeft(remaining)
+
+      if (remaining === 0) {
         setIsRunning(false)
-        
-        return 0
+        localStorage.removeItem("focusEndTime")
+
+      if (
+        "Notifications" in window &&
+        Notification.permission === "granted"
+      ) {
+        new Notification("Focus session complete!", )
+      }       
       }
-      
-      return previousTime - 1
     })
-  }, 1000)
-  
-  return () => clearInterval(timer)
-}, [isRunning])
+  })
 
   async function toggleTimer() {
     if (isRunning) {
