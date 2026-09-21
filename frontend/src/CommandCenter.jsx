@@ -54,7 +54,7 @@ function CommandCenter() {
     setIsRunning(true)
   }
 
-  const [streak, setStreak] = useState(0)
+  const [streak, setStreak] = useState(10)
 
   useEffect(() =>{
     fetch("http://localhost:5000/hackatime/streaks", {
@@ -157,9 +157,14 @@ function CommandCenter() {
 
     <section className="streak-station">
         <p>Spot III || Streak'o Meter</p>
-        <div className="streak-number"></div>
+        <div className="streak-number">
+          {String(streak).padStart(2, "0").split("").map((digit, index) => (
+            <span key={index}>{digit}</span>
+          ))}
+        </div>
+
+        <p className="description">Consecutive Coding Days</p>
     </section>
- 
     </main>
   )
 }
