@@ -120,7 +120,7 @@ function CommandCenter() {
     <main className="command-center">
         <div className="title1">
             <h1>Command Center</h1>
-            <p>{feedback}</p>
+            <p style={{"color": "#2284a2"}}>{feedback}</p>
         </div>
         <div className="todays-code">
             <h1>CODED HOURS</h1>
