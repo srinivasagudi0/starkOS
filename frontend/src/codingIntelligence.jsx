@@ -1,11 +1,13 @@
 function CodingIntel() {
     return(
-        <main>
+        <main className="coding-intel">
             <section>
-                Main
+                <div className="title2">
+                    <h1>Coding Intelligence</h1>
+                </div>
             </section>
         </main>
     )
 }
-
+// honestly wil be a blast (this)
 export default CodingIntel;
