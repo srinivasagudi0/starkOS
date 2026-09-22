@@ -146,7 +146,40 @@ def give_message():
     meassage = random.choice(messages)
     return jsonify({"ok": True, "message": meassage})
 
+@app.route("/hackatime/past7days")
+def get_last_days():
+    token = session["hackatime_token"]
 
+    if not token:
+        return jsonify({"connected": False, "hours": 0})
+
+    today = datetime.now().data().isoformat()
+    hours_data = {}
+
+    for i in range(7):
+        current_date = today - datetime.timedelta(days=i)
+        date_string = current_date.isoformat()
+
+        hours = requests.get(
+            "https://hackatime.hackclub.com/api/v1/authenticated/hours",
+            headers={
+                "Authorization": f"Bearer {token}"
+            },
+            params={
+                "start_date": date_string,
+                "end_date": date_string
+            }
+        )
+        data = hours.json()
+        seconds = data.get("total_seconds", 0)
+
+        hours_data[date_string] = round(seconds/3600, 2)
+
+    return jsonify(hours)
+
+
+
+        
 
 if __name__ == "__main__":
     app.run(debug=True)
