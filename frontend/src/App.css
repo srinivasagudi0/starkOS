@@ -174,7 +174,7 @@ button {
 .streak-station {
   position: absolute;
   bottom: 60px;
-  left: 40px;
+  left: 160px;
   text-align: center;
   color: #7566c6;
   rotate: -30deg;
@@ -192,6 +192,9 @@ button {
 
 .streak-number {
   font-size: 5rem;
-  color: rgb(0, 166, 255);
+  color: rgba(207, 219, 209, 0.714);
+  border-style: groove;
+  border: 1px solid white;
+  padding: 0 0 0 0;
 }
 

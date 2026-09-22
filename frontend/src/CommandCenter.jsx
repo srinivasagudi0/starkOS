@@ -159,7 +159,7 @@ function CommandCenter() {
         <h1 className="streak-title">Spot III || Streak'o Meter</h1>
         <div className="streak-number">
           {String(streak).padStart(2, "0").split("").map((digit, index) => (
-            <span key={index}>{digit}</span>
+            <span key={index}>[{digit}]</span>
           ))}
         </div>
 
