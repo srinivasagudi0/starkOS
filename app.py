@@ -12,6 +12,8 @@ CORS(
     supports_credentials=True
 )
 
+description = {}
+
 @app.route("/api/hackatime/connect")
 def connect_hackatime():
     return redirect(
@@ -102,6 +104,10 @@ def hackatime_hours():
     else:
         percent = 0
 
+    description["hours"] = hours
+    description["percent"] = percent
+    description['target_hours'] = target_hours
+
     return jsonify({"connected": True, "hours": round(seconds/3600, 2), "target_hours": f"{target_seconds / 3600}", "percent": percent}) 
 
 @app.route('/hackatime/streaks')
@@ -121,7 +127,40 @@ def get_streaks():
         data = streak.json()
         streak = data.get("streak_days", 0)
 
+        description["streak"] = streak
+
         return jsonify({"ok": True, "streak": streak})        
+
+
+@app.route('/feedback/line')
+def give_message():
+    hours = description.get("hours", 0)
+    target_hours= description.get("target_hours", 0)
+    percent_done = description.get("percent", 0)
+    streak = description.get("streak", 0)
+
+    message = ""
+
+    if hours >= target_hours:
+        message += "You are on top of your target. Awesome job!"
+        if streak >=3:
+            message += " You have moved your streak one day further! 🎉"
+    elif percent_done >= 80:
+        message += "Almost there, dont let intrusive thoughts take over."
+        if streak >=3:
+            message += f" You are so close, don't lose your streak of {streak} days"
+
+    elif percent_done >= 50:
+        message += "You are halfway done. Suck it up and keep moving..."
+        if streak >=3:
+            message += " Don't lose your streak by not trying."
+
+    else:
+        message += "Lock in. Start doin' your coding for today."
+        if streak >=3:
+            message += " Your streak is at a critical position, try to save it up by coding."
+
+    return jsonify({"ok": True, "message": message})
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -98,6 +98,15 @@ function CommandCenter() {
       setTimeLeft(savedMinutes * 60)
     }
   }, [])
+
+  const [feedback, setFeedback] = useState("")
+
+  useEffect(() => {
+    fetch('/feedback/line')
+      .then(response => response.json())
+      .then((data) => setFeedback(data.message))
+      .catch((error) => {console.error(error)})
+  }, [])
   
   
 
@@ -105,6 +114,7 @@ function CommandCenter() {
     <main className="command-center">
         <div className="title1">
             <h1>Command Center</h1>
+            <p>{feedback}</p>
         </div>
         <div className="todays-code">
             <h1>CODED HOURS</h1>
