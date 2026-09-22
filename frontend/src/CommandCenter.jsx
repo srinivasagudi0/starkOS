@@ -75,7 +75,7 @@ function CommandCenter() {
     fetch('http://localhost:5000/hackatime/hours',{credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
-        if (!data.connected) {
+        if (data.connected) {
         setCodeHours(data.hours)
         setTargetHours(data.target_hours)
         setPercentHour(data.percent)
@@ -107,20 +107,20 @@ function CommandCenter() {
   
 
   useEffect(() => {
-    fetch('/feedback/line')
+    fetch("http://localhost:5000/feedback/line")
       .then((response) => response.json())
       .then((data) => {
         if (data.ok) {setFeedback(data.message)}
       })
       .catch((error) => console.error(error))
-  })
+  }, [])
   
 
   return (
     <main className="command-center">
         <div className="title1">
             <h1>Command Center</h1>
-            <h1>{feedback}</h1>
+            <p>{feedback}</p>
         </div>
         <div className="todays-code">
             <h1>CODED HOURS</h1>
