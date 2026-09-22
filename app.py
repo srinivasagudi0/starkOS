@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, session, redirect
-from datetime import datetime
+from datetime import datetime, timedelta
 import requests
 from flask_cors import CORS
 import os
@@ -11,7 +11,6 @@ CORS(
     origins=["http://localhost:5173"],
     supports_credentials=True
 )
-
 
 
 @app.route("/api/hackatime/connect")
@@ -156,7 +155,7 @@ def get_last_days():
     today = datetime.now().data().isoformat()
     hours_data = {}
 
-    for i in range(7):
+    for i in range(6, -1, -1):
         current_date = today - datetime.timedelta(days=i)
         date_string = current_date.isoformat()
 
@@ -175,7 +174,7 @@ def get_last_days():
 
         hours_data[date_string] = round(seconds/3600, 2)
 
-    return jsonify(hours)
+    return jsonify(hours_data)
 
 
 

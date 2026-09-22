@@ -13,7 +13,7 @@ function CodingIntel() {
                         </tr>
                         <tr>
                         </tr>
-                    </table>
+                    </tasble>
                 </div>
             </section>
         </main>
