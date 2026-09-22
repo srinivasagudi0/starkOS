@@ -8,6 +8,8 @@ function CommandCenter() {
   const [focusMins, setFocusMins] = useState(50)
   const [timeLeft, setTimeLeft]  = useState( 50 * 60) // 50 mins of 60 secs
   const [isRunning, setIsRunning] = useState(false)
+  const [hours, setHoursLoaded] = useState(false) // debug
+  const [streakLoaded, setStreakLoaded] = useState(false) // dxebug
 
   useEffect(() => {
     if (!isRunning) return 
@@ -73,10 +75,12 @@ function CommandCenter() {
     fetch('http://localhost:5000/hackatime/hours',{credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
+        if (!data.connected) {
         setCodeHours(data.hours)
         setTargetHours(data.target_hours)
         setPercentHour(data.percent)
-      })
+        setHoursLoaded(true)
+      }})
       .catch((error) => {console.error(error)})
       
   }, [])
@@ -100,11 +104,17 @@ function CommandCenter() {
   }, [])
 
   const [feedback, setFeedback] = useState("")
+  
 
   useEffect(() => {
+
     fetch('/feedback/line')
       .then(response => response.json())
-      .then((data) => setFeedback(data.message))
+      .then((data) => {
+        if (data.ok) {
+          setFeedback(data.message)
+        }
+      })
       .catch((error) => {console.error(error)})
   }, [])
   
