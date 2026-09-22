@@ -146,5 +146,7 @@ def give_message():
     meassage = random.choice(messages)
     return jsonify({"ok": True, "message": meassage})
 
+
+
 if __name__ == "__main__":
     app.run(debug=True)
