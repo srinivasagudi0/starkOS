@@ -107,24 +107,20 @@ function CommandCenter() {
   
 
   useEffect(() => {
-
     fetch('/feedback/line')
-      .then(response => response.json())
+      .then((response) => response.json())
       .then((data) => {
-        if (data.ok) {
-          setFeedback(data.message)
-        }
+        if (data.ok) {setFeedback(data.message)}
       })
-      .catch((error) => {console.error(error)})
-  }, [])
-  
+      .catch((error) => console.error(error))
+  })
   
 
   return (
     <main className="command-center">
         <div className="title1">
             <h1>Command Center</h1>
-            <p>{feedback}</p>
+            <h1>{feedback}</h1>
         </div>
         <div className="todays-code">
             <h1>CODED HOURS</h1>
@@ -184,6 +180,11 @@ function CommandCenter() {
         </div>
 
         <p className="description">Consecutive Coding Days</p>
+    </section>
+    <section className="navigation">
+      <div>
+
+      </div>
     </section>
     </main>
   )
