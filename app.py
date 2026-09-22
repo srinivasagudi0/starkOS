@@ -106,7 +106,7 @@ def hackatime_hours():
 
     description["hours"] = round(seconds / 3600, 2)
     description["percent"] = percent
-    description['target_hours'] = target_hours / 3600
+    description['target_hours'] = target_seconds / 3600
 
     return jsonify({"connected": True, "hours": round(seconds/3600, 2), "target_hours": f"{target_seconds / 3600}", "percent": percent}) 
 
