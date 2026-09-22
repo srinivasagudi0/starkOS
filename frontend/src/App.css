@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Fascinate+Inline&display=swap');
+@import url('https://fonts.googleapis.com/css2?');
 
 body {
   width: 100%;
@@ -169,3 +170,28 @@ button {
   color: #171918;
   background: #beb643;
 }
+
+.streak-station {
+  position: absolute;
+  bottom: 60px;
+  left: 40px;
+  text-align: center;
+  color: #7566c6;
+  rotate: -30deg;
+}
+
+.streak-station p {
+  font-size: 20px;
+}
+
+.streak-title {
+  font-size: 1.5rem;
+  font-family: "Silkscreen", sans-serif;
+  font-weight: 700;
+}
+
+.streak-number {
+  font-size: 5rem;
+  color: rgb(0, 166, 255);
+}
+

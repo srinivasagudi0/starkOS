@@ -119,7 +119,7 @@ def get_streaks():
         )
 
         data = streak.json()
-        streak = data.get("streak_days")
+        streak = data.get("streak_days", 0)
 
         return jsonify({"ok": True, "streak": streak})        
 
