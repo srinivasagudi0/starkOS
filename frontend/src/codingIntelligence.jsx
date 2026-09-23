@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function CodingIntel() {
 
@@ -38,7 +39,7 @@ function CodingIntel() {
                 </div>
                 <div className="last-7-days">
                     <h1>Last 7 Days</h1>
-                    <button>More ➡️</button>
+                    <Link to="/coding/this-week" className="more-button">More ➡️</Link>
                     {error ? (
     <p>{error}</p>
     ) : days.length === 0 ? (

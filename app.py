@@ -177,6 +177,28 @@ def get_last_days():
 
     return jsonify(hours_data)
 
+@app.route("/hackatime/week-details")
+def get():
+
+    if not session.get("hackatime_token"):
+        return jsonify({"message": "Hackatime is not connected."})
+
+    # week overview
+    hours_data = get_last_days().get_json()
+    total_hours = 0
+    for hours in hours_data.values():
+        total_hours += hours
+
+    active_days = []
+
+    for day, hours in hours_data.items():
+        if hours > 0:
+            active_days.append(day)
+
+    average = total_hours / 7
+
+    
+
 
 if __name__ == "__main__":
     app.run(debug=True)
