@@ -222,7 +222,7 @@ button {
 
 .last-7-days h1 {
   color: rgb(60, 3, 231);
-  font-size: 2.4rem; 
+  font-size: 3.2rem;
 }
 
 .last-7-days > p {
@@ -236,7 +236,7 @@ button {
 }
 
 .heatmap-day h1 {
-  text-align: left;
+  text-align: center;
   font-size: 1rem;
   color: rgb(164, 50, 50);
 }
@@ -262,5 +262,17 @@ button {
   aspect-ratio: 1;
   display: grid;
   place-items: center;
+}
+
+.last-7-days > h1,
+.last-7-days > p
+{
+  text-align: center;
+  margin: 4px 0;
+}
+
+.week-heatmap
+{
+  margin-top: 8px;
 }
 
