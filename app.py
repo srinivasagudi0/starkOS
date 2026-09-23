@@ -179,6 +179,7 @@ def get_last_days():
 
 @app.route("/hackatime/week-details")
 def get():
+    token = session.get("hackatime_token")
 
     if not session.get("hackatime_token"):
         return jsonify({"message": "Hackatime is not connected."})
@@ -196,6 +197,41 @@ def get():
             active_days.append(day)
 
     average = total_hours / 7
+
+    # daily breakdown
+
+    date = datetime.now().date().isoformat()
+
+    today_hours = hours_data.get(date, 0)
+
+    get_hackatime_api()
+
+    api_key = session.get("api_key")
+
+    data = requests.get(
+        "https://hackatime.hackclub.com/api/hackatime/v1/users/current/stats/last_7_days",
+        headers={
+            "Authorization": f"BEARER {token}"
+        },
+        params={
+            "api_key": api_key
+        }
+    )
+
+    data = data.json().get("data", {})
+
+    projects = data.get("projects", [])
+    langs = data.get("languages", [])
+
+    top_project = max(
+        projects, 
+        key=lambda project: project["total_seconds"], 
+        default=None) # most worked project
+
+    top_langs = max(
+        langs,
+        key=lambda language: language["total_seconds"],
+        default=None)
 
     
 
