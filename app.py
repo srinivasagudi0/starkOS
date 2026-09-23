@@ -182,7 +182,7 @@ def get():
     token = session.get("hackatime_token")
 
     if not session.get("hackatime_token"):
-        return jsonify({"message": "Hackatime is not connected."})
+        return jsonify({"message": "Hackatime is not connected."}), 401
 
     # week overview
     hours_data = get_last_days().get_json()
@@ -233,7 +233,17 @@ def get():
         key=lambda language: language["total_seconds"],
         default=None)
 
-    
+    busiest_day = max(hours_data, key=hours_data.get, default=None) # show the world how busy you are.
+
+    return jsonify({
+        "total_hours": (total_hours, 2),
+        "active_days": len(active_days),
+        "average_hours": round(average, 2),
+        "daily_hours": hours_data,
+        "busiest_day": busiest_day,
+        "top_project": top_project,
+        "top_language": top_langs
+    })   #returns lot of info
 
 
 if __name__ == "__main__":
