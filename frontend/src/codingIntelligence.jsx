@@ -20,7 +20,7 @@ function CodingIntel() {
                 setDays(
                     Object.entries(data)
                         .sort(([a],[b]) => a.localeCompare(b))
-                        .map(([data, hours]) => ({date, hours}))
+                        .map(([date, hours]) => ({date, hours}))
 
                 ) // turns python dict to something rwact can follow
             })
@@ -38,14 +38,45 @@ function CodingIntel() {
                 </div>
                 <div className="last-7-days">
                     <h1>Last 7 Days</h1>
-                    <table>
-                        <tr>
-                            day7 day6 day 5 day4 day3 day2 day1
-                        </tr>
-                        <tr>
-                        </tr>
-                    </table>
-                </div>
+                    {error ? (
+    <p>{error}</p>
+    ) : days.length === 0 ? (
+    <p>Loading coding hours…</p>
+    ) : (
+    <>
+    <p>
+      {totalHours.toFixed(2)} hours · {days[0].date} — {days[6].date}
+    </p>
+
+    <div className="week-heatmap">
+      {days.map(day => {
+        const color = 20 + (day.hours / maxHours) * 65
+
+        return (
+        <div className="heatmap-day" key={day.date}>
+            <span>
+              {new Date(`${day.date}T12:00:00`).toLocaleDateString(
+                undefined,
+                { weekday: "short" }
+              )}
+            </span>
+
+            <div
+              className="heatmap-cell"
+              tabIndex={0}
+              aria-label={`${day.date}: ${day.hours} coding hours`}
+              style={{ backgroundColor: `hsl(0, 0%, ${color}%)` }}
+            >
+              <span className="heatmap-detail">
+                {day.hours} hrs
+            </span>
+            </div>
+        </div>
+)})}
+        </div>
+            </>
+            )}
+        </div>
             </section>
         </main>
     )
