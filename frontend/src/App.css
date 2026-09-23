@@ -215,14 +215,14 @@ button {
 }
 
 .last-7-days {
-  max-width: 200px;
+  max-width: 2000px;
   margin: 20px;
   padding: 24px;
 }
 
 .last-7-days h1 {
   color: rgb(60, 3, 231);
-  
+  font-size: 2.4rem; 
 }
 
 .last-7-days > p {
@@ -237,7 +237,7 @@ button {
 
 .heatmap-day h1 {
   text-align: left;
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: rgb(164, 50, 50);
 }
 
@@ -245,5 +245,22 @@ button {
   display: flex;
   color: rgba(13, 23, 161, 0.563);
   margin-bottom: 1px;
+}
+
+
+.heatmap-detail {
+  font-size: 30px;
+}
+
+.week-heatmap {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.heatmap-cell {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
 }
 
