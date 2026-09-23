@@ -209,15 +209,14 @@ def get():
     api_key = session.get("api_key")
 
     data = requests.get(
-        "https://hackatime.hackclub.com/api/hackatime/v1/users/current/stats/last_7_days",
-        headers={
-            "Authorization": f"BEARER {token}"
-        },
-        params={
-            "api_key": api_key
-        }
+    "https://hackatime.hackclub.com/api/hackatime/v1/users/current/stats/last_7_days",
+    headers={
+        "Authorization": f"Bearer {api_key}"
+    }
     )
 
+    print("Stats status:", data.status_code)
+    print("Stats response:", data.text)
     data = data.json().get("data", {})
 
     projects = data.get("projects", [])
@@ -226,12 +225,12 @@ def get():
     top_project = max(
         projects, 
         key=lambda project: project["total_seconds"], 
-        default=None) # most worked project
+        default=None).get("name") # most worked project
 
     top_langs = max(
         langs,
         key=lambda language: language["total_seconds"],
-        default=None)
+        default=None).get("name")
 
     busiest_day = max(hours_data, key=hours_data.get, default=None) # show the world how busy you are.
 
