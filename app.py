@@ -150,13 +150,13 @@ def get_last_days():
     token = session["hackatime_token"]
 
     if not token:
-        return jsonify({"connected": False, "hours": 0})
+        return jsonify({"connected": False, "hours": 0}), 401
 
-    today = datetime.now().data().isoformat()
+    today = datetime.now().date()
     hours_data = {}
 
     for i in range(6, -1, -1):
-        current_date = today - datetime.timedelta(days=i)
+        current_date = today - timedelta(days=i)
         date_string = current_date.isoformat()
 
         hours = requests.get(
@@ -169,6 +169,7 @@ def get_last_days():
                 "end_date": date_string
             }
         )
+        
         data = hours.json()
         seconds = data.get("total_seconds", 0)
 
