@@ -214,3 +214,36 @@ button {
   border: 1px solid white; 
 }
 
+.last-7-days {
+  max-width: 200px;
+  margin: 20px;
+  padding: 24px;
+}
+
+.last-7-days h1 {
+  color: rgb(60, 3, 231);
+  
+}
+
+.last-7-days > p {
+  margin-bottom: 24px;
+}
+
+.weak-heatmap {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.heatmap-day h1 {
+  text-align: left;
+  font-size: 1.5rem;
+  color: rgb(164, 50, 50);
+}
+
+.description {
+  display: flex;
+  color: rgba(13, 23, 161, 0.563);
+  margin-bottom: 1px;
+}
+

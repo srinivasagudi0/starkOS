@@ -44,8 +44,11 @@ function CodingIntel() {
     <p>Loading coding hours…</p>
     ) : (
     <>
-    <p>
-      {totalHours.toFixed(2)} hours · {days[0].date} — {days[6].date}
+    <p className="description">
+      {totalHours.toFixed(2)} hours
+    </p>
+    <p className="description"> 
+      {days[0].date} — {days[6].date}
     </p>
 
     <div className="week-heatmap">
@@ -54,12 +57,12 @@ function CodingIntel() {
 
         return (
         <div className="heatmap-day" key={day.date}>
-            <span>
+            <h1>
               {new Date(`${day.date}T12:00:00`).toLocaleDateString(
                 undefined,
                 { weekday: "short" }
               )}
-            </span>
+            </h1>
 
             <div
               className="heatmap-cell"
