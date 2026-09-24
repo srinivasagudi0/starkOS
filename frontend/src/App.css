@@ -313,3 +313,28 @@ button {
   margin-left: 70px;
 }
 
+.daily-breakdown {
+  margin: 30px 20px;
+  max-width: 700px;
+}
+
+.daily-row {
+  display: grid;
+  grid-template-columns: 110px;
+  letter-spacing: 1px;
+}
+
+.daily-track {
+  height: 8px;
+  background: rgba(6, 6, 6, 0.15);
+}
+
+.daily-fill {
+  height: 100%;
+}
+
+.daily-row > span:last-child {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
