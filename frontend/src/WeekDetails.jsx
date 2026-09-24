@@ -36,7 +36,7 @@ function WeekDetails() {
         <Link to="/coding">← Back</Link>
         <h1>Your Week in Code</h1>
 
-        <section>
+        <section className="week-overview">
         <h2>Week Overview</h2>
         <p>Total: {totalHours} hours</p>
         <p>Active days: {activeDays} / 7</p>

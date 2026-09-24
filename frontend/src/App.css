@@ -289,3 +289,26 @@ button {
     );
   overflow: hidden;
 }
+
+.week-overview {
+  font-size: 1.3rem;
+  border: 2px solid white;
+  max-width: 500px;
+  margin-left: 20px;
+  border-radius: 100px;
+  background-color: rgba(255, 0, 0, 0.481);
+}
+.week-details h1 {
+  font-size: 3.9rem;
+  text-align: center;
+}
+
+.week-overview h2 {
+  text-align: center;
+  font-size: 2.3rem;
+  color: #87670f;
+}
+
+.week-overview p {
+  margin-left: 70px;
+}
