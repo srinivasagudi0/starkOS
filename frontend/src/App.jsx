@@ -9,7 +9,6 @@ function App() {
     <BrowserRouter>
       <Link to="/">Home</Link>
       <Link to="/coding">Coding Intelligence</Link>
-      <Link to="week-details">Week Details</Link>
       <Routes>
         <Route path="/" element={<CommandCenter />} />
         <Route path="/coding" element={<CodingIntel />} />

@@ -39,7 +39,7 @@ function CodingIntel() {
                 </div>
                 <div className="last-7-days">
                     <h1>Last 7 Days</h1>
-                    <Link to="/coding/this-week" className="more-button">More ➡️</Link>
+                    <Link to="/week-details" className="more-button">More ➡️</Link>
                     {error ? (
     <p>{error}</p>
     ) : days.length === 0 ? (
