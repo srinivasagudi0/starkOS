@@ -43,13 +43,26 @@ function WeekDetails() {
         <p>Daily average: {averageHours} hours</p>
         </section>
 
-        <section>
-        <h2>Daily Breakdown</h2>
-        {Object.entries(dailyHours).map(([date, hours]) => (
-            <p key={date}>
-            {date}: {hours} hours
-            </p>
-        ))}
+        <section className="daily-breakdown">
+            
+            <h2>Daily Breakdown</h2>
+
+            {Object.entries(dailyHours).map(([date, hours]) => (
+                <div className="daily-row" key={date}>
+                <span>{date}</span>
+
+                <div className="daily-track">
+                    <div
+                    className="daily-fill"
+                    style={{
+                        width: `${(hours / Math.max(1, ...Object.values(dailyHours))) * 100}%`
+                    }}
+                    />
+                </div>
+
+                <span>{hours} hrs</span>
+                </div>
+            ))}
         </section>
 
         <section>
