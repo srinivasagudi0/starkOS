@@ -276,3 +276,16 @@ button {
   margin-top: 8px;
 }
 
+
+.week-details {
+  min-height: 100vh;
+  color: #111;
+  background:
+    linear-gradient(
+      155deg,
+     rgb(255, 204, 0),
+     rgba(3, 186, 3, 0.618),
+      black
+    );
+  overflow: hidden;
+}

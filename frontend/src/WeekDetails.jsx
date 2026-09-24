@@ -6,10 +6,10 @@ function WeekDetails() {
     const [totalHours, setTotalHours] = useState(0)
     const [activeDays, setActiveDays] = useState(0)
     const [averageHours, setAverageHours] = useState(0)
-    const [dailyHours, setDaily] = useState(0)
+    const [dailyHours, setDaily] = useState({})
     const [busiestHours, setBusiestHours]= useState(0)
-    const [topProject, setTopProject] = useState("")
-    const [topLang, setTopLang] = useState("")
+    const [topProject, setTopProject] = useState(null)
+    const [topLang, setTopLang] = useState(null)
 
     useEffect(() =>{
         fetch('http://localhost:5000/hackatime/week-details', {
@@ -32,11 +32,40 @@ function WeekDetails() {
     }, [])
 
     return (
-        <main>
-            <Link to="/coding">🔙</Link>
-            <h1>Your Week in Code</h1>
-            
-        </main>
+    <main className="week-details">
+        <Link to="/coding">← Back</Link>
+        <h1>Your Week in Code</h1>
+
+        <section>
+        <h2>Week Overview</h2>
+        <p>Total: {totalHours} hours</p>
+        <p>Active days: {activeDays} / 7</p>
+        <p>Daily average: {averageHours} hours</p>
+        </section>
+
+        <section>
+        <h2>Daily Breakdown</h2>
+        {Object.entries(dailyHours).map(([date, hours]) => (
+            <p key={date}>
+            {date}: {hours} hours
+            </p>
+        ))}
+        </section>
+
+        <section>
+        <h2>Weekly Highlights</h2>
+        <p>Busiest day: {busiestHours || "No data"}</p>
+
+        <p>
+            Top project: {topProject ?? "No data"}
+        </p>
+
+        <p>
+            Top language: {topLang ?? "No data"}
+
+        </p>
+        </section>
+    </main>
     )
 }
 
