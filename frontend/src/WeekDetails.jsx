@@ -10,6 +10,7 @@ function WeekDetails() {
     const [busiestHours, setBusiestHours]= useState(0)
     const [topProject, setTopProject] = useState(null)
     const [topLang, setTopLang] = useState(null)
+    const [summary, setSummary] = useState("")
 
     useEffect(() =>{
         fetch('http://localhost:5000/hackatime/week-details', {
@@ -27,6 +28,7 @@ function WeekDetails() {
                 setBusiestHours(data.busiest_day),
                 setTopProject(data.top_project),
                 setTopLang(data.top_langs)
+                setSummary(data.summary)
             })
             .catch(error => console.error(error))
     }, [])
@@ -34,7 +36,7 @@ function WeekDetails() {
     return (
     <main className="week-details">
         <Link to="/coding">← Back</Link>
-        <h1>Your Week in Code</h1>
+        <h1 className="title4">Your Week in Code</h1>
 
         <div className="one-line" style={{}}>
         <section className="week-overview">
@@ -78,7 +80,10 @@ function WeekDetails() {
                 </div>
             ))}
         </section>
-
+        <section className="suummary">
+            <h2>Summary</h2>
+            <p>{summary}</p>
+        </section>
        
     </main>
     )
