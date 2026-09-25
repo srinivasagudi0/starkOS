@@ -402,3 +402,26 @@ button {
 .week-overview p {
   margin-left: 20px;
 }
+
+.weekly-highlights h2 {
+  color:rgb(4, 8, 248);
+  font-size: 2.5rem;
+  text-align: center;
+  background-color: rgba(255, 0, 0, 0.36);
+  letter-spacing: 1px;
+}
+
+.weekly-highlights p {
+  font-size: 1.3rem;
+  text-align: right;
+  margin-right: 35px;
+  color:#06e475;
+  font-weight: 800;
+}
+
+.weekly-highlights {
+  background-color: rgb(174, 0, 255);
+  width: 600px;
+  border-radius: 50px;
+  border: rgb(0, 0, 0) 2px solid;
+}
