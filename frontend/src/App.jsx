@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
 import CommandCenter from './CommandCenter.jsx'
 import CodingIntel from './codingIntelligence.jsx'
 import WeekDetails from './WeekDetails.jsx'
+import ProjectBreakdown from './ProjectBreakdown.jsx'
 import './App.css'
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<CommandCenter />} />
         <Route path="/coding" element={<CodingIntel />} />
         <Route path='/week-details' element={<WeekDetails />} />
+        <Route path="/project-breakdown" element={<ProjectBreakdown />} />
       </Routes>
     </BrowserRouter>
   )

@@ -281,7 +281,10 @@ def get():
 
 @app.route("/hackatime/project-breakdown")
 def give_project_breakdown():
-    token = session.get("token")
+    token = session.get("hackatime_token")
+
+    if not token:
+        return jsonify({"message": "Hackatime not connected."})
 
     #getlast 5 worked projects name, coded time, % of code time per this week
     response = requests.get(

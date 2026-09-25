@@ -35,6 +35,7 @@ function CodingIntel() {
         })
             .then(async response => {
                 const data= await response.json()
+                return data
             })
             .then(data => {
                 setProjects(data.projects)
@@ -98,8 +99,13 @@ function CodingIntel() {
         </section>
         <section className="project-breakdown">
             <h2>Project BreakDown</h2>
-            <p>{projects}</p>
-
+            <Link to="/project-breakdown">More ➡️</Link>
+            {projects.slice(0, 5).map(project => (
+            <div key={project.name} className="project-row">
+                <h3>{project.name}</h3>
+                <p>{(project.total_seconds / 3600).toFixed(2)} hours total</p>
+            </div>
+            ))}
         </section>
         </main>
     )

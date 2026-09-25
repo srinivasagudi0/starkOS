@@ -456,5 +456,30 @@ button {
 .project-breakdown h2 {
   text-align: center;
   font-size: 2.8rem;
+  text-decoration: underline;
+}
+
+.project-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid;
+}
+
+.project-row h3 {
+  margin-left:20px;
+  font-size: 1.5rem;
+  color:#e45706;
+  overflow-wrap: anywhere;
+}
+
+.project-row p {
+  margin: 0;
+  font-size: 1.4rem;
+  margin-right: 10px;
+  font-family: monospace;
+  white-space: nowrap;
 }
 
