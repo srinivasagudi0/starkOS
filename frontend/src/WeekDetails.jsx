@@ -36,15 +36,15 @@ function WeekDetails() {
         <Link to="/coding">← Back</Link>
         <h1>Your Week in Code</h1>
 
-        <div>
+        <div className="one-line" style={{}}>
         <section className="week-overview">
         <h2>Week Overview</h2>
         <p>Total: {totalHours} hours</p>
-        <p>Active days: {activeDays} / 7</p>
+        <p>Active Days: {activeDays} / 7</p>
         <p>Daily average: {averageHours} hours</p>
         </section>
 
-         <section>
+         <section className="weekly-highlights">
             <h2>Weekly Highlights</h2>
             <p>Busiest day: {busiestHours || "No data"}</p>
             <p>
@@ -68,7 +68,8 @@ function WeekDetails() {
                     <div
                     className="daily-fill"
                     style={{
-                        width: `${(hours / Math.max(1, ...Object.values(dailyHours))) * 100}%`
+                        width: `${(hours / Math.max(1, ...Object.values(dailyHours))) * 100}%`,
+                        height: `${(hours / Math.max(1, ...Object.values(dailyHours))) * 100}%`
                     }}
                     />
                 </div>

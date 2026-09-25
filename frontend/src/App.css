@@ -293,9 +293,10 @@ button {
 .week-overview {
   font-size: 1.3rem;
   border: 2px solid white;
-  max-width: 500px;
+  max-width: 900px;
+  box-sizing: border-box;
   margin-left: 20px;
-  border-radius: 100px;
+  border-radius: 80px;
   background-color: rgba(255, 0, 0, 0.481);
 }
 .week-details h1 {
@@ -316,7 +317,7 @@ button {
 .daily-breakdown {
   margin: 40px 20px;
   background-color: red;
-  max-width: 300px;
+  max-width: 900px;
   border-radius: 50px;
   text-align: center;
 }
@@ -384,3 +385,20 @@ button {
   background: #5151fa;
 }
 
+.one-line {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.one-line .week-overview {
+  flex: 0 1 500px;
+  width: 500px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.week-overview p {
+  margin-left: 20px;
+}
