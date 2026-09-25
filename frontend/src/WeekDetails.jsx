@@ -36,12 +36,25 @@ function WeekDetails() {
         <Link to="/coding">← Back</Link>
         <h1>Your Week in Code</h1>
 
+        <div>
         <section className="week-overview">
         <h2>Week Overview</h2>
         <p>Total: {totalHours} hours</p>
         <p>Active days: {activeDays} / 7</p>
         <p>Daily average: {averageHours} hours</p>
         </section>
+
+         <section>
+            <h2>Weekly Highlights</h2>
+            <p>Busiest day: {busiestHours || "No data"}</p>
+            <p>
+                Top project: {topProject ?? "No data"}
+            </p>
+            <p>
+                Top language: {topLang ?? "No data"}
+            </p>
+        </section>
+        </div>
 
         <section className="daily-breakdown">
             
@@ -65,19 +78,7 @@ function WeekDetails() {
             ))}
         </section>
 
-        <section>
-        <h2>Weekly Highlights</h2>
-        <p>Busiest day: {busiestHours || "No data"}</p>
-
-        <p>
-            Top project: {topProject ?? "No data"}
-        </p>
-
-        <p>
-            Top language: {topLang ?? "No data"}
-
-        </p>
-        </section>
+       
     </main>
     )
 }
