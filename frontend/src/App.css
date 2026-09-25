@@ -315,6 +315,10 @@ button {
 
 .daily-breakdown {
   margin: 40px 20px;
+  background-color: red;
+  max-width: 300px;
+  border-radius: 50px;
+  text-align: center;
 }
 
 .daily-breakdown h2 {
@@ -339,5 +343,39 @@ button {
 .daily-row > span:last-child {
   text-align: right;
   font-variant-numeric: tabular-nums;
+}
+
+.daily-breakdown {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  width: auto;
+  max-width: 950px;
+  background: transparent;
+  border-radius: 0;
+}
+
+.daily-breakdown h2 {
+  grid-column: 1 / -1;
+}
+
+.daily-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.daily-track {
+  height: 180px;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  background: transparent;
+}
+
+.daily-fill {
+  width: 100%;
+  background: #5151fa;
 }
 
