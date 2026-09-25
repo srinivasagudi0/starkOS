@@ -452,3 +452,9 @@ button {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+.project-breakdown h2 {
+  text-align: center;
+  font-size: 2.8rem;
+}
+

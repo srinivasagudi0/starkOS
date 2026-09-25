@@ -279,5 +279,28 @@ def get():
     })   #returns lot of info
 
 
+@app.route("/hackatime/project-breakdown")
+def give_project_breakdown():
+    token = session.get("token")
+
+    #getlast 5 worked projects name, coded time, % of code time per this week
+    response = requests.get(
+        "https://hackatime.hackclub.com/api/v1/authenticated/projects",
+        headers={
+            "Authorization": f"Bearer {token}"
+        },
+        params={"include_archived": "true"},
+        timeout=20
+    )
+    response.raise_for_status()
+
+    projects = response.json().get("projects", [])
+
+    projects.sort(
+        key=lambda project: project.get("most_recent_heartbeat") or "",
+        reverse=True
+    )
+    return jsonify({"projects": projects})
+
 if __name__ == "__main__":
     app.run(debug=True)

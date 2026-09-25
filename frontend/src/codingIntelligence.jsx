@@ -5,6 +5,7 @@ function CodingIntel() {
 
     const [days, setDays] = useState([])
     const [error, setError] = useState("")
+    const [projects, setProjects] = useState([])
 
     useEffect(() => {
         fetch("http://localhost:5000/hackatime/past7days", {
@@ -27,6 +28,18 @@ function CodingIntel() {
             })
             .catch(error => setError(error.message))
     }, [])
+
+    useEffect(() => {
+        fetch('http://localhost:5000/hackatime/project-breakdown', {
+            credentials: "include"
+        })
+            .then(async response => {
+                const data= await response.json()
+            })
+            .then(data => {
+                setProjects(data.projects)
+            })
+    })
 
     const maxHours = Math.max(1, ...days.map(day => day.hours))
     const totalHours = days.reduce((total, day) => total + day.hours, 0)
@@ -77,12 +90,17 @@ function CodingIntel() {
             </span>
             </div>
         </div>
-)})}
+            )})}
         </div>
             </>
             )}
         </div>
-            </section>
+        </section>
+        <section className="project-breakdown">
+            <h2>Project BreakDown</h2>
+            <p>{projects}</p>
+
+        </section>
         </main>
     )
 }
