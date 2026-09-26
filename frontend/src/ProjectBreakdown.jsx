@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 
 function ProjectBreakdown() {
@@ -20,10 +20,9 @@ function ProjectBreakdown() {
             .catch((error) => setError(error.message))
     }, [])
 
-    function createProjectStory() {
+    async function createProjectStory(event) {
         event.preventDefault()
-
-        if(!selectedProject || loading) return 
+        if (!selectedProject || loading) return
 
         setLoading(true)
         setStory("")
@@ -31,23 +30,23 @@ function ProjectBreakdown() {
 
         try {
             const response = await fetch(
-                "htpp://localhost:5000/project-breakdown/story",
-                {
-                    method: "POST",
-                    credentials: "include",
-                    headers: {"Coontent-Type": "apllication/json"},
-                    body: JSON.stringify({project_name: selectedProject})
-                }
+            "http://localhost:5000/project-breakdown/story",
+            {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ project_name: selectedProject })
+            }
             )
 
             const data = await response.json()
             setStory(data.story)
-        } catch {
-            setError(error.message)
-        } finally {
-            setLoading(false)
+            } catch (error) {
+                setError(error.message)
+            } finally {
+                setLoading(false)
+            }
         }
-    }
     
 
     return (
@@ -66,10 +65,6 @@ function ProjectBreakdown() {
                 <form
                     onSubmit={(event) => {
                         event.preventDefault()
-
-                    if (selectedProject) {
-                        navigate(`/project-story/${encodeURIComponent(selectedProject)}`)
-                    }
                 }}
                     >
                 <select

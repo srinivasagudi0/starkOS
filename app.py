@@ -333,7 +333,7 @@ def more_project_breakdown():
     projects = response.json().get("projects", [])
 
     projects.sort(
-        key=lambda project:project.get("most_recent_heartbeat") or "",
+        key=lambda project: project.get("most_recent_heartbeat") or "",
         reverse=True
     )
 
