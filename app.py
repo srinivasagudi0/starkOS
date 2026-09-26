@@ -305,5 +305,39 @@ def give_project_breakdown():
     )
     return jsonify({"projects": projects})
 
+@app.route("/project-breakdown/project-overview")
+def more_project_breakdown():
+    token = session.get("hackatime_token")
+
+    if not token:
+        return jsonify({"message": "Hackatime is not connected"})
+
+    response = requests.get(
+        "https://hackatime.hackclub.com/api/v1/authenticated/projects",
+        headers={
+            "Authorization": f"Bearer {token}"
+        },
+        params={
+            "include_archived": "false",
+            "projects": "",
+            "since": "",
+            "until": "",
+            "until_date": "",
+            "start": "",
+            "end": "",
+            "start_date": "",
+            "end_date": ""
+        }
+    )
+
+    projects = response.json().get("projects", [])
+
+    projects.sort(
+        key=lambda project:project.get("most_recent_heartbeat") or "",
+        reverse=True
+    )
+
+    return jsonify({"projects": projects})
+
 if __name__ == "__main__":
     app.run(debug=True)
