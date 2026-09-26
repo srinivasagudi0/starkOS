@@ -1,11 +1,54 @@
 import { useState } from "react"
-import { Link, useNavigate} from "react-router-dom"
+import { Link } from "react-router-dom"
 
 function ProjectBreakdown() {
 
     const [selectedProject, setSelectedProject] = useState("")
-    const navigate = useNavigate()
     const [projects, setProjects] = useState([])
+    const [story, setStory] = useState("")
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState("")
+    
+    useEffect(() => {
+        fetch("http://localhost:5000/project-breakdown/project-overview", {
+            credentials: "include"
+        })
+            .then(async (response) => {
+                const data = await response.json()
+                setProjects(data.projects)
+            })
+            .catch((error) => setError(error.message))
+    }, [])
+
+    function createProjectStory() {
+        event.preventDefault()
+
+        if(!selectedProject || loading) return 
+
+        setLoading(true)
+        setStory("")
+        setError("")
+
+        try {
+            const response = await fetch(
+                "htpp://localhost:5000/project-breakdown/story",
+                {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {"Coontent-Type": "apllication/json"},
+                    body: JSON.stringify({project_name: selectedProject})
+                }
+            )
+
+            const data = await response.json()
+            setStory(data.story)
+        } catch {
+            setError(error.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+    
 
     return (
         <main>
@@ -43,8 +86,12 @@ function ProjectBreakdown() {
                     ))}
                 </select>
 
-                <button type="submit" onClick={}>View story →</button>
+                <button type="submit" disabled={loading || !selectedProject}>
+                    {loading ? "Writing..." : "View Story ➡️"}
+                </button>
                 </form>
+                {error && <p role="alert">{error}</p>}
+                {story && <p className="story">{story}</p>}
             </section>
         </main>
     )
