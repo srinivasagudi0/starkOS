@@ -531,7 +531,7 @@ button {
 .project-story button {
   font-size: 2rem;
   background-color: transparent;
-  margin-left: 51%;
+  margin-left: 69%;
   transition: 0.2s ease-in;
   transform: translate3d(0,0,0);
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, use } from "react"
 import { Link } from "react-router-dom"
 
 function ProjectBreakdown() {
@@ -8,6 +8,22 @@ function ProjectBreakdown() {
     const [story, setStory] = useState("")
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
+    const [totatProjects, setTotalProjects] = useState(0)
+    const [totalHours, setTotalHours] = useState(0)
+    const [recentProject, setRecentProject] = useState("")
+
+    useEffect(() => {
+        fetch("http://localhost:5000/project-breakdown/story", {
+            credentials: "include"
+        })
+            .then(async (response) => {
+                const data = await response.json()
+                setTotalProjects(data.total_projects)
+                setTotalHours(data.total_hours)
+                setRecentProject(data.recent_project)
+            })
+            .catch((error) => setError(error.message))
+    }, [])
     
     useEffect(() => {
         fetch("http://localhost:5000/project-breakdown/project-overview", {
@@ -56,9 +72,9 @@ function ProjectBreakdown() {
             
             <section className="project-overview">
             <h2>Overview</h2>
-            <p>Total Projects: </p>
-            <p>Total Tracked Hours: </p>
-            <p>Most Recent Project: </p>
+            <p>Total Projects: {totatProjects}</p>
+            <p>Total Tracked Hours: {totalHours}</p>
+            <p>Most Recent Project: {recentProject}</p>
             </section>
 
             <section className="project-story">
