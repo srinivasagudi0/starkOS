@@ -483,3 +483,67 @@ button {
   white-space: nowrap;
 }
 
+
+.more-project-breakdown {
+  min-height: 100vh;
+  background:
+    linear-gradient(
+      200deg,
+     red,
+     rgb(0, 153, 255),
+      black
+    );
+  overflow: hidden;
+}
+
+.title6 {
+  text-align: center;
+  font-size: 5rem;
+  text-decoration: underline;
+  text-decoration-style: wavy;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #06e475;
+}
+
+
+.project-overview {
+  text-align: right;
+  margin-right: 10rem;
+  font-size: 2rem;
+}
+
+.project-story form {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+
+.project-story select {
+  flex: 1;
+  background: transparent;
+  text-align: center;
+  color:#f6da03;
+  font-size: 1.4rem;
+}
+
+.project-story button {
+  font-size: 2rem;
+  background-color: transparent;
+  margin-left: 51%;
+  transition: 0.2s ease-in;
+  transform: translate3d(0,0,0);
+}
+
+.project-story button:disabled{
+  color:gray;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.project-story button:hover {
+  transform: rotate(5deg);
+  color: rgb(5, 235, 5);
+}
+

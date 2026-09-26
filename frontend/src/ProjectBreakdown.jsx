@@ -50,8 +50,8 @@ function ProjectBreakdown() {
     
 
     return (
-        <main>
-            <h1>Project Breakdown</h1>
+        <main className="more-project-breakdown">
+            <h1 className="title6">Project Breakdown</h1>
             <Link to="/coding">Back 🔙</Link>
             
             <section className="project-overview">
@@ -78,7 +78,7 @@ function ProjectBreakdown() {
                     </option>
                     ))}
                 </select>
-
+                <br />
                 <button type="submit" disabled={loading || !selectedProject}>
                     {loading ? "Writing..." : "View Story ➡️"}
                 </button>
