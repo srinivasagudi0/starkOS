@@ -63,9 +63,7 @@ function ProjectBreakdown() {
 
             <section className="project-story">
                 <form
-                    onSubmit={(event) => {
-                        event.preventDefault()
-                }}
+                    onSubmit={createProjectStory}
                     >
                 <select
                     value={selectedProject}

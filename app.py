@@ -339,7 +339,7 @@ def more_project_breakdown():
 
     return jsonify({"projects": projects})
 
-@app.route("/project-breakdown/story", )
+@app.route("/project-breakdown/story", methods=["POST"])
 def tell_story():
     data = request.get_json()
     project_name = data.get("project_name")
