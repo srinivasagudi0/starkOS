@@ -13,12 +13,12 @@ function ProjectBreakdown() {
     const [recentProject, setRecentProject] = useState("")
 
     useEffect(() => {
-        fetch("http://localhost:5000/project-breakdown/story", {
+        fetch("http://localhost:5000/project-breakdown/more/stats", {
             credentials: "include"
         })
             .then(async (response) => {
                 const data = await response.json()
-                setTotalProjects(data.total_projects)
+                setTotalProjects(data.num_projects)
                 setTotalHours(data.total_hours)
                 setRecentProject(data.recent_project)
             })

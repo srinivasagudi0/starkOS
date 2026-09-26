@@ -339,7 +339,7 @@ def more_project_breakdown():
 
     return jsonify({"projects": projects})
 
-@app.route("/project-breakdown/story", methods=["POST"])
+@app.route("/project-breakdown/story", methods=["POST", "Get"])
 def tell_story():
     token = session.get("hackatime_token")
     
@@ -351,7 +351,21 @@ def tell_story():
 
     if not project_name:
         return jsonify({"message": "Choose a project first"}), 400
+    
+
+    return jsonify({
+        "story": f"You selected {project_name}."
+    })
+
+@app.route("/project-breakdown/more/stats")
+def send_stuff():
+    token = session.get("hackatime_token")
+        
+    if not token:
+        return jsonify({"message": "Hackatime is not connected"}), 401
+
     project_data = more_project_breakdown().get_json()
+
     projects = project_data.get("projects", [])
 
     total_projects = len(projects)
@@ -365,9 +379,8 @@ def tell_story():
     recent_project = projects[0]["name"] if projects else None
 
     return jsonify({
-        "total_projects": total_projects,
         "total_hours": total_hours,
-        "story": f"You selected {project_name}.",
+        "num_projects": total_projects,
         "recent_project": recent_project
     })
 
