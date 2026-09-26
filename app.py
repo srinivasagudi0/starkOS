@@ -339,5 +339,15 @@ def more_project_breakdown():
 
     return jsonify({"projects": projects})
 
+@app.route("/project-breakdown/story", )
+def tell_story():
+    data = request.get_json()
+    project_name = data.get("project_name")
+
+    if not project_name:
+        return jsonify({"message": "hackatime no connected"})
+
+    return ({"story": f"You selected {project_name}. "})
+
 if __name__ == "__main__":
     app.run(debug=True)
