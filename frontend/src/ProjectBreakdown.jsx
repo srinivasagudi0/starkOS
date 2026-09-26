@@ -69,12 +69,24 @@ function ProjectBreakdown() {
         <main className="more-project-breakdown">
             <h1 className="title6">Project Breakdown</h1>
             <Link to="/coding">Back 🔙</Link>
+
+            <section className="recent-project">
+                <h2>Most Recent Project: {recentProject}</h2>
+                <p>Total Coding Time: </p>
+                <p>Last Coding Activity: </p>
+                <p>Latest Commit Message: </p>
+                <p>Commit Time: </p>
+                <p>Files changed in the latest commit: </p>
+                <p>Project Description: </p>
+                
+
+            </section>
             
             <section className="project-overview">
             <h2>Overview</h2>
             <p>Total Projects: {totatProjects}</p>
             <p>Total Tracked Hours: {totalHours}</p>
-            <p>Most Recent Project: {recentProject}</p>
+
             </section>
 
             <section className="project-story">

@@ -384,5 +384,54 @@ def send_stuff():
         "recent_project": recent_project
     })
 
+@app.route("/hackatime/recent-project/stats")
+def fetch_recent_stats():
+    token = session.get("hackatime_token")
+
+    if not token: 
+        return jsonify({"message": "hackatime is not connected"})
+
+    ## Coding time
+    # get recent project
+    project_data = more_project_breakdown().get_json()
+    projects = project_data.get("projects", [])
+    recent_project = projects[0]["name"] if projects else None # just keeping thsi if i i need this later
+    # check the hours of the first (latest) project
+    project_hours = round(projects[0]["total_seconds"] / 3600)
+
+    ##Last Coding Activity
+    #fetch the latest heartbeat
+    latest_heartbeat = projects[0]["most_recent_heartbeat"]
+
+    # will be objects
+    today_date = datetime.now().date()
+    yesterday_date = today_date - timedelta(days=1)
+
+    #make it string so i can compare
+    today = today_date.isoformat()
+    yesterday = yesterday_date.isoformat()
+
+    latest_heartbeat_date = datetime.fromisoformat(latest_heartbeat).date().isoformat()
+    latest_coding_activity = ""
+    #if today will say how long ago, for yestrday time and yesterday and anythign else date
+    if today == latest_heartbeat_date:
+        latest_heartbeat_time = datetime.fromisoformat(latest_heartbeat)
+        now = datetime.now()
+        difference = (now - latest_heartbeat_time)
+
+        total_seconds = int(difference.total_seconds())
+        hours = total_seconds // 3600
+        minutes = (total_seconds % 3600) // 60
+
+        latest_coding_activity = f"{hours} hr {minutes} mins"
+        pass
+    elif yesterday == latest_heartbeat_date:
+        latest_heartbeat_time = datetime.fromisoformat(latest_heartbeat).strftime("%I:%M %p")
+        latest_coding_activity = f"Yesterday at {latest_heartbeat_time}"
+    else:
+        latest_coding_activity = latest_heartbeat_date
+
+    # took such a long time to figure out the top thing
+
 if __name__ == "__main__":
     app.run(debug=True)
