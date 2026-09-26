@@ -384,6 +384,29 @@ def send_stuff():
         "recent_project": recent_project
     })
 
+def get_url(token, recent_project):
+    # get latest commit of the recent project
+    response = requests.get(
+        "http://hackatime.hackclub.com/api/v1/users/my/projects/details",
+        headers={
+            "Authorization": f"Bearer {token}"
+        },
+        params={
+            "projects": recent_project
+        },
+        timeout=20
+    )
+
+    response.raise_for_status()
+    project_details = response.json().get("projects", [])
+
+    repo_url = (
+        project_details[0].get("repo_url")
+        if project_details else None
+    )
+
+    return repo_url
+
 @app.route("/hackatime/recent-project/stats")
 def fetch_recent_stats():
     token = session.get("hackatime_token")
@@ -432,6 +455,11 @@ def fetch_recent_stats():
         latest_coding_activity = latest_heartbeat_date
 
     # took such a long time to figure out the top thing
+    
+    ##Get the latest commit 
+    repo_url = get_url(token, recent_project)
+
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
