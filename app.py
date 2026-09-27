@@ -444,6 +444,28 @@ def get_latest_commit(repo_url):
     except Exception as e:
         return f"Fetch error - Both API and Git clone methods failed. Details: {e}"
 
+def get_latest_commit_time(repo_url):
+    import subprocess
+    import tempfile
+
+    try:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Clone only the latest commit to bypass some limits
+            subprocess.run(
+                ["git", "clone", "--depth", "1", repo_url, tmpdir],
+                check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+            )
+            
+            commit_time = subprocess.check_output(
+                ["git", "-C", tmpdir, "log", "-1", "--pretty=format:%cd", "--date=human"],
+                text=True
+            ).strip()
+            
+            return commit_time
+    except Exception as e:
+        return f"Fetch error - {e}"
+
+
 @app.route("/hackatime/recent-project/stats")
 def fetch_recent_stats():
     token = session.get("hackatime_token")
@@ -483,7 +505,7 @@ def fetch_recent_stats():
         hours = total_seconds // 3600
         minutes = (total_seconds % 3600) // 60
 
-        latest_coding_activity = f"{hours} hr {minutes} mins"
+        latest_coding_activity = f"{hours} hr {minutes} mins Ago"
         pass
     elif yesterday == latest_heartbeat_date:
         latest_heartbeat_time = datetime.fromisoformat(latest_heartbeat).strftime("%I:%M %p")
@@ -496,6 +518,9 @@ def fetch_recent_stats():
     ##Get the latest commit 
     repo_url = get_url(token, recent_project)
     commit_msg = get_latest_commit(repo_url)
+    commit_time = get_latest_commit_time(repo_url)
+
+    
 
 
     
