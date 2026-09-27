@@ -466,6 +466,28 @@ def get_latest_commit_time(repo_url):
         return f"Fetch error - {e}"
 
 
+def get_desc(repo_url):
+    import urllib.request
+    import json
+    try:
+        parts = repo_url.strip("/").split("/")
+        owner = parts[3]
+        repo = parts[4]
+        
+        # 3. make it a  guaranteed perfect API URL
+        api_url = f"https://api.github.com/repos/{owner}/{repo}"
+        
+
+        req = urllib.request.Request(api_url, headers={"User-Agent": "StarkOS"})
+        with urllib.request.urlopen(req) as res:
+            data = json.loads(res.read().decode())
+            return data.get("description", "No description found.")
+            
+    except Exception as e:
+        return f"Script error: {e}"
+
+
+
 def get_files_changed_in_last_commit(repo_url):
     import subprocess
     import tempfile
@@ -545,7 +567,7 @@ def fetch_recent_stats():
     commit_msg = get_latest_commit(repo_url)
     commit_time = get_latest_commit_time(repo_url)
     commit_changes = get_files_changed_in_last_commit(repo_url) # special case, this should be a loop annd is a dict
-
+    repo_description = get_desc(repo_url)
     
 
 
