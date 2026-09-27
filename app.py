@@ -407,6 +407,43 @@ def get_url(token, recent_project):
 
     return repo_url
 
+def get_latest_commit(repo_url):
+    import urllib.request
+    import json
+    import subprocess
+    import tempfile # this and urllib are new to work with!
+
+    # so i will keep trying until i get the commit msg
+    ## 1st-  try github api
+    if "github.com" in repo_url:
+        api_url = repo_url.replace("github.com/", "api.github.com/repos/") + "commits?per_page=1"
+        req = urllib.request.Request(api_url, headers={
+            "User-Agent": "StarkOS",
+            "Accept": "application/vnd.github+json"
+        })
+
+        try:
+            with urllib.request.urlopen(req, timeout=5) as response:
+                data = json.loads(response.read().decode())
+                return data[0]["commit"]["message"]
+        except Exception:
+            pass
+    
+    ## try ot clone and run subprocess to get the latest ocmmit and then delete the file(time consuming though)
+    try:
+        with tempfile.TemporaryDirectory as tmpdir:
+            subprocess.run(
+                ["git", "clone", "--depth", "1", repo_url, tmpdir],
+                check=True, stdout=subprocess.DEVNULL,stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+            )
+            message = subprocess.check_output(
+                ["git", "-C", tmpdir, "log", "-1", "--pretty=%B"],
+                text=True
+            ).strip()
+            return message
+    except Exception as e:
+        return f"Fetch error - Both API and Git clone methods failed. Details: {e}"
+
 @app.route("/hackatime/recent-project/stats")
 def fetch_recent_stats():
     token = session.get("hackatime_token")
@@ -458,6 +495,8 @@ def fetch_recent_stats():
     
     ##Get the latest commit 
     repo_url = get_url(token, recent_project)
+    commit_msg = get_latest_commit(repo_url)
+
 
     
 
