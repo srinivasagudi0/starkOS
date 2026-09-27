@@ -466,6 +466,31 @@ def get_latest_commit_time(repo_url):
         return f"Fetch error - {e}"
 
 
+def get_files_changed_in_last_commit(repo_url):
+    import subprocess
+    import tempfile
+
+    try:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Clone only the last 2 commits (--depth 2) so I an  compare them
+            subprocess.run(
+                ["git", "clone", "--depth", "2", repo_url, tmpdir],
+                check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+            )
+            
+            # git diff-tree finds changes between the latest commit (HEAD) and its parent (HEAD~)
+            # --no-commit-id hides the hash, --name-only lists just the file names
+            files = subprocess.check_output(
+                ["git", "-C", tmpdir, "diff-tree", "--no-commit-id", "--name-only", "-r", "HEAD"],
+                text=True
+            ).strip().split('\n')
+            
+            # Filter out empty strings if no files changed
+            return [f for f in files if f]
+            
+    except Exception as e:
+        return f"Fetch error - {e}"
+
 @app.route("/hackatime/recent-project/stats")
 def fetch_recent_stats():
     token = session.get("hackatime_token")
@@ -519,6 +544,7 @@ def fetch_recent_stats():
     repo_url = get_url(token, recent_project)
     commit_msg = get_latest_commit(repo_url)
     commit_time = get_latest_commit_time(repo_url)
+    commit_changes = get_files_changed_in_last_commit(repo_url) # special case, this should be a loop annd is a dict
 
     
 
