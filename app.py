@@ -595,6 +595,46 @@ def summarize_commit_msg(repo_url):
     return response.output_text
 
 
+def create_story(project_name, project_hours, latest_heartbeat, repo_url, commit_msg, commit_time, commit_changes, repo_desc):
+    import re
+    from urllib.parse import quote
+
+    match = re.fullmatch(
+        r"https://github\.com/([A-Za-z0-9-]+)/([A-Za-z0-9_.-]+)/?",
+        repo_url or ""
+    )
+
+    if not match:
+        return "Not correct repo_url"
+
+    owner = match.group(1)
+    repo = match.group(2).removesuffix(".git")
+    api_url = f"https://api.github.com/repos/{owner}/{repo}"
+
+    # checks the fule paths in the repo
+    def github_get(path, params=None, raw=False):
+            response = requests.get(
+                f"{api_url}/{path}",
+                headers={
+                    "Accept": (
+                        "application/vnd.github.raw+json"
+                        if raw else "application/vnd.github+json"
+                    ),
+                    "User-Agent": "StarkOS"
+                },
+                params=params,
+                timeout=20,
+                allow_redirects=False
+            )
+    
+            if response.status_code != 200:
+                raise ValueError(
+                    f"GitHub returned {response.status_code}. "
+                    "Check the public repository link or try again later."
+                )
+    
+            return response.text if raw else response.json()
+    
 
 
 @app.route("/project-breakdown/story", methods=["POST", "Get"])
