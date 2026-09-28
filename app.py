@@ -569,13 +569,13 @@ def fetch_recent_stats():
     commit_changes = get_files_changed_in_last_commit(repo_url) # special case, this should be a loop annd is a dict
     repo_description = get_desc(repo_url)
     return jsonify({
-        "total_coding_time": project_hours,
-        "last_coding_activity": latest_coding_activity,
-        "latest_commit_message": commit_msg,
-        "latest_commit_time": commit_time,
-        "latest_commit_changes": commit_changes,
-        "repo_description": repo_description,
-        "repo_url": repo_url
+    "repo_url": repo_url,
+    "total_coding_time": project_hours,
+    "last_coding_activity": latest_coding_activity,
+    "latest_commit_message": commit_msg,
+    "latest_commit_time": commit_time,
+    "files_changed": commit_changes,
+    "repo_description": repo_description
     })
 
 if __name__ == "__main__":

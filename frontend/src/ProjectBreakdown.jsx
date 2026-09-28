@@ -70,9 +70,12 @@ function ProjectBreakdown() {
         const [lastCommitMessge, setLastCommitMessage] = useState("")
         const [latestCommitTime, setLatestCommitTime] = useState("")
         const [repoDescripiton, setRepoDescription] = useState("")
+        const [filesChanged, setFilesChanged] = useState([])
 
         useEffect(() =>{
-            fetch("http://localhost:5000/hackatime/recent-project/stats")
+           fetch("http://localhost:5000/hackatime/recent-project/stats", {
+                credentials: "include"
+            })
                 .then(async response => {
                     const data = await response.json()
                     setRepoUrl(data.repo_url)
@@ -80,7 +83,8 @@ function ProjectBreakdown() {
                     setLastCodingActivity(data.last_coding_activity)
                     setLastCommitMessage(data.latest_commit_message)
                     setLatestCommitTime(data.latest_commit_time)
-                    setRepoDescription(data.repo_direction)
+                    setRepoDescription(data.repo_description)
+                    setFilesChanged(data.files_changed)
                 })
                 .catch((error) => console.log(error))
         },[])
@@ -91,15 +95,19 @@ function ProjectBreakdown() {
             <Link to="/coding">Back 🔙</Link>
 
             <section className="recent-project">
-                <h2>Most Recent Project: {recentProject}</h2>
+                <h1>Most Recent Project: {recentProject}</h1>
+                <h2>Project Description: {repoDescripiton}</h2>
                 <p>Total Coding Time: {recentCodingTime}</p>
                 <p>Last Coding Activity: {lastCodingActivity}</p>
                 <p>Latest Commit Message: {lastCommitMessge}</p>
                 <p>Commit Time: {latestCommitTime}</p>
-                <p>Files changed in the latest commit: {repoDescripiton}</p>
-                <p>Project Description: </p>
+                <p>Files changed in the latest commit: </p>
+                <ul>
+                {filesChanged.map((files, index) => (
+                    <li>{files}</li>
                 
-
+                ))}
+                </ul>
             </section>
             
             <section className="project-overview">
