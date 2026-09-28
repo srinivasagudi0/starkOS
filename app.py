@@ -552,7 +552,7 @@ def fetch_recent_stats():
         hours = total_seconds // 3600
         minutes = (total_seconds % 3600) // 60
 
-        latest_coding_activity = f"{hours} hr {minutes} mins Ago"
+        latest_coding_activity = f"{hours} hr {minutes} min(s) Ago"
         pass
     elif yesterday == latest_heartbeat_date:
         latest_heartbeat_time = datetime.fromisoformat(latest_heartbeat).strftime("%I:%M %p")
@@ -564,7 +564,7 @@ def fetch_recent_stats():
     
     ##Get the latest commit 
     repo_url = get_url(token, recent_project)
-    commit_msg = get_latest_commit(repo_url)
+    commit_msg = '"'+get_latest_commit(repo_url)+'"'
     commit_time = get_latest_commit_time(repo_url)
     commit_changes = get_files_changed_in_last_commit(repo_url) # special case, this should be a loop annd is a dict
     repo_description = get_desc(repo_url)

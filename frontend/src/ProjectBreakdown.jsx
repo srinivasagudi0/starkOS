@@ -96,13 +96,13 @@ function ProjectBreakdown() {
 
             <section className="recent-project">
                 <h1>Most Recent Project: {recentProject}</h1>
-                <h2>Project Description: {repoDescripiton}</h2>
-                <p>Total Coding Time: {recentCodingTime}</p>
-                <p>Last Coding Activity: {lastCodingActivity}</p>
-                <p>Latest Commit Message: {lastCommitMessge}</p>
-                <p>Commit Time: {latestCommitTime}</p>
-                <p>Files changed in the latest commit: </p>
-                <ul>
+                <h2>Description: {repoDescripiton}</h2>
+                <li>Total Coding Time: {recentCodingTime} hrs</li>
+                <li>Last Coding Activity: {lastCodingActivity}</li>
+                <li>Latest Commit Message: {lastCommitMessge}</li>
+                <li>Commit Time: {latestCommitTime}</li>
+                <li>Files changed in the latest commit: </li>
+                <ul className="a">
                 {filesChanged.map((files, index) => (
                     <li>{files}</li>
                 

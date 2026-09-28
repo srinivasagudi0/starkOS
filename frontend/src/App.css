@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Fascinate+Inline&display=swap');
 @import url('https://fonts.googleapis.com/css2?');
 @import url('https://fonts.googleapis.com/css2?family=Bungee+Tint&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Edu+QLD+Hand:wght@400..700&display=swap');
 
 body {
   width: 100%;
@@ -547,3 +548,39 @@ button {
   color: rgb(5, 235, 5);
 }
 
+.recent-project {
+  margin-left: 50px;
+  max-width: 600px;
+  margin-top: 10px;
+  border: 3px black solid;
+  border-style: groove;
+  background-color: rgba(235, 230, 135, 0.459);
+}
+
+.recent-project h1 {
+  color: rgb(140, 255, 0);
+  background-color: #11111185;
+  max-width: 97%;
+  text-align: center;
+  border-radius: 200px;
+}
+
+.recent-project h2 {
+  margin-left: 30px;
+  text-decoration: underline;
+  text-decoration-style: double;
+  color:#5205f7;
+  font-family: "Edu QLD Hand", cursive;
+}
+
+.recent-project li{
+  margin-left: 60px;
+  font-size: 1.4rem;
+  list-style: none;
+  color: rgb(159, 75, 0);
+  font-weight: 700;
+}
+
+.recent-project li::before {
+  content: "🆕 ";
+}
