@@ -431,10 +431,10 @@ def get_latest_commit(repo_url):
     
     ## try ot clone and run subprocess to get the latest ocmmit and then delete the file(time consuming though)
     try:
-        with tempfile.TemporaryDirectory as tmpdir:
+        with tempfile.TemporaryDirectory() as tmpdir:
             subprocess.run(
                 ["git", "clone", "--depth", "1", repo_url, tmpdir],
-                check=True, stdout=subprocess.DEVNULL,stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+                check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
             )
             message = subprocess.check_output(
                 ["git", "-C", tmpdir, "log", "-1", "--pretty=%B"],
@@ -545,7 +545,7 @@ def fetch_recent_stats():
     #if today will say how long ago, for yestrday time and yesterday and anythign else date
     if today == latest_heartbeat_date:
         latest_heartbeat_time = datetime.fromisoformat(latest_heartbeat)
-        now = datetime.now()
+        now = datetime.now(latest_heartbeat_time.tzinfo)
         difference = (now - latest_heartbeat_time)
 
         total_seconds = int(difference.total_seconds())
@@ -568,10 +568,15 @@ def fetch_recent_stats():
     commit_time = get_latest_commit_time(repo_url)
     commit_changes = get_files_changed_in_last_commit(repo_url) # special case, this should be a loop annd is a dict
     repo_description = get_desc(repo_url)
-    
-
-
-    
+    return jsonify({
+        "total_coding_time": project_hours,
+        "last_coding_activity": latest_coding_activity,
+        "latest_commit_message": commit_msg,
+        "latest_commit_time": commit_time,
+        "latest_commit_changes": commit_changes,
+        "repo_description": repo_description,
+        "repo_url": repo_url
+    })
 
 if __name__ == "__main__":
     app.run(debug=True)

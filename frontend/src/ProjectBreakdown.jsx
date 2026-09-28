@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from "react"
+import { useState, useEffect} from "react"
 import { Link } from "react-router-dom"
 
 function ProjectBreakdown() {
@@ -64,6 +64,26 @@ function ProjectBreakdown() {
             }
         }
     
+        const [repoUrl, setRepoUrl] = useState("")
+        const [recentCodingTime, setRecentCodingTime] = useState(0)
+        const [lastCodingActivity, setLastCodingActivity] = useState("")
+        const [lastCommitMessge, setLastCommitMessage] = useState("")
+        const [latestCommitTime, setLatestCommitTime] = useState("")
+        const [repoDescripiton, setRepoDescription] = useState("")
+
+        useEffect(() =>{
+            fetch("http://localhost:5000/hackatime/recent-project/stats")
+                .then(async response => {
+                    const data = await response.json()
+                    setRepoUrl(data.repo_url)
+                    setRecentCodingTime(data.total_coding_time)
+                    setLastCodingActivity(data.last_coding_activity)
+                    setLastCommitMessage(data.latest_commit_message)
+                    setLatestCommitTime(data.latest_commit_time)
+                    setRepoDescription(data.repo_direction)
+                })
+                .catch((error) => console.log(error))
+        },[])
 
     return (
         <main className="more-project-breakdown">
@@ -72,11 +92,11 @@ function ProjectBreakdown() {
 
             <section className="recent-project">
                 <h2>Most Recent Project: {recentProject}</h2>
-                <p>Total Coding Time: </p>
-                <p>Last Coding Activity: </p>
-                <p>Latest Commit Message: </p>
-                <p>Commit Time: </p>
-                <p>Files changed in the latest commit: </p>
+                <p>Total Coding Time: {recentCodingTime}</p>
+                <p>Last Coding Activity: {lastCodingActivity}</p>
+                <p>Latest Commit Message: {lastCommitMessge}</p>
+                <p>Commit Time: {latestCommitTime}</p>
+                <p>Files changed in the latest commit: {repoDescripiton}</p>
                 <p>Project Description: </p>
                 
 
