@@ -371,7 +371,7 @@ def send_stuff():
 def get_url(token, recent_project):
     # get latest commit of the recent project
     response = requests.get(
-        "http://hackatime.hackclub.com/api/v1/users/my/projects/details",
+        "https://hackatime.hackclub.com/api/v1/users/my/projects/details",
         headers={
             "Authorization": f"Bearer {token}"
         },
@@ -400,7 +400,7 @@ def get_latest_commit(repo_url):
     # so i will keep trying until i get the commit msg
     ## 1st-  try github api
     if "github.com" in repo_url:
-        api_url = repo_url.replace("github.com/", "api.github.com/repos/") + "commits?per_page=1"
+        api_url = repo_url.replace("github.com/", "api.github.com/repos/") + "/commits?per_page=1"
         req = urllib.request.Request(api_url, headers={
             "User-Agent": "StarkOS",
             "Accept": "application/vnd.github+json"
@@ -585,7 +585,7 @@ def summarize_commit_msg(repo_url):
 
         commits = result.stdout.strip().split("\n")
     response = client.responses.create(
-        model="gpt-4.1-mini",
+        model="gpt-5.4-nano",
         instructions=(
             "Summarize all the commits, there will be a lot but be clear and explain how the user had started off and he could have ended, where is he at the progress."
         ),
@@ -593,6 +593,7 @@ def summarize_commit_msg(repo_url):
     )
 
     return response.output_text
+
 
 
 
@@ -634,9 +635,9 @@ def tell_story():
     repo_description = get_desc(repo_url)
 
     # i will be actually adding an agent(openai) that checks the github repo for code and everytgihn it is goingto be peak
+    api_key = os.getenv("OPENAI_API_KEY")
+    client = OpenAI(api_key=api_key)
 
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-    
