@@ -634,8 +634,37 @@ def create_story(project_name, project_hours, latest_heartbeat, repo_url, commit
                 )
     
             return response.text if raw else response.json()
-    
 
+    commits = summarize_commit_msg(repo_url)
+    latest_sha = commits[0]["sha"]
+    tree_sha = commits[0]["commit"]["tree"]["sha"]
+
+    latest_commit = github_get(f"commits/{latest_sha}")
+    changed_files = latest_commit.get("files", [])
+
+    # get the repos file list
+    tree = github_get(f"git/trees/{tree_sha}", {"recursive": "1"})
+
+    # read only files that seem important to me 🫵
+    extensions = (
+    ".py", ".js", ".jsx", ".ts", ".tsx", ".css",
+    ".html", ".json", ".md", ".sql", ".yml", ".yaml", ".txt"
+    ) # i mean these are more than enough
+
+    skipped_folders = {
+    "node_modules", "dist", "build", ".git", ".venv",
+    "venv", "__pycache__"
+        }   
+
+    available_files = {} # if a repo is long(hopefully i am not fried)
+
+    for item in tree.get("tree", []):
+        path = item["path"]
+        filename = path.rsplit("/", 1)[-1].lower()
+
+        if item["type"] != "blob" or item.get("mode") == "120000":
+            pass
+            
 
 @app.route("/project-breakdown/story", methods=["POST", "Get"])
 def tell_story():
