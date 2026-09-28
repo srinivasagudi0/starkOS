@@ -102,7 +102,7 @@ function ProjectBreakdown() {
                 <li>Latest Commit Message: {lastCommitMessge}</li>
                 <li>Commit Time: {latestCommitTime}</li>
                 <li>Files changed in the latest commit: </li>
-                <ul className="a">
+                <ul>
                 {filesChanged.map((files, index) => (
                     <li>{files}</li>
                 

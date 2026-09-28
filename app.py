@@ -339,23 +339,7 @@ def more_project_breakdown():
 
     return jsonify({"projects": projects})
 
-@app.route("/project-breakdown/story", methods=["POST", "Get"])
-def tell_story():
-    token = session.get("hackatime_token")
-    
-    if not token:
-        return jsonify({"message": "Hackatime is not connected"}), 401
 
-    data = request.get_json()
-    project_name = data.get("project_name")
-
-    if not project_name:
-        return jsonify({"message": "Choose a project first"}), 400
-    
-
-    return jsonify({
-        "story": f"You selected {project_name}."
-    })
 
 @app.route("/project-breakdown/more/stats")
 def send_stuff():
@@ -578,5 +562,81 @@ def fetch_recent_stats():
     "repo_description": repo_description
     })
 
+
+def summarize_commit_msg(repo_url):
+    import subprocess
+    import tempfile
+    #use a low level(cheap yet fast)
+    api_key = os.getenv()
+    client= OpenAI(api_key=api_key)
+    # get all the commits
+    with tempfile.TemporaryDirectory() as temp_dir:
+        clone_cmd = ["git", "clone", "--bare", repo_url, temp_dir]
+        subprocess.run(clone_cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+        log_cmd = ["git", "log", "--format=%H|%an|%ad|%s"]
+        result = subprocess.run(
+            log_cmd,
+            cwd=temp_dir, # runs the commanf here
+            capture_output=True,
+            text=True,
+            check=True
+        )
+
+        commits = result.stdout.strip().split("\n")
+    response = client.responses.create(
+        model="gpt-4.1-mini",
+        instructions=(
+            "Summarize all the commits, there will be a lot but be clear and explain how the user had started off and he could have ended, where is he at the progress."
+        ),
+        input=commits
+    )
+
+    return response.output_text
+
+
+
+@app.route("/project-breakdown/story", methods=["POST", "Get"])
+def tell_story():
+
+    data = request.get_json()
+    project_name = data.get("project_name")
+
+    if not project_name:
+        return jsonify({"message": "Choose a project first"})
+
+    token = session.get("hackatime_token")
+
+    if not token:
+        return jsonify({"message": "Hackatime is not connected."})
+
+    project_data = more_project_breakdown().get_json()
+    projects = project_data.get("projects", [])
+
+    project_hours = None
+    latest_heartbeat = None
+    repo_url = None
+
+
+    for project in projects:
+        if project["name"] == project_name:
+            project_hours = round(project["total_seconds"] / 3600, 2)
+            latest_heartbeat = project["most_recent_heartbeat"]
+            repo_url = get_url(token, project)
+            break
+
+    if project_hours is None:
+        return jsonify({"message": "Project not found."}), 404
+
+    commits_summary = summarize_commit_msg(repo_url)
+    commit_time = get_latest_commit_time(repo_url)
+    commit_changes = get_files_changed_in_last_commit(repo_url)
+    repo_description = get_desc(repo_url)
+
+    # i will be actually adding an agent(openai) that checks the github repo for code and everytgihn it is goingto be peak
+
+
 if __name__ == "__main__":
     app.run(debug=True)
+
+    
