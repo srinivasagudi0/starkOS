@@ -126,13 +126,21 @@ function CodingIntel() {
 
         <section className="lang-breakdown">
             <h1>Language breakdown</h1>
-            {langs.slice(0,5).map(language =>(
-                <div key={langs.name} className="langs-row">
-                    <h2>{language.name}</h2>
-                    <p>{language.text}</p>
-                    <p>{language.percent}</p>
+            <p>Where your coding time went. </p>
+            <div className="langs-list">
+            {langs.slice(0, 5).map(language => (
+            <div key={language.name} className="langs-row">
+                <h3>{language.name}</h3>
+                <div className="language-track">
+                    <div
+                        className="language-fill"
+                        style={{ width: `${language.percent}%` }}
+                    />
                 </div>
-            ))}
+                <p>{language.text} · {language.percent}%</p>
+            </div>
+        ))}
+            </div>
         </section>
         
         </main>

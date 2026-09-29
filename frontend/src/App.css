@@ -621,15 +621,6 @@ button {
   font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-.lang-breakdown{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  padding: 20px 0;
-  border-bottom: 1px solid;
-}
-
 .title2 p{
   margin-top: 0%;
   font-family: 'Courier New', Courier, monospace;
@@ -637,4 +628,42 @@ button {
 }
 .title2 h1{
   margin-bottom: 0%;
+}
+
+.lang-breakdown {
+  max-width: 1100px;
+  margin:60px auto;
+  padding: 24px;
+   background-color: rgba(39, 172, 101, 0.397);
+}
+
+.language-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.language-track {
+  height: 8px;
+  background-color: rgba(0,0,0,0.15);
+}
+
+.language-fill {
+  height: 100%;
+  background-color: currentColor;
+}
+
+.lang-breakdown h1{
+  color: rgb(16, 150, 181);
+  font-family: fantasy;
+  text-align: center;
+  font-size: 2.3rem;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+.lang-breakdown p{
+  color: grey;
+  text-align: center;
+  margin-top: 0%;
 }
