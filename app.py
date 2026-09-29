@@ -5,6 +5,7 @@ from flask_cors import CORS
 import os
 from openai import OpenAI
 import json
+import random
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
@@ -898,6 +899,99 @@ def give_more_lang_info():
         "statement": (
             f"{most_used['name']} counted for {most_used['percent']}% of your tracked coding time in the last seven days."
         )
+    })
+
+@app.route("/hackatime/lang-breakdown/quiz")
+def language_quiz():
+    token = session.get("hackatime_token")
+    if not token:
+        return jsonify({"message": "hackatime is not connected."})
+
+    langs = get_lang_stats().get_json().get("langs", [])
+    langs = [
+        lang for lang in langs
+        if lang.get("total_seconds", 0) > 0
+    ]
+
+    if len(langs) < 2:
+        return jsonify({
+            "questions": [],
+            "message": "You need activity in atlease 2 languages to do the quiz."
+        })
+
+    most_seconds = max(lang["total_seconds"] for lang in langs)
+    least_seconds = min(lang["total_seconds"] for lang in langs)
+    chosen = random.choice(langs)
+
+    quiz = [
+        {
+            "id": "most-used",
+            "question": "Which language had the most coding time?",
+            "options": [lang["name"] for lang in langs],
+            "correct_answers": [
+                lang["name"] for lang in langs
+                if lang["total_seconds"] == most_seconds
+            ],
+            "explanation": (
+                f"The highest tracked time was "
+                f"{most_seconds / 3600:.2f} hours."
+            )
+        },
+        {
+            "id": "least-used",
+            "question": "Which tracked language had the least coding time?",
+            "options": [lang["name"] for lang in langs],
+            "correct_answers": [
+                lang["name"] for lang in langs
+                if lang["total_seconds"] == least_seconds
+            ],
+            "explanation": (
+                f"The lowest nonzero tracked time was "
+                f"{least_seconds / 3600:.2f} hours."
+            )
+        },
+        {
+            "id": "language-share",
+            "question": (
+                f"About what percentage of your coding time "
+                f"was spent in {chosen['name']}?"
+            ),
+            "options": [],
+            "correct_answers": [],
+            "explanation": (
+                f"{chosen['name']} accounted for "
+                f"{chosen['percent']}% of your tracked time."
+            )
+        }
+    ] # added 3 questions
+
+    correct_percent = round(chosen["percent"])
+    wrong_choices = [
+        number for number in range(101)
+        if number != correct_percent
+    ]
+
+    quiz[2]["options"] = [
+        f"{number}%"
+        for number in [correct_percent] + random.sample(wrong_choices, 3)
+    ]
+    quiz[2]["correct_answers"] = [f"{correct_percent}%"]
+
+    for question in quiz:
+        random.shuffle(question["options"])
+
+    session["language_quiz"] = quiz
+
+    return jsonify({
+    "range": "Last 7 Days",
+    "questions": [
+        {
+            "id": question["id"],
+            "question": question["question"],
+            "options": question["options"]
+        }
+        for question in quiz
+    ]
     })
 
 if __name__ == "__main__":

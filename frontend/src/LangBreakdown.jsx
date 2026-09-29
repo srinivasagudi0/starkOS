@@ -65,6 +65,9 @@ function LangBreakdown() {
                             </div>
                         ))}
                     </section>
+                    <section className="all-time-langs">
+                        <h2></h2>
+                    </section>
                 </>
             )}
         </main>
