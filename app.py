@@ -691,7 +691,59 @@ def create_story(project_name, project_hours, latest_heartbeat, repo_url, commit
                 break
 
         source_files = {}
-            
+        file_erros = {}
+
+        for path in selected_files:
+            try:
+                content = github_get(
+                    f"contents/{quote(path, safe='/')}",
+                    {"ref": latest_sha},
+                    raw=True
+                )
+
+                source_files[path] = "\n".join(
+                    f"{number}: {line}"
+                    for number, line in enumerate(content.splitlines(), start=1)
+                )
+            except (requests.RequestException, ValueError) as error:
+                file_erros[path] = str(error)
+
+        evidence = {
+            "project_name": project_name,
+            "coding_hours": project_hours,
+            "last_coding_activity": latest_heartbeat,
+            "repo_url": repo_url,
+            "description": repo_desc,
+            "previously_fetched_commit_message": commit_msg,
+            "previously_fetched_commit_time": commit_time,
+            "previously_fetched_changed_files": commit_changes,
+            "reviewed_commit": latest_sha,
+            "recent_commits": [
+                {
+                    "sha": commit["sha"],
+                    "message": commit["commit"]["message"],
+                    "time": commit["commit"]["committer"]["date"]
+                }
+                for commit in commits
+            ],
+            # Limit patch sizes so one large commit doesn't overload the prompt.
+            "latest_changes": [
+                {
+                    "file": file["filename"],
+                    "status": file["status"],
+                    "additions": file.get("additions", 0),
+                    "deletions": file.get("deletions", 0),
+                    "patch_excerpt": (file.get("patch") or "")[:3000]
+                }
+                for file in changed_files[:12]
+            ],
+            "file_list": list(available_files)[:300],
+            "github_tree_truncated": tree.get("truncated", False),
+            "source_files": source_files,
+            "file_errors": file_erros
+        }
+
+        
 
 @app.route("/project-breakdown/story", methods=["POST", "Get"])
 def tell_story():
