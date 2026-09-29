@@ -138,13 +138,44 @@ function LangBreakdown() {
                                     </label>
                                 ))}
                             </fieldset>
-                        ))}
+                        ))} 
+
+                        {questions.length >0 && (
+                            <button
+                                type="button"
+                                onClick={SubmitQuiz}
+                                disabled={
+                                    submitting ||
+                                    quizResult !== null ||
+                                    questions.some(question => !answers[question.id])
+                                }
+                                className="quiz-button"
+                            >
+                                {submitting ? "Checking..." : "Check Answers"}
+                            </button>
+                        )}
+
+                        {quizResult && (
+                            <div className="quiz-results">
+                                <h3>You scored {quizResult.score}/{quizResult.total}</h3>
+                                {quizResult.results.map(result => (
+                                    <div key={result.id}>
+                                         <h4>
+                        {questions.find(question => question.id === result.id)?.question}
+                                </h4>
+                                <p>{result.correct ? "Correct!" : "Not quite."}</p>
+                                <p>Correct answer: {result.correct_answers.join(" or ")}</p>
+                                <p>{result.explanation}</p>
+                            </div>
+                                ))}
+                            </div>
+                        )}
                     </section>
                 </>
             )}
         </main>
     )
 }
-
+// the fun section looks tuff for some reason if you see it 
 export default LangBreakdown
 
