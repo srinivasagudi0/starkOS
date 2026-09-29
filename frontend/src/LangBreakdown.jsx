@@ -21,6 +21,9 @@ function LangBreakdown() {
         })
             .then(async response => {
                 const data = await response.json()
+                if (!response.ok) {
+                    throw new Error(data.message || "Couldn't load quiz.")
+                }
                 return data
             })
             .then(data => {
@@ -59,7 +62,7 @@ function LangBreakdown() {
         if (submitting) return
 
         setSubmitting(true)
-        setQuizResult("")
+        setQuizMessage("")
         setQuizResult(null)
         
         try {
@@ -68,13 +71,16 @@ function LangBreakdown() {
                 {
                     method: "POST",
                     credentials: "include",
-                    headers: {"Content-Type": "applications/json"},
+                    headers: {"Content-Type": "application/json"},
                     body: JSON.stringify({answers})
                 
                 }
             )
 
             const data = await response.json()
+            if (!response.ok) {
+                throw new Error(data.message || "couldnt fetch")
+            }
             setQuizResult(data)
         } catch(error) {
             setQuizMessage(error.message)
@@ -119,7 +125,7 @@ function LangBreakdown() {
                         <p>{quizMessage}</p>
                         
                         {questions.map(question => (
-                            <fieldset key={question.id}>
+                            <fieldset key={question.id} disabled={submitting || quizResult !== null}>
                                 <legend>{question.question}</legend>
 
                                 {question.options.map(option => (
