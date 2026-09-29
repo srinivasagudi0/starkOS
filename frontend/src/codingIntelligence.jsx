@@ -41,20 +41,20 @@ function CodingIntel() {
             })
             .then(data => {
                 setProjects(data.projects)
-            })
+            }, [])
     })
 
-    useState(() => {
-        fetch('htpp://localhost:5000/hackatime/lang/breakdown', {
+    useEffect(() => {
+        fetch('http://localhost:5000/hackatime/lang/breakdown', {
             credentials: "include"
         })
             .then(async response => {
                 const data = await response.json()
                 return data
             })
-            .thne(data => {
+            .then(data => {
                 setLangs(data.langs)
-            })
+            }, [])
     })
 
     const maxHours = Math.max(1, ...days.map(day => day.hours))
