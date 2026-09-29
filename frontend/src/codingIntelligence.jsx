@@ -65,6 +65,7 @@ function CodingIntel() {
             <section>
                 <div className="title2">
                     <h1>Coding Intelligence</h1>
+                    <p>Learn from what you have coded.</p>
                 </div>
                 <div className="last-7-days">
                     <h1>Last 7 Days</h1>
