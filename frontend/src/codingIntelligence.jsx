@@ -6,7 +6,7 @@ function CodingIntel() {
     const [days, setDays] = useState([])
     const [error, setError] = useState("")
     const [projects, setProjects] = useState([])
-
+    
     const [langs, setLangs] = useState([])
 
     useEffect(() => {

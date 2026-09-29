@@ -9,6 +9,22 @@ function LangBreakdown() {
     const [langs, setLangs] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState("")
+    const [question, setQuestion] = useState("")
+    const [options, setOptions] = useState([])
+
+    useEffect(() => {
+        fetch("/hackatime/lang-breakdown/quiz", {
+            credentials: "include"
+        })
+            .then(async response => {
+                const data = await response.json()
+                return data
+            })
+            .then(data => {
+                setQuestion(data.questions.question)
+                setOptions(data.questions.options)
+            }, [])
+    },[])
 
     useEffect(() => {
         fetch("http://localhost:5000/hackatime/lang-breakdown/more", {
@@ -65,8 +81,8 @@ function LangBreakdown() {
                             </div>
                         ))}
                     </section>
-                    <section className="all-time-langs">
-                        <h2></h2>
+                    <section className="fun-quiz">
+                        <h2>{question}</h2>
                     </section>
                 </>
             )}
