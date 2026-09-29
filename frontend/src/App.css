@@ -747,3 +747,25 @@ button {
     font-weight: bold;
 }
 
+.most-used-language {
+    position: relative;
+    width: 90%;
+    max-width: 55rem;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    background-color: #11057cb9;
+}
+
+.most-used-language .icon {
+    position: absolute;
+    top: 5rem;
+    right: 1.5rem;
+    left: auto;
+    bottom: auto;
+    margin: 0;
+    font-size: 6rem;
+    line-height: 1;
+    background: transparent;
+}
+

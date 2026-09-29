@@ -51,8 +51,8 @@ function LangBreakdown() {
                         <p><span>Percent Used: </span>{mostPercent}%</p>
                         <p><span>Coding Time: </span>{mostLangHours} hours</p>
                         <p>{statement}</p>
+                            <p className="icon" aria-hidden="true">📅</p>
                     </section>
-                    <p className="icon">📅</p>
 
                     <section className="all-languages">
                         <h2>Languages Used · Last 7 Days</h2>
