@@ -111,6 +111,7 @@ function ProjectBreakdown() {
             </section>
             
             <section className="project-overview">
+                <br/>
             <h2>Overview</h2>
             <p>Total Projects: {totatProjects}</p>
             <p>Total Tracked Hours: {totalHours}</p>
@@ -118,6 +119,7 @@ function ProjectBreakdown() {
             </section>
 
             <section className="project-story">
+                <h1>Read your Project as a Story</h1>
                 <form
                     onSubmit={createProjectStory}
                     >

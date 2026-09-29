@@ -784,7 +784,8 @@ def create_story(project_name, project_hours, latest_heartbeat, repo_url, commit
     "and do not reproduce credentials. "
 
     "Write flowing paragraphs without report headings or bullet points. "
-    "Keep it under 450 words. Finish with a short, plain note listing "
+    "Keep it under 100-200 words. Finish with a short, plain note listing "
+    "the user SHOULD not lose interest."
     "the files reviewed and stating that no code or tests were run."
     ),# written by AI prompt
         input=json.dumps(evidence)
