@@ -663,7 +663,34 @@ def create_story(project_name, project_hours, latest_heartbeat, repo_url, commit
         filename = path.rsplit("/", 1)[-1].lower()
 
         if item["type"] != "blob" or item.get("mode") == "120000":
-            pass
+            continue
+        if skipped_folders.intersection(path.split("/")): # if i meet the folders i want to avoid this happend
+            continue
+        if not filename.endswith(extensions):
+            continue
+        if "lock" in filename or "secret" in filename or "credintial" in filename: # hopefully no hack clubber does this (i used to do this almost many times and my api would get revoked and i will be like wtf is it not working.)
+            continue
+        if item.get("size", 0) > 30000:
+            continue
+
+        available_files[path] = item
+
+        priority = [file["filename"] for file in changed_files]
+        priority += [
+            "README.md", "app.py", "package.json",
+            "frontend/package.json", "frontend/src/App.jsx"
+        ]
+        priority += list(available_files)
+        # mainly I am focusing on the react here
+        selected_files = []
+        
+        for path in priority:
+            if path in available_files and path not in selected_files:
+                selected_files.append(path)
+            if len(selected_files) == 6:
+                break
+
+        source_files = {}
             
 
 @app.route("/project-breakdown/story", methods=["POST", "Get"])
