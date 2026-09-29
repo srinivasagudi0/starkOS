@@ -667,3 +667,83 @@ button {
   text-align: center;
   margin-top: 0%;
 }
+
+.more-lang {
+  background-image: linear-gradient(135deg,gold,rgb(0, 255, 119) ,blue);
+  min-height: 100vh;
+}
+
+.title5 {
+  color: green;
+  font-size: 4rem;
+  background-color: rgba(128, 0, 113, 0.354);
+}
+
+.most-used-language {
+  position: relative;
+  left: 200px; 
+  background-color: #11057cb9;
+  max-width: 650px;
+}
+
+.icon {
+  position: relative;
+  bottom: 240px;
+  left: 500px;
+  font-size: 6rem;
+}
+
+.most-used-language h2 {
+  color: white;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 2.5rem;
+}
+
+.most-used-language span {
+  color: rgb(122, 147, 137);
+  margin-left: 20px;
+  min-height: 25px;
+}
+
+.most-used-language p {
+  color: rgb(255, 200, 0);
+   margin-left: 10px;
+}
+
+.all-languages {
+    width: 90%;
+    margin: 3rem auto;
+}
+
+.all-languages h2 {
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+.all-languages .langs-row {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid currentColor;
+}
+
+.all-languages .langs-row h3 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.all-languages .langs-row p {
+    margin: 0;
+    font-family: monospace;
+    font-size: 1.1rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.all-languages .langs-row p:last-child {
+    text-align: right;
+    font-weight: bold;
+}
+

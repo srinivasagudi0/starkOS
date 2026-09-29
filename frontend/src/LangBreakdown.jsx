@@ -35,9 +35,9 @@ function LangBreakdown() {
     }, [])
 
     return (
-        <main>
+        <main className="more-lang">
             <Link to="/coding">🔙</Link>
-            <h1>Language Breakdown</h1>
+            <h1 className="title5">Detailed Language Breakdown</h1>
 
             {loading ? (
                 <p>Loading languages...</p>
@@ -46,12 +46,13 @@ function LangBreakdown() {
             ) : (
                 <>
                     <section className="most-used-language">
-                        <h2>Most Used Language · Last 7 Days</h2>
-                        <p>Most Used Lang: {mostUsedLang}</p>
-                        <p>Percent Used: {mostPercent}%</p>
-                        <p>Coding Time: {mostLangHours} hours</p>
+                        <h2>Most Used Language ~ Last 7 Days</h2>
+                        <p><span>Most Used Lang: </span>{mostUsedLang}</p>
+                        <p><span>Percent Used: </span>{mostPercent}%</p>
+                        <p><span>Coding Time: </span>{mostLangHours} hours</p>
                         <p>{statement}</p>
                     </section>
+                    <p className="icon">📅</p>
 
                     <section className="all-languages">
                         <h2>Languages Used · Last 7 Days</h2>
