@@ -994,6 +994,60 @@ def language_quiz():
     ]
     })
 
+@app.route("/hackatime/lang-breakdown/quiz/submit", methods=["POST"])
+def submit_language_quiz():
+    if not session.get("hackatime_token"):
+        return jsonify({"message": "Hackatime is not connected."}), 401
+
+    quiz = session.get("language_quiz")
+
+    if not quiz:
+        return jsonify({"message": "Start a quiz first."}), 400
+
+    data = request.get_json(silent=True)
+
+    if not isinstance(data, dict):
+        return jsonify({"message": "Send your answers as JSON."}), 400
+
+    answers = data.get("answers")
+
+    if not isinstance(answers, dict):
+        return jsonify({"message": "Answers must be an object."}), 400
+
+    # Require a valid choice for every question.
+    for question in quiz:
+        answer = answers.get(question["id"])
+
+        if answer not in question["options"]:
+            return jsonify({
+                "message": "Answer every question before submitting."
+            }), 400
+
+    score = 0
+    results = []
+
+    for question in quiz:
+        answer = answers[question["id"]]
+        correct = answer in question["correct_answers"]
+
+        if correct:
+            score += 1
+
+        results.append({
+            "id": question["id"],
+            "correct": correct,
+            "your_answer": answer,
+            "correct_answers": question["correct_answers"],
+            "explanation": question["explanation"]
+        })
+
+    return jsonify({
+        "score": score,
+        "total": len(quiz),
+        "results": results
+    })
+# asked AI to complete this functipjon correclty
+
 if __name__ == "__main__":
     app.run(debug=True)
     
