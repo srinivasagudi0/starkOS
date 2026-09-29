@@ -9,11 +9,12 @@ function LangBreakdown() {
     const [langs, setLangs] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState("")
-    const [question, setQuestion] = useState("")
-    const [options, setOptions] = useState([])
+    const [questions, setQuestions] = useState([])
+    const [answers, setAnswers] = useState({})
+    const [quizMessage, setQuizMessage] = useState("")
 
     useEffect(() => {
-        fetch("/hackatime/lang-breakdown/quiz", {
+        fetch("http://localhost:5000/hackatime/lang-breakdown/quiz", {
             credentials: "include"
         })
             .then(async response => {
@@ -21,10 +22,11 @@ function LangBreakdown() {
                 return data
             })
             .then(data => {
-                setQuestion(data.questions.question)
-                setOptions(data.questions.options)
-            }, [])
-    },[])
+                setQuestions(data.questions ?? [])
+                setQuizMessage(data.message ?? "")
+            })
+            .catch(error => setQuizMessage(error.message))
+    }, [])
 
     useEffect(() => {
         fetch("http://localhost:5000/hackatime/lang-breakdown/more", {
@@ -82,7 +84,30 @@ function LangBreakdown() {
                         ))}
                     </section>
                     <section className="fun-quiz">
-                        <h2>{question}</h2>
+                        <h2>Know Your Code</h2>
+                        <p>{quizMessage}</p>
+                        
+                        {questions.map(question => (
+                            <fieldset key={question.id}>
+                                <legend>{question.question}</legend>
+
+                                {question.options.map(option => (
+                                    <label key={option}>
+                                        <input
+                                            type="radio"
+                                            name={question.id}
+                                            value={option}
+                                            checked={answers[question.id] === option}
+                                            onChange={() => setAnswers(previous => ({
+                                                ...previous,
+                                                [question.id]: option
+                                            }))}
+                                        />
+                                        {option}
+                                    </label>
+                                ))}
+                            </fieldset>
+                        ))}
                     </section>
                 </>
             )}
