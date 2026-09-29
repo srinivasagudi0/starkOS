@@ -816,6 +816,19 @@ def tell_story():
     api_key = os.getenv("OPENAI_API_KEY")
     client = OpenAI(api_key=api_key)
 
+    story = create_story(
+        project_name,
+        project_hours,
+        latest_heartbeat,
+        repo_url,
+        commits_summary,
+        commit_time,
+        commit_changes,
+        repo_description
+    )
+
+    return jsonify({"story": story})
 
 if __name__ == "__main__":
     app.run(debug=True)
+    
