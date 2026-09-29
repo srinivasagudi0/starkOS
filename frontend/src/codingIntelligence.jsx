@@ -7,6 +7,8 @@ function CodingIntel() {
     const [error, setError] = useState("")
     const [projects, setProjects] = useState([])
 
+    const [langs, setLangs] = useState([])
+
     useEffect(() => {
         fetch("http://localhost:5000/hackatime/past7days", {
             credentials: "include"
@@ -39,6 +41,19 @@ function CodingIntel() {
             })
             .then(data => {
                 setProjects(data.projects)
+            })
+    })
+
+    useState(() => {
+        fetch('htpp://localhost:5000/hackatime/lang/breakdown', {
+            credentials: "include"
+        })
+            .then(async response => {
+                const data = await response.json()
+                return data
+            })
+            .thne(data => {
+                setLangs(data.langs)
             })
     })
 
@@ -107,6 +122,18 @@ function CodingIntel() {
             </div>
             ))}
         </section>
+
+        <section className="lang-breakdown">
+            <h1>Language breakdown</h1>
+            {langs.slice(0,5).map(language =>(
+                <div key={langs.name} className="langs-row">
+                    <h2>{language.name}</h2>
+                    <p>{language.text}</p>
+                    <p>{language.percent}</p>
+                </div>
+            ))}
+        </section>
+        
         </main>
     )
 }

@@ -843,7 +843,25 @@ def tell_story():
     )
 
     return jsonify({"story": story})
+@app.route('/hackatime/lang/breakdown')
+def get_lang_stats():
+    token = session.get("hackatime_token")
 
+    if not token:
+        return jsonify({"message": "Hackatime is not connected."}), 401
+
+    api_key = get_hackatime_api()
+
+    response = requests.get(
+        "https://hackatime.hackclub.com/api/hackatime/v1/users/current/stats/last_7_days",
+        headers={"Authorization": f"Bearer {api_key}"},
+        timeout=20
+    )
+
+    response.raise_for_status()
+    langs = response.json().get("data", {}).get("languages", [])
+
+    return jsonify({"langs": langs})
 if __name__ == "__main__":
     app.run(debug=True)
     
