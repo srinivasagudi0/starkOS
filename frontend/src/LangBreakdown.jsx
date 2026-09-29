@@ -12,6 +12,8 @@ function LangBreakdown() {
     const [questions, setQuestions] = useState([])
     const [answers, setAnswers] = useState({})
     const [quizMessage, setQuizMessage] = useState("")
+    const [quizResult, setQuizResult] = useState(null)
+    const [submitting, setSubmitting] = useState(false)
 
     useEffect(() => {
         fetch("http://localhost:5000/hackatime/lang-breakdown/quiz", {
@@ -51,6 +53,35 @@ function LangBreakdown() {
             .catch(error => setError(error.message))
             .finally(() => setLoading(false))
     }, [])
+
+
+    async function SubmitQuiz() {
+        if (submitting) return
+
+        setSubmitting(true)
+        setQuizResult("")
+        setQuizResult(null)
+        
+        try {
+            const response= await fetch(
+                "http://localhost:5000/hackatime/lang-breakdown/quiz/submit",
+                {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {"Content-Type": "applications/json"},
+                    body: JSON.stringify({answers})
+                
+                }
+            )
+
+            const data = await response.json()
+            setQuizResult(data)
+        } catch(error) {
+            setQuizMessage(error.message)
+        } finally {
+            setSubmitting(false)
+        }
+    }
 
     return (
         <main className="more-lang">
