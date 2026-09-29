@@ -126,6 +126,7 @@ function CodingIntel() {
 
         <section className="lang-breakdown">
             <h1>Language breakdown</h1>
+            <Link to="/lang-breakdown">more ➡️</Link>
             <p>Where your coding time went. </p>
             <div className="langs-list">
             {langs.slice(0, 5).map(language => (

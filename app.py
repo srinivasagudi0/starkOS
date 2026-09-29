@@ -862,6 +862,44 @@ def get_lang_stats():
     langs = response.json().get("data", {}).get("languages", [])
 
     return jsonify({"langs": langs})
+
+@app.route("/hackatime/lang-breakdown/more")
+def give_more_lang_info():
+    token = session.get("hackatime_token")
+    if not token:
+        return jsonify({"message": "Hackatime is not connected."}), 401
+
+    langs = get_lang_stats().get_json().get("langs", [])
+
+    # most used langs
+    langs = sorted(
+        langs,
+        key=lambda lang: lang.get("total_seconds", 0),
+        reverse=True
+    )
+
+    # if bit worked thsi week
+    if not langs:
+        return jsonify({
+            "most_used": None,
+            "langs": [],
+            "statement": "No language activity recorded in the last seven days."
+        })
+
+    most_used = langs[0]
+
+    return jsonify({
+        "most_used": {
+            "name": most_used["name"],
+            "hours": round(most_used["total_seconds"] / 3600, 2),
+            "percent": most_used["percent"]
+        },
+        "langs": langs,
+        "statement": (
+            f"{most_used['name']} counted for {most_used['percent']}% of your tracked coding time in the last seven days."
+        )
+    })
+
 if __name__ == "__main__":
     app.run(debug=True)
     

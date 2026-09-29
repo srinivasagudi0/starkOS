@@ -3,6 +3,7 @@ import CommandCenter from './CommandCenter.jsx'
 import CodingIntel from './codingIntelligence.jsx'
 import WeekDetails from './WeekDetails.jsx'
 import ProjectBreakdown from './ProjectBreakdown.jsx'
+import LangBreakdown from './LangBreakdown.jsx'
 import './App.css'
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route path="/coding" element={<CodingIntel />} />
         <Route path='/week-details' element={<WeekDetails />} />
         <Route path="/project-breakdown" element={<ProjectBreakdown />} />
+        <Route path="/lang-breakdown" element={<LangBreakdown />} />
       </Routes>
     </BrowserRouter>
   )
