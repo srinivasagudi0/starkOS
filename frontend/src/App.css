@@ -790,3 +790,12 @@ button {
   font-family: cursive;
 }
 
+.fun-quiz h2{
+  text-align: center;
+  font-size: 3rem;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color:#05e876;
+  background-color: rgba(26, 0, 128, 0.668);
+  rotate: -2deg;
+}
+
