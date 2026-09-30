@@ -16,6 +16,7 @@ function LangBreakdown() {
     const [quizResult, setQuizResult] = useState(null)
     const [quizLoading, setQuizLoading] = useState(false)
     const [submitting, setSubmitting] = useState(false)
+    const [takingQuiz, setTakingQuiz] = useState(false)
 
     useEffect(() => {
         fetch("http://localhost:5000/hackatime/lang-breakdown/more", {
@@ -42,8 +43,9 @@ function LangBreakdown() {
     }, [])
 
     async function startQuiz() {
-        if (loading || quizLoading || questions.length > 0) return
+        if (loading || quizLoading || questions.length > 0 || takingQuiz) return
 
+        setTakingQuiz(true)
         setQuizLoading(true)
         setQuizMessage("")
         setAnswers({})
@@ -69,6 +71,7 @@ function LangBreakdown() {
             setQuizMessage(error.message)
         } finally {
             setQuizLoading(false)
+            setTakingQuiz(false)
         }
     }
 
@@ -145,14 +148,20 @@ function LangBreakdown() {
 
                     <section className="all-languages">
                         <h2>Languages Used · Last 7 Days</h2>
-
-                        {langs.map(language => (
+                        {takingQuiz ? (
+                            <div className="hidden-stats">
+                                <h2>You are taking a quiz, finish it to see this.</h2>
+                            </div>
+                        ): (
+                        langs.map(language => (
                             <div key={language.name} className="langs-row">
                                 <h3>{language.name}</h3>
                                 <p>{language.text}</p>
                                 <p>{language.percent}%</p>
                             </div>
-                        ))}
+                        ))
+                    )}
+                        
                     </section>
 
                     <section className="fun-quiz">
