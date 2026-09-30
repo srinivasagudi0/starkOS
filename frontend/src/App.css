@@ -715,6 +715,9 @@ button {
 .all-languages {
     width: 90%;
     margin: 3rem auto;
+    rotate: 3deg;
+    background-color:rgba(238, 130, 238, 0.507);
+    margin: 3rem;
 }
 
 .all-languages h2 {
@@ -729,6 +732,7 @@ button {
     gap: 1rem;
     padding: 1.2rem 0;
     border-bottom: 1px solid currentColor;
+    margin-left: 10px;
 }
 
 .all-languages .langs-row h3 {
@@ -736,11 +740,18 @@ button {
     font-size: 1.4rem;
 }
 
+.all-languages .langs-row h2 {
+  margin-left: 10px;
+}
+
+
 .all-languages .langs-row p {
     margin: 0;
     font-family: monospace;
     font-size: 1.1rem;
     font-variant-numeric: tabular-nums;
+    margin-right: 10px;
+    margin-left: 10px;
 }
 
 .all-languages .langs-row p:last-child {
@@ -802,4 +813,22 @@ button {
   color: black;
   margin-left: 200px;
   font-weight: 900;
+}
+
+.quiz-button {
+  margin-left: 200px;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  background-color: #e89505;
+  color: #111;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 100px;
+  margin-top: 30px;
+  text-align: center;
+}
+
+.quiz-button:hover {
+  background-color: #f5c542;
+  color: #111;
 }

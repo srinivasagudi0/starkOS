@@ -147,7 +147,7 @@ function LangBreakdown() {
                     </section>
 
                     <section className="all-languages">
-                        <h2>Languages Used · Last 7 Days</h2>
+                        <h2 className="k">Languages Used · Last 7 Days</h2>
                         {questions.length > 0 && quizResult === null ? (
                             <div className="hidden-stats">
                                 <span>You are taking a quiz, finish it to see this.</span>
