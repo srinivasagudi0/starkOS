@@ -782,3 +782,11 @@ button {
   color:#060de4;
 }
 
+.hidden-stats span {
+  font-size: 35px;
+  background-color: red;
+  color: white;
+  word-spacing: 3px;
+  font-family: cursive;
+}
+

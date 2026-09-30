@@ -150,7 +150,7 @@ function LangBreakdown() {
                         <h2>Languages Used · Last 7 Days</h2>
                         {questions.length > 0 && quizResult === null ? (
                             <div className="hidden-stats">
-                                <h2>You are taking a quiz, finish it to see this.</h2>
+                                <span>You are taking a quiz, finish it to see this.</span>
                             </div>
                         ): (
                         langs.map(language => (
