@@ -1,2 +1,3 @@
 # starkOS
-for suncatcher
+
+A simple and effective app with good 
