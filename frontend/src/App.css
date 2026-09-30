@@ -770,3 +770,15 @@ button {
     background: transparent;
 }
 
+.all-languages {
+  position: relative;
+  right: 50px;
+  rotate: 6deg;
+}
+
+.all-languages h2 {
+  font-size: 4rem;
+  font-family:'Courier New', Courier, monospace;
+  color:#060de4;
+}
+
