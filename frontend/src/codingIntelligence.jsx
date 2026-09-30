@@ -40,9 +40,9 @@ function CodingIntel() {
                 return data
             })
             .then(data => {
-                setProjects(data.projects)
-            }, [])
-    })
+                setProjects(data.projects ?? [])
+            })
+    }, [])
 
     useEffect(() => {
         fetch('http://localhost:5000/hackatime/lang/breakdown', {

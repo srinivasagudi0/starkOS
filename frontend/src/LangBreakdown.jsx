@@ -148,7 +148,7 @@ function LangBreakdown() {
 
                     <section className="all-languages">
                         <h2>Languages Used · Last 7 Days</h2>
-                        {takingQuiz ? (
+                        {questions.length > 0 && quizResult === null ? (
                             <div className="hidden-stats">
                                 <h2>You are taking a quiz, finish it to see this.</h2>
                             </div>
@@ -165,7 +165,8 @@ function LangBreakdown() {
                     </section>
 
                     <section className="fun-quiz">
-                        <h2>Know Your Code</h2>
+                        <h2>Know Your Code ~ <span>Last 7 days</span></h2>
+                        
 
                         {quizMessage && (
                             <p role="status">{quizMessage}</p>

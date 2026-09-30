@@ -1048,6 +1048,10 @@ def submit_language_quiz():
     })
 # asked AI to complete this functipjon correclty
 
+
+def get_weather():
+    pass
+
 if __name__ == "__main__":
     app.run(debug=True)
     
