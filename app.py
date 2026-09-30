@@ -1048,9 +1048,59 @@ def submit_language_quiz():
     })
 # asked AI to complete this functipjon correclty
 
-@app.route('/weather', methods=["POST"]) #this is a post because my python server will be hosted somewhere and the user will be somewhere
+@app.route("/weather", methods=["POST"])
 def get_weather():
-    pass
+    # as a command center, i want it to be fairly comlex
+    data = request.get_json(silent=True) or {}
+    location = data.get("location")
+
+    if not location:
+        return jsonify({
+            "weather": "Location is not allowed."
+        }), 400
+
+    place_response = requests.get(
+        "https://geocoding-api.open-meteo.com/v1/search",
+        params={
+            "name": location,
+            "count": 1,
+            "language": "en",
+            "format": "json"
+        },
+        timeout=11
+    )
+
+    place_response.raise_for_status()
+    places = place_response.json().get("results", [])
+
+    place = places[0]
+
+    weather_response = requests.get(
+        "https://api.open-meteo.com/v1/forecast",
+        params={
+            "latitude": place["latitude"],
+            "longitude": place["longitude"],
+            "current": (
+                "temperature_2m,"
+                "relative_humidity_2m,"
+                "weather_code,"
+                "wind_speed_10m"
+            ),
+            "temperature_unit": "fahrenheit",
+            "wind_speed_unit": "mph",
+            "timezone": "auto"
+        },
+        timeout=10
+    )
+
+    weather_response.raise_for_status()
+    weather = weather_response.json()
+
+    return jsonify({
+        "location": place["name"],
+        "country": place.get("country"),
+        "weather": weather.get("current", {})
+    })
 
 if __name__ == "__main__":
     app.run(debug=True)
