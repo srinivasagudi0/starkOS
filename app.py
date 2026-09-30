@@ -1048,7 +1048,7 @@ def submit_language_quiz():
     })
 # asked AI to complete this functipjon correclty
 
-
+@app.route('/weather', methods=["POST"]) #this is a post because my python server will be hosted somewhere and the user will be somewhere
 def get_weather():
     pass
 

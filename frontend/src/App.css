@@ -770,16 +770,9 @@ button {
     background: transparent;
 }
 
-.all-languages {
-  position: relative;
-  right: 50px;
-  rotate: 6deg;
-}
-
-.all-languages h2 {
-  font-size: 4rem;
-  font-family:'Courier New', Courier, monospace;
-  color:#060de4;
+.more-lang {
+  background-image: linear-gradient(135deg, gold, rgb(0, 255, 119), blue);
+  min-height: 100vh;
 }
 
 .hidden-stats span {
@@ -791,7 +784,7 @@ button {
 }
 
 .fun-quiz h2{
-  text-align: center;
+  text-align: left;
   font-size: 3rem;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   color:#05e876;
@@ -799,3 +792,14 @@ button {
   rotate: -2deg;
 }
 
+.fun-quiz legend {
+  color: rgb(135, 1, 1);
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.fun-quiz label {
+  color: black;
+  margin-left: 200px;
+  font-weight: 900;
+}

@@ -154,14 +154,14 @@ function LangBreakdown() {
                             </div>
                         ): (
                         langs.map(language => (
-                            <div key={language.name} className="lang-row">
+                            <div key={language.name} className="langs-row">
                                 <h2>{language.name}</h2>
                                 <p>{language.text}</p>
                                 <p>{language.percent}%</p>
                             </div>
                         ))
                     )}
-                        
+
                     </section>
 
                     <section className="fun-quiz">
