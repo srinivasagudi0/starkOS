@@ -62,20 +62,45 @@ function CommandCenter() {
       localStorage.setItem("focusEndTime", endTime)
 
       answer = "25 minute focus session started."
-      
+
       }
     }
 
     else if (text === "focus 50") {
-      setFocusMins(50)
-      setTimeLeft(50 * 60)
-      answer = "Focus timer set to 50 minutes."
-    }
+      if(isRunning) {
+        answer = "A focus session is already running. Type cancel focus first."
+      }
+       
+      else {
+        const endTime = Date.now() + 50 * 60 * 1000
+        setFocusMins(50)
+        setTimeLeft(50*60)
+        setIsRunning(true)
+
+        localStorage.setItem("focusMins", 50)
+        localStorage.setItem("focusEndTime", endTime)
+
+        answer = "50 minute focus session started."
+      }
+      }
 
     else if (text === "focus 90") {
-      setFocusMins(90)
-      setTimeLeft(90 * 60)
-      answer = "Focus timer set to 90 minutes."
+      if(isRunning) {
+        answer = "A focus session is already running. Type cancel focus first."
+      }
+       
+      else {
+        const endTime = Date.now() + 90 * 60 * 1000
+        setFocusMins(90)
+        setTimeLeft(90*60)
+        setIsRunning(true)
+
+        localStorage.setItem("focusMins", 90)
+        localStorage.setItem("focusEndTime", endTime)
+
+        answer = "90 minute focus session started."
+      }
+      
     }
 
     else if (text === "clear") {
