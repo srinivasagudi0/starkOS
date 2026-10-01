@@ -875,3 +875,13 @@ button {
 .weather-card button {
   padding: 8px 12px;
 }
+body:has(.command-center),
+#root:has(.command-center) {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.command-center {
+  height: 100vh;
+  overflow:hidden;
+}
