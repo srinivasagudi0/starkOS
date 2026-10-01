@@ -17,7 +17,7 @@ function ProjectBreakdown() {
 
     useEffect(() => {
         setLoading(true)
-        fetch("https://starkos-backend.onrender.com/project-breakdown/more/stats", {
+        fetch("/backend/project-breakdown/more/stats", {
             credentials: "include"
         })
             .then(async (response) => {
@@ -32,7 +32,7 @@ function ProjectBreakdown() {
     
     useEffect(() => {
         setProjectsLoading(true)
-        fetch("https://starkos-backend.onrender.com/project-breakdown/project-overview", {
+        fetch("/backend/project-breakdown/project-overview", {
             credentials: "include"
         })
             .then(async (response) => {
@@ -53,7 +53,7 @@ function ProjectBreakdown() {
 
         try {
             const response = await fetch(
-            "https://starkos-backend.onrender.com/project-breakdown/story",
+            "/backend/project-breakdown/story",
             {
                 method: "POST",
                 credentials: "include",
@@ -81,7 +81,7 @@ function ProjectBreakdown() {
 
         useEffect(() =>{
             setRecentLoading(true)
-           fetch("https://starkos-backend.onrender.com/hackatime/recent-project/stats", {
+           fetch("/backend/hackatime/recent-project/stats", {
                 credentials: "include"
             })
                 .then(async response => {

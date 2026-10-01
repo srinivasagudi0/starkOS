@@ -12,12 +12,12 @@ import random
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 FRONTEND_URL = os.getenv("FRONTEND_URL", "https://stark-os1-gamma.vercel.app").rstrip("/")
-CALLBACK_URL = os.getenv("HACKATIME_CALLBACK_URL", "https://starkos-backend.onrender.com/api/hackatime/callback")
+CALLBACK_URL = os.getenv("HACKATIME_CALLBACK_URL", f"{FRONTEND_URL}/backend/api/hackatime/callback")
 frontend_address = urlsplit(FRONTEND_URL)
 frontend_origin = f"{frontend_address.scheme}://{frontend_address.netloc}"
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SECURE"] = CALLBACK_URL.startswith("https://")
-app.config["SESSION_COOKIE_SAMESITE"] = os.getenv("SESSION_COOKIE_SAMESITE", "None")
+app.config["SESSION_COOKIE_SAMESITE"] = os.getenv("SESSION_COOKIE_SAMESITE", "Lax")
 CORS(
     app,
     origins=["http://localhost:5173"] + ([frontend_origin] if FRONTEND_URL else []),

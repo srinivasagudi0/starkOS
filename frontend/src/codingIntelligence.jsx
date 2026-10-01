@@ -15,7 +15,7 @@ function CodingIntel() {
 
     useEffect(() => {
         setDaysLoading(true)
-        fetch("https://starkos-backend.onrender.com/hackatime/past7days", {
+        fetch("/backend/hackatime/past7days", {
             credentials: "include"
         })
             .then(async response => {
@@ -39,7 +39,7 @@ function CodingIntel() {
 
     useEffect(() => {
         setProjectsLoading(true)
-        fetch('https://starkos-backend.onrender.com/hackatime/project-breakdown', {
+        fetch('/backend/hackatime/project-breakdown', {
             credentials: "include"
         })
             .then(async response => {
@@ -60,7 +60,7 @@ function CodingIntel() {
 
     useEffect(() => {
         setLangsLoading(true)
-        fetch('https://starkos-backend.onrender.com/hackatime/lang/breakdown', {
+        fetch('/backend/hackatime/lang/breakdown', {
             credentials: "include"
         })
             .then(async response => {

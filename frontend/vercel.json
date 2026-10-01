@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/backend/:path*", "destination": "https://starkos-backend.onrender.com/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
