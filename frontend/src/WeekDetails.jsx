@@ -11,6 +11,7 @@ function WeekDetails() {
     const [topProject, setTopProject] = useState(null)
     const [topLang, setTopLang] = useState(null)
     const [summary, setSummary] = useState("")
+    const [loading, setLoading] = useState(true)
 
     useEffect(() =>{
         fetch('http://localhost:5000/hackatime/week-details', {
@@ -27,14 +28,21 @@ function WeekDetails() {
                 setDaily(data.daily_hours),
                 setBusiestHours(data.busiest_day),
                 setTopProject(data.top_project),
-                setTopLang(data.top_langs)
+                setTopLang(data.top_language)
                 setSummary(data.summary)
             })
             .catch(error => console.error(error))
+            .finally(()=> setLoading(false))
     }, [])
 
     return (
+        
     <main className="week-details">
+        {loading && (
+            <p className="loading-message">
+               Syncing data
+            </p>
+        )}
         <Link to="/coding">← Back</Link>
         <h1 className="title4">Your Week in Code</h1>
 
