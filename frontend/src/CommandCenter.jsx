@@ -151,7 +151,7 @@ function CommandCenter() {
     setWeatherError("")
 
     try {
-      const response = await fetch("http://localhost:5000/weather", {
+      const response = await fetch("https://starkos-backend.onrender.com/weather", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -224,7 +224,7 @@ function CommandCenter() {
 
   useEffect(() => {
     setStatusLoading(true)
-    fetch("http://localhost:5000/api/hackatime/status", {
+    fetch("https://starkos-backend.onrender.com/api/hackatime/status", {
       credentials: "include"
     })
       .then(async response => {
@@ -242,7 +242,7 @@ function CommandCenter() {
     if (!connected) return
 
     setStreakLoading(true)
-    fetch("http://localhost:5000/hackatime/streaks", {
+    fetch("https://starkos-backend.onrender.com/hackatime/streaks", {
       credentials: "include"
     })
       .then(response => {
@@ -266,7 +266,7 @@ function CommandCenter() {
     if (!connected) return
 
     setLoading(true)
-    fetch('http://localhost:5000/hackatime/hours',{credentials: "include"})
+    fetch('https://starkos-backend.onrender.com/hackatime/hours',{credentials: "include"})
       .then(response => {
         if (response.status === 401) {
           setConnected(false)
@@ -309,7 +309,7 @@ function CommandCenter() {
 
   useEffect(() => {
     setFeedbackLoading(true)
-    fetch("http://localhost:5000/feedback/line")
+    fetch("https://starkos-backend.onrender.com/feedback/line")
       .then((response) => response.json())
       .then((data) => {
         if (data.ok) {setFeedback(data.message)}
@@ -335,7 +335,7 @@ function CommandCenter() {
             <p>Hackatime is not connected.</p>
             <button
               className="more-button"
-              onClick={() => window.location.assign("http://localhost:5000/api/hackatime/connect")}
+              onClick={() => window.location.assign("https://starkos-backend.onrender.com/api/hackatime/connect")}
             >
               Connect Hackatime
             </button>

@@ -16,7 +16,7 @@ function WeekDetails() {
 
     useEffect(() =>{
         setLoading(true)
-        fetch('http://localhost:5000/hackatime/week-details', {
+        fetch('https://starkos-backend.onrender.com/hackatime/week-details', {
             credentials: "include"
         })
             .then(async response => {

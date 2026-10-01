@@ -11,13 +11,13 @@ import random
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
-FRONTEND_URL = os.getenv("FRONTEND_URL", "").rstrip("/")
-CALLBACK_URL = os.getenv("HACKATIME_CALLBACK_URL", "http://localhost:5000/api/hackatime/callback")
+FRONTEND_URL = os.getenv("FRONTEND_URL", "https://stark-os1-gamma.vercel.app").rstrip("/")
+CALLBACK_URL = os.getenv("HACKATIME_CALLBACK_URL", "https://starkos-backend.onrender.com/api/hackatime/callback")
 frontend_address = urlsplit(FRONTEND_URL)
 frontend_origin = f"{frontend_address.scheme}://{frontend_address.netloc}"
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SECURE"] = CALLBACK_URL.startswith("https://")
-app.config["SESSION_COOKIE_SAMESITE"] = os.getenv("SESSION_COOKIE_SAMESITE", "Lax")
+app.config["SESSION_COOKIE_SAMESITE"] = os.getenv("SESSION_COOKIE_SAMESITE", "None")
 CORS(
     app,
     origins=["http://localhost:5173"] + ([frontend_origin] if FRONTEND_URL else []),
@@ -562,6 +562,17 @@ def fetch_recent_stats():
     # get recent project
     project_data = more_project_breakdown().get_json()
     projects = project_data.get("projects", [])
+    if not projects:
+        return jsonify({
+            "repo_url": None,
+            "total_coding_time": 0,
+            "last_coding_activity": "No activity",
+            "latest_commit_message": "No commits",
+            "latest_commit_time": "",
+            "files_changed": [],
+            "repo_description": "No projects yet."
+        })
+
     recent_project = projects[0]["name"] if projects else None # just keeping thsi if i i need this later
     # check the hours of the first (latest) project
     project_hours = round(projects[0]["total_seconds"] / 3600)

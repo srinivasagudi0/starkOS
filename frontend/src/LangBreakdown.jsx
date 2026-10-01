@@ -20,7 +20,7 @@ function LangBreakdown() {
 
     useEffect(() => {
         setLoading(true)
-        fetch("http://localhost:5000/hackatime/lang-breakdown/more", {
+        fetch("https://starkos-backend.onrender.com/hackatime/lang-breakdown/more", {
             credentials: "include"
         })
             .then(async response => {
@@ -54,7 +54,7 @@ function LangBreakdown() {
 
         try {
             const response = await fetch(
-                "http://localhost:5000/hackatime/lang-breakdown/quiz",
+                "https://starkos-backend.onrender.com/hackatime/lang-breakdown/quiz",
                 {
                     credentials: "include"
                 }
@@ -89,7 +89,7 @@ function LangBreakdown() {
 
         try {
             const response = await fetch(
-                "http://localhost:5000/hackatime/lang-breakdown/quiz/submit",
+                "https://starkos-backend.onrender.com/hackatime/lang-breakdown/quiz/submit",
                 {
                     method: "POST",
                     credentials: "include",
