@@ -175,7 +175,7 @@ button {
 
 .streak-station {
   position: absolute;
-  bottom: 60px;
+  bottom: 90px;
   left: 160px;
   text-align: center;
   color: #7566c6;
@@ -184,6 +184,7 @@ button {
 
 .streak-station p {
   font-size: 20px;
+  color: red;
 }
 
 .streak-title {
@@ -833,3 +834,44 @@ button {
   color: #111;
 }
 
+.command-center {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+
+}
+
+.focus-channel {
+  margin-top: 19rem;
+}
+
+.weather-card {
+  position: absolute;
+  top: 7rem;
+  right: 4rem;
+  width: 280px;
+  padding: 1.2rem;
+  color: white;
+  background: #1976c9;
+  border-radius: 28px;
+  box-shadow: 0 8px 20px #0005;
+}
+
+.weather-card h2 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.weather-card form {
+  display: flex;
+  gap: 8px;
+}
+
+.weather-card input {
+  width: 100%;
+  padding: 8px;
+}
+
+.weather-card button {
+  padding: 8px 12px;
+}
