@@ -10,6 +10,40 @@ function CommandCenter() {
   const [isRunning, setIsRunning] = useState(false)
   const [hours, setHoursLoaded] = useState(false) // debug
   const [streakLoaded, setStreakLoaded] = useState(false) // dxebug
+  const [location, setLocation] = useState("")
+  const [weather, setWeather] = useState(null)
+  const [weatherError, setWeatherError] = useState("")
+
+  async function getWeather(event) {
+    event.preventDefault()
+
+    if (!location.trim()) {
+      setWeather("Something went wrong.")
+      return
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/weather", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          location: location.trim()
+        })
+      })
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.weather || "Weather failed")
+      }
+      setWeather(data)
+      setWeatherError("")    
+    } catch(error) {
+        setWeatherError(error.message)
+    }
+  }
+
 
   useEffect(() => {
     if (!isRunning) return 
