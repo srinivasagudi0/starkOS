@@ -8,10 +8,12 @@ function CommandCenter() {
   const [focusMins, setFocusMins] = useState(50)
   const [timeLeft, setTimeLeft]  = useState( 50 * 60) // 50 mins of 60 secs
   const [isRunning, setIsRunning] = useState(false)
-  const [hours, setHoursLoaded] = useState(false) // debug
-  const [streakLoaded, setStreakLoaded] = useState(false) // dxebug
+  const [loading, setLoading] = useState(true)
+  const [streakLoading, setStreakLoading] = useState(true)
+  const [feedbackLoading, setFeedbackLoading] = useState(true)
   const [location, setLocation] = useState("")
   const [weather, setWeather] = useState(null)
+  const [weatherLoading, setWeatherLoading] = useState(false)
   const [weatherError, setWeatherError] = useState("")
 
   async function getWeather(event) {
@@ -22,6 +24,10 @@ function CommandCenter() {
       setWeatherError("Please enter a city or ZIP code.")
       return
     }
+
+    setWeatherLoading(true)
+    setWeather(null)
+    setWeatherError("")
 
     try {
       const response = await fetch("http://localhost:5000/weather", {
@@ -42,6 +48,8 @@ function CommandCenter() {
       setWeatherError("")    
     } catch(error) {
         setWeatherError(error.message)
+    } finally {
+        setWeatherLoading(false)
     }
   }
 
@@ -94,6 +102,7 @@ function CommandCenter() {
   const [streak, setStreak] = useState(0)
 
   useEffect(() =>{
+    setStreakLoading(true)
     fetch("http://localhost:5000/hackatime/streaks", {
       credentials: "include"
     })
@@ -102,11 +111,13 @@ function CommandCenter() {
         if (data.ok) {setStreak(data.streak)}
       })
       .catch((error) => console.error(error))
+      .finally(() => setStreakLoading(false))
   }, [])
 
   
 
   useEffect(() => {
+    setLoading(true)
     fetch('http://localhost:5000/hackatime/hours',{credentials: "include"})
       .then((response) => response.json())
       .then((data) => {
@@ -114,9 +125,9 @@ function CommandCenter() {
         setCodeHours(data.hours)
         setTargetHours(data.target_hours)
         setPercentHour(data.percent)
-        setHoursLoaded(true)
       }})
       .catch((error) => {console.error(error)})
+      .finally(() => setLoading(false))
       
   }, [])
   const displayMinutes = Math.floor(timeLeft / 60)
@@ -142,17 +153,25 @@ function CommandCenter() {
   
 
   useEffect(() => {
+    setFeedbackLoading(true)
     fetch("http://localhost:5000/feedback/line")
       .then((response) => response.json())
       .then((data) => {
         if (data.ok) {setFeedback(data.message)}
       })
       .catch((error) => console.error(error))
+      .finally(() => setFeedbackLoading(false))
   }, [])
   
 
   return (
     <main className="command-center">
+        {loading || streakLoading || feedbackLoading ? (
+          <p className="loading-message">
+            Welcome back — synchronizing your command center...
+          </p>
+        ) : (
+        <>
         <div className="title1">
             <h1>Command Center</h1>
             <p style={{"color": "#2284a2"}}>{feedback}</p>
@@ -217,15 +236,18 @@ function CommandCenter() {
             <button type="submit">Check</button>
           </form>
 
-          {weatherError && <p>{weatherError}</p>}
-          {weather && (
+          {weatherLoading ? (
+            <p className="section-loading">Checking the skies for you...</p>
+          ) : weatherError ? (
+            <p>{weatherError}</p>
+          ) : weather ? (
             <div>
               <h3>{weather.location}, {weather.country}</h3>
               <p>{weather.weather.temperature_2m} ℉</p>
               <p>Wind: {weather.weather.wind_speed_10m} mph</p>
               <p>Humidity: {weather.weather.relative_humidity_2m}%</p>
             </div>
-          )}
+          ) : null}
     </section>
     
     <section className="streak-station">
@@ -238,6 +260,8 @@ function CommandCenter() {
 
         <p className="description">Consecutive Coding Days</p>
     </section>
+    </>
+    )}
 
     </main>
   )

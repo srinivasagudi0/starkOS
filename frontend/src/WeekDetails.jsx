@@ -12,37 +12,47 @@ function WeekDetails() {
     const [topLang, setTopLang] = useState(null)
     const [summary, setSummary] = useState("")
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState("")
 
     useEffect(() =>{
+        setLoading(true)
         fetch('http://localhost:5000/hackatime/week-details', {
             credentials: "include"
         })
             .then(async response => {
                 const data= await response.json()
+
+                if (!response.ok) {
+                    throw new Error(data.message || "Couldn't load your week.")
+                }
+
                 return data
             })
             .then(data => {
-                setTotalHours(data.total_hours),
-                setActiveDays(data.active_days),
-                setAverageHours(data.average),
-                setDaily(data.daily_hours),
-                setBusiestHours(data.busiest_day),
-                setTopProject(data.top_project),
+                setTotalHours(data.total_hours)
+                setActiveDays(data.active_days)
+                setAverageHours(data.average_hours)
+                setDaily(data.daily_hours)
+                setBusiestHours(data.busiest_day)
+                setTopProject(data.top_project)
                 setTopLang(data.top_language)
                 setSummary(data.summary)
             })
-            .catch(error => console.error(error))
+            .catch(error => setError(error.message))
             .finally(()=> setLoading(false))
     }, [])
 
     return (
         
     <main className="week-details">
-        {loading && (
+        {loading ? (
             <p className="loading-message">
-               Syncing data
+               Building your weekly debrief, Srinivasa...
             </p>
-        )}
+        ) : error ? (
+            <p role="alert">{error}</p>
+        ) : (
+        <>
         <Link to="/coding">← Back</Link>
         <h1 className="title4">Your Week in Code</h1>
 
@@ -92,10 +102,11 @@ function WeekDetails() {
             <h2>Summary</h2>
             <p>{summary}</p>
         </section>
+        </>
+        )}
        
     </main>
     )
 }
 
 export default WeekDetails
-

@@ -14,6 +14,40 @@ button {
   cursor: pointer;
 }
 
+.loading-message {
+  width: fit-content;
+  max-width: min(520px, 80vw);
+  margin: 20vh auto 0;
+  padding: 18px 24px;
+  border: 1px solid currentColor;
+  border-radius: 12px;
+  background: rgba(17, 25, 24, 0.82);
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.25);
+  color: #f5d742;
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.loading-message::before {
+  content: "STARKOS // SYNC";
+  display: block;
+  margin-bottom: 10px;
+  color: #60d5d1;
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+}
+
+.section-loading {
+  padding: 12px;
+  border: 1px dashed currentColor;
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
 .command-center {
   min-height: 100vh;
   color: #111;
@@ -885,4 +919,3 @@ body:has(.command-center),
   height: 100vh;
   overflow:hidden;
 }
-

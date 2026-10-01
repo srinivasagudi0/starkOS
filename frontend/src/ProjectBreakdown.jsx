@@ -6,13 +6,17 @@ function ProjectBreakdown() {
     const [selectedProject, setSelectedProject] = useState("")
     const [projects, setProjects] = useState([])
     const [story, setStory] = useState("")
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
+    const [projectsLoading, setProjectsLoading] = useState(true)
+    const [recentLoading, setRecentLoading] = useState(true)
+    const [storyLoading, setStoryLoading] = useState(false)
     const [error, setError] = useState("")
     const [totatProjects, setTotalProjects] = useState(0)
     const [totalHours, setTotalHours] = useState(0)
     const [recentProject, setRecentProject] = useState("")
 
     useEffect(() => {
+        setLoading(true)
         fetch("http://localhost:5000/project-breakdown/more/stats", {
             credentials: "include"
         })
@@ -23,9 +27,11 @@ function ProjectBreakdown() {
                 setRecentProject(data.recent_project)
             })
             .catch((error) => setError(error.message))
+            .finally(() => setLoading(false))
     }, [])
     
     useEffect(() => {
+        setProjectsLoading(true)
         fetch("http://localhost:5000/project-breakdown/project-overview", {
             credentials: "include"
         })
@@ -34,13 +40,14 @@ function ProjectBreakdown() {
                 setProjects(data.projects)
             })
             .catch((error) => setError(error.message))
+            .finally(() => setProjectsLoading(false))
     }, [])
 
     async function createProjectStory(event) {
         event.preventDefault()
-        if (!selectedProject || loading) return
+        if (!selectedProject || storyLoading) return
 
-        setLoading(true)
+        setStoryLoading(true)
         setStory("")
         setError("")
 
@@ -60,7 +67,7 @@ function ProjectBreakdown() {
             } catch (error) {
                 setError(error.message)
             } finally {
-                setLoading(false)
+                setStoryLoading(false)
             }
         }
     
@@ -73,6 +80,7 @@ function ProjectBreakdown() {
         const [filesChanged, setFilesChanged] = useState([])
 
         useEffect(() =>{
+            setRecentLoading(true)
            fetch("http://localhost:5000/hackatime/recent-project/stats", {
                 credentials: "include"
             })
@@ -87,10 +95,17 @@ function ProjectBreakdown() {
                     setFilesChanged(data.files_changed)
                 })
                 .catch((error) => console.log(error))
+                .finally(() => setRecentLoading(false))
         },[])
 
     return (
         <main className="more-project-breakdown">
+            {loading || projectsLoading || recentLoading ? (
+                <p className="loading-message">
+                    Mapping your latest projects, Srinivasa...
+                </p>
+            ) : (
+            <>
             <h1 className="title6">Project Breakdown</h1>
             <Link to="/coding">Back 🔙</Link>
 
@@ -137,13 +152,15 @@ function ProjectBreakdown() {
                     ))}
                 </select>
                 <br />
-                <button type="submit" disabled={loading || !selectedProject}>
-                    {loading ? "Writing..." : "View Story ➡️"}
+                <button type="submit" disabled={storyLoading || !selectedProject}>
+                    {storyLoading ? "Writing..." : "View Story ➡️"}
                 </button>
                 </form>
                 {error && <p role="alert">{error}</p>}
                 {story && <p className="story">{story}</p>}
             </section>
+            </>
+            )}
         </main>
     )
 }

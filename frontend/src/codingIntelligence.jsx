@@ -5,11 +5,16 @@ function CodingIntel() {
 
     const [days, setDays] = useState([])
     const [error, setError] = useState("")
+    const [daysLoading, setDaysLoading] = useState(true)
     const [projects, setProjects] = useState([])
-    
+    const [projectsLoading, setProjectsLoading] = useState(true)
+    const [projectsError, setProjectsError] = useState("")
     const [langs, setLangs] = useState([])
+    const [langsLoading, setLangsLoading] = useState(true)
+    const [langsError, setLangsError] = useState("")
 
     useEffect(() => {
+        setDaysLoading(true)
         fetch("http://localhost:5000/hackatime/past7days", {
             credentials: "include"
         })
@@ -29,33 +34,50 @@ function CodingIntel() {
                 ) // turns python dict to something rwact can follow
             })
             .catch(error => setError(error.message))
+            .finally(() => setDaysLoading(false))
     }, [])
 
     useEffect(() => {
+        setProjectsLoading(true)
         fetch('http://localhost:5000/hackatime/project-breakdown', {
             credentials: "include"
         })
             .then(async response => {
                 const data= await response.json()
+
+                if (!response.ok) {
+                    throw new Error(data.message || "Couldn't load projects.")
+                }
+
                 return data
             })
             .then(data => {
                 setProjects(data.projects ?? [])
             })
+            .catch(error => setProjectsError(error.message))
+            .finally(() => setProjectsLoading(false))
     }, [])
 
     useEffect(() => {
+        setLangsLoading(true)
         fetch('http://localhost:5000/hackatime/lang/breakdown', {
             credentials: "include"
         })
             .then(async response => {
                 const data = await response.json()
+
+                if (!response.ok) {
+                    throw new Error(data.message || "Couldn't load languages.")
+                }
+
                 return data
             })
             .then(data => {
-                setLangs(data.langs)
-            }, [])
-    })
+                setLangs(data.langs ?? [])
+            })
+            .catch(error => setLangsError(error.message))
+            .finally(() => setLangsLoading(false))
+    }, [])
 
     const maxHours = Math.max(1, ...days.map(day => day.hours))
     const totalHours = days.reduce((total, day) => total + day.hours, 0)
@@ -70,10 +92,12 @@ function CodingIntel() {
                 <div className="last-7-days">
                     <h1>Last 7 Days</h1>
                     <Link to="/week-details" className="more-button">More ➡️</Link>
-                    {error ? (
+                    {daysLoading ? (
+    <p className="section-loading">Pulling your seven-day signal...</p>
+    ) : error ? (
     <p>{error}</p>
     ) : days.length === 0 ? (
-    <p>Loading coding hours…</p>
+    <p>No data</p>
     ) : (
     <>
     <p className="description">
@@ -116,7 +140,13 @@ function CodingIntel() {
         <section className="project-breakdown">
             <h2>Project BreakDown</h2>
             <Link to="/project-breakdown">More ➡️</Link>
-            {projects.slice(0, 5).map(project => (
+            {projectsLoading ? (
+                <p className="section-loading">Mapping your latest projects...</p>
+            ) : projectsError ? (
+                <p>{projectsError}</p>
+            ) : projects.length === 0 ? (
+                <p>No data</p>
+            ) : projects.slice(0, 5).map(project => (
             <div key={project.name} className="project-row">
                 <h3>{project.name}</h3>
                 <p>{(project.total_seconds / 3600).toFixed(2)} hours total</p>
@@ -129,7 +159,13 @@ function CodingIntel() {
             <Link to="/lang-breakdown">more ➡️</Link>
             <p>Where your coding time went. </p>
             <div className="langs-list">
-            {langs.slice(0, 5).map(language => (
+            {langsLoading ? (
+                <p className="section-loading">Reading your language activity...</p>
+            ) : langsError ? (
+                <p>{langsError}</p>
+            ) : langs.length === 0 ? (
+                <p>No data</p>
+            ) : langs.slice(0, 5).map(language => (
             <div key={language.name} className="langs-row">
                 <h3>{language.name}</h3>
                 <div className="language-track">

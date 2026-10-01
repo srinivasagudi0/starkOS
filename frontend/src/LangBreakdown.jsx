@@ -19,6 +19,7 @@ function LangBreakdown() {
     const [takingQuiz, setTakingQuiz] = useState(false)
 
     useEffect(() => {
+        setLoading(true)
         fetch("http://localhost:5000/hackatime/lang-breakdown/more", {
             credentials: "include"
         })
@@ -119,7 +120,9 @@ function LangBreakdown() {
             <h1 className="title5">Detailed Language Breakdown</h1>
 
             {loading ? (
-                <p>Loading languages...</p>
+                <p className="loading-message">
+                    Reading your coding languages, Srinivasa...
+                </p>
             ) : error ? (
                 <p role="alert">{error}</p>
             ) : (
@@ -153,7 +156,9 @@ function LangBreakdown() {
                                 <span>You are taking a quiz, finish it to see this.</span>
                             </div>
                         ): (
-                        langs.map(language => (
+                        langs.length === 0 ? (
+                            <p>No data</p>
+                        ) : langs.map(language => (
                             <div key={language.name} className="langs-row">
                                 <h2>{language.name}</h2>
                                 <p>{language.text}</p>

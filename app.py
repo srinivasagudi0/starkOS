@@ -255,19 +255,21 @@ def get():
     projects = data.get("projects", [])
     langs = data.get("languages", [])
 
-    top_project = max(
+    top_project_data = max(
         projects, 
         key=lambda project: project["total_seconds"], 
-        default=None).get("name") # most worked project
+        default=None)
+    top_project = top_project_data.get("name") if top_project_data else None
 
-    top_langs = max(
+    top_language_data = max(
         langs,
         key=lambda language: language["total_seconds"],
-        default=None).get("name")
+        default=None)
+    top_language = top_language_data.get("name") if top_language_data else None
 
     busiest_day = max(hours_data, key=hours_data.get, default=None) # show the world how busy you are.
 
-    summary = ask_summary(total_hours, active_days, average, hours_data, busiest_day, top_project, top_langs)
+    summary = ask_summary(total_hours, active_days, average, hours_data, busiest_day, top_project, top_language)
     return jsonify({
         "total_hours": round(total_hours, 2),
         "active_days": len(active_days),
@@ -275,7 +277,7 @@ def get():
         "daily_hours": hours_data,
         "busiest_day": busiest_day,
         "top_project": top_project,
-        "top_language": top_langs,
+        "top_language": top_language,
         "summary": summary
     })   #returns lot of info
 
@@ -1104,4 +1106,3 @@ def get_weather():
 
 if __name__ == "__main__":
     app.run(debug=True)
-    
