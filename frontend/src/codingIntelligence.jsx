@@ -139,7 +139,7 @@ function CodingIntel() {
         </section>
         <section className="project-breakdown">
             <h2>Project BreakDown</h2>
-            <Link to="/project-breakdown">More ➡️</Link>
+            <Link to="/project-breakdown" className="more-button">More ➡️</Link>
             {projectsLoading ? (
                 <p className="section-loading">Mapping your latest projects...</p>
             ) : projectsError ? (
@@ -156,7 +156,7 @@ function CodingIntel() {
 
         <section className="lang-breakdown">
             <h1>Language breakdown</h1>
-            <Link to="/lang-breakdown">more ➡️</Link>
+            <Link to="/lang-breakdown" className="more-button">More ➡️</Link>
             <p>Where your coding time went. </p>
             <div className="langs-list">
             {langsLoading ? (

@@ -54,6 +54,17 @@ button {
   outline-offset: 5px;
 }
 
+.more-button {
+  display: inline-block;
+  padding: 8px 12px;
+  color: #30251b;
+  background: #ffe16b;
+  border-radius: 8px;
+  font-family: "Comic Sans MS", cursive;
+  text-decoration: none;
+}
+.more-button:hover { text-decoration: underline wavy; }
+
 .loading-message {
   width: fit-content;
   max-width: min(520px, 80vw);
@@ -999,21 +1010,17 @@ button {
   font-family: monospace;
 }
 
-/* Desktop windows: two columns, with a third column when there is room. */
-@media (min-width: 768px) {
+/* Stack the cards first; add columns when the screen has room. */
   .command-center {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
-      "title title"
-      "code terminal"
-      "weather focus"
-      "streak focus";
+      "title" "code" "terminal" "weather" "focus" "streak";
     justify-content: center;
     align-content: start;
     align-items: start;
     gap: 28px;
-    padding: 32px max(28px, calc((100% - 1440px) / 2)) 48px;
+    padding: 24px max(16px, calc((100% - 1440px) / 2)) 48px;
     box-sizing: border-box;
   }
 
@@ -1146,6 +1153,16 @@ button {
   .command-center .focus-display {
     font-size: clamp(3rem, 5vw, 4.5rem);
   }
+
+@media (min-width: 768px) {
+  .command-center {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "title title"
+      "code terminal"
+      "weather focus"
+      "streak focus";
+  }
 }
 
 @media (min-width: 1200px) {
@@ -1156,4 +1173,51 @@ button {
       "code terminal weather"
       "streak focus focus";
   }
+}
+
+/* Keep the detail pages comfortable on tablets and phones. */
+@media (max-width: 1100px) {
+  main { padding: 16px; overflow-wrap: anywhere; }
+  main, main * { box-sizing: border-box; min-width: 0; }
+  main h1 { font-size: clamp(1.8rem, 5vw, 2.5rem); }
+  main h2 { font-size: clamp(1.4rem, 4vw, 2rem); }
+  .title2 { font-size: 1rem; margin: 0; }
+  .title4, .title5, .title6 { margin: 20px 0; font-size: 2rem; }
+  .project-breakdown h2, .lang-breakdown h1, .weekly-highlights h2,
+  .week-overview h2, .most-used-language h2, .suummary h2 { font-size: 1.6rem; }
+  .last-7-days, .lang-breakdown { margin: 24px 0; padding: 12px; }
+  .last-7-days > h1, .week-details > h1 { font-size: 2rem; }
+  .week-heatmap { grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); }
+  .heatmap-detail { font-size: 1rem; }
+  .project-row { flex-wrap: wrap; gap: 8px; }
+  .project-row h3, .project-row p { margin: 0; white-space: normal; }
+  .one-line { gap: 20px; }
+  .one-line .week-overview, .weekly-highlights {
+    width: 100%; margin: 0; padding: 16px; border-radius: 20px;
+  }
+  .one-line .week-overview { flex-basis: 100%; }
+  .week-overview p, .weekly-highlights p { margin: 12px 0; }
+  .daily-breakdown {
+    margin: 24px 0;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+  .recent-project, .project-overview, .most-used-language, .all-languages {
+    width: 100%; max-width: 100%; margin: 24px 0; left: auto; rotate: none;
+    padding: 16px;
+  }
+  .recent-project h2, .recent-project li { margin-left: 0; font-size: 1.1rem; }
+  .recent-project ul { padding-left: 16px; }
+  .project-overview { text-align: left; }
+  .project-story form { flex-direction: column; align-items: stretch; }
+  .project-story select, .project-story button { width: 100%; margin: 0; font-size: 1rem; }
+  .project-story br { display: none; }
+  .most-used-language .icon { position: static; font-size: 3rem; }
+  .all-languages .langs-row { grid-template-columns: minmax(0, 1fr); margin: 0; }
+  .all-languages .langs-row p:last-child { text-align: left; }
+  .fun-quiz h2 { rotate: none; font-size: 1.8rem; }
+  .fun-quiz label { display: block; margin: 0; padding: 12px 0; }
+  .quiz-button { margin: 20px 0; }
+  .hidden-stats span, .suummary p { font-size: 1.2rem; }
+  .weather-card input, .terminal input { font-size: 16px; }
+  .loading-message { max-width: 100%; }
 }
