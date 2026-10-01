@@ -205,6 +205,28 @@ function CommandCenter() {
       </button>
     </section>
 
+    <section className="weather-card">
+          <h2>Local Weather</h2>
+          <form onSubmit={getWeather}>
+            <input
+              value={location}
+              onChange={event => setLocation(event.target.value)}
+              placeholder="City or Zip Code"
+            />
+            <button type="submit">Check</button>
+          </form>
+
+          {weatherError && <p>{weatherError}</p>}
+          {weather && (
+            <div>
+              <h3>{weather.location}, {weather.country}</h3>
+              <p>{weather.weather.temperature_2m} ℉</p>
+              <p>Wind: {weather.weather.wind_speed_10m} mph</p>
+              <p>Humidity: {weather.weather.relative_humidity_2m}%</p>
+            </div>
+          )}
+    </section>
+    
     <section className="streak-station">
         <h1 className="streak-title">Spot III || Streak'o Meter</h1>
         <div className="streak-number">
@@ -215,11 +237,7 @@ function CommandCenter() {
 
         <p className="description">Consecutive Coding Days</p>
     </section>
-    <section className="navigation">
-      <div>
 
-      </div>
-    </section>
     </main>
   )
 }
