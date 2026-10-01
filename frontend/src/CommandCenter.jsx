@@ -47,9 +47,23 @@ function CommandCenter() {
     }
 
     else if (text === "focus 25") {
+
+     if (isRunning) {
+      answer = "A focus session is already running. Type cancel focus first."
+
+  } else {
+
+      const endTime = Date.now() + 25 * 60 * 1000
       setFocusMins(25)
       setTimeLeft(25 * 60)
-      answer = "Focus timer set to 25 minutes."
+      setIsRunning(true)
+
+      localStorage.setItem("focusMins", 25)
+      localStorage.setItem("focusEndTime", endTime)
+
+      answer = "25 minute focus session started."
+      
+      }
     }
 
     else if (text === "focus 50") {

@@ -59,7 +59,7 @@ button {
       #171918 43.1%,
       #171918 100%
     );
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .title1 {
@@ -870,8 +870,8 @@ button {
 
 .command-center {
   position: relative;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-x: hidden;
 
 }
 
@@ -913,10 +913,48 @@ button {
 
 .terminal {
   position: relative;
-  left: 700px;
-  top: 200px;
-  background-color: black;
-  max-width: 300px;
-  color: green;
+  width: 32%;
+  height: 280px;
+  padding: 18px;
+  left: 550px;
+  top: 100px;
 
+  background: black;
+  color: green;
+  border: 1px solid #777;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal h2 {
+  margin-top: 0;
+  font-size: 18px;
+}
+
+.terminal-output {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+.terminal-output p {
+  margin: 5px 0;
+  font-family: monospace;
+}
+
+.terminal form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.terminal input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #777;
+  color: white;
+  outline: none;
+  font-family: monospace;
 }
