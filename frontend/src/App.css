@@ -958,3 +958,65 @@ button {
   outline: none;
   font-family: monospace;
 }
+
+@media (min-width: 900px) {
+  .command-center {
+    display: grid;
+    grid-template-columns:
+      minmax(200px, 340px)
+      minmax(300px, 620px)
+      minmax(240px, 340px);
+    grid-template-areas:
+      "title title title"
+      "code terminal weather"
+      "streak focus focus";
+    justify-content: center;
+    align-items: start;
+    gap: clamp(24px, 3vw, 48px);
+    padding: 0 clamp(24px, 4vw, 80px) 60px;
+    box-sizing: border-box;
+  }
+
+  .title1 {
+    grid-area: title;
+  }
+
+  .todays-code {
+    grid-area: code;
+    position: relative;
+    margin: 0;
+    rotate: -4deg;
+  }
+
+  .terminal {
+    grid-area: terminal;
+    position: relative;
+    top: auto;
+    left: auto;
+    width: auto;
+    box-sizing: border-box;
+  }
+
+  .weather-card {
+    grid-area: weather;
+    position: relative;
+    top: auto;
+    right: auto;
+    width: auto;
+    box-sizing: border-box;
+  }
+
+  .streak-station {
+    grid-area: streak;
+    position: relative;
+    bottom: auto;
+    left: auto;
+    rotate: -4deg;
+  }
+
+  .focus-channel {
+    grid-area: focus;
+    width: min(100%, 620px);
+    margin: 0 auto;
+  }
+}

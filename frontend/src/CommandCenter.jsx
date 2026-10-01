@@ -38,6 +38,17 @@ function CommandCenter() {
       answer = `Today: ${codeHours}hrs / ${targetHours}hrs (${hourPercent}%)`
     }
 
+    else if (text === "cancel focus") {
+      if (!isRunning) {
+          answer = "No focus session is running."
+      } else {
+          setIsRunning(false)
+          setTimeLeft(focusMins * 60)
+          localStorage.removeItem("focusEndTime")
+          answer = "Focus session cancelled."
+      }
+   }
+
     else if (text === "weather") {
       if (weather) {
         answer = `${weather.location}: ${weather.weather.temperature_2m}°F`
