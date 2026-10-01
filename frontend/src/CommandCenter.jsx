@@ -24,19 +24,64 @@ function CommandCenter() {
 
   function runCommand(event) {
     event.preventDefault()
-
     const text = command.trim().toLowerCase()
+    
+    if (!text) return
 
-    if(!text) return 
+    let answer = ""
+
+    if (text === "help") {
+      answer = "Commands: help, status, weather, focus 25, focus 50, focus 90, clear"
+    }
+
+    else if (text === "status") {
+      answer = `Today: ${codeHours}hrs / ${targetHours}hrs (${hourPercent}%)`
+    }
+
+    else if (text === "weather") {
+      if (weather) {
+        answer = `${weather.location}: ${weather.weather.temperature_2m}°F`
+      } else {
+        answer = "Check your weather first."
+      }
+    }
+
+    else if (text === "focus 25") {
+      setFocusMins(25)
+      setTimeLeft(25 * 60)
+      answer = "Focus timer set to 25 minutes."
+    }
+
+    else if (text === "focus 50") {
+      setFocusMins(50)
+      setTimeLeft(50 * 60)
+      answer = "Focus timer set to 50 minutes."
+    }
+
+    else if (text === "focus 90") {
+      setFocusMins(90)
+      setTimeLeft(90 * 60)
+      answer = "Focus timer set to 90 minutes."
+    }
+
+    else if (text === "clear") {
+      setTerminalLines([])
+      setCommand("")
+      return
+    }
+
+    else {
+      answer = "Command not recognized. Type help."
+    }
+
     setTerminalLines(previous => [
       ...previous,
-      `>${text}`,
-      text === "help"
-        ? "Available: status, weather, focus 25, refresh"
-        : "Command not recognized."
+      `> ${text}`,
+      answer
     ])
+
     setCommand("")
-  }
+    }
 
   async function getWeather(event) {
     event.preventDefault()
@@ -208,6 +253,21 @@ function CommandCenter() {
         </div>
         
         <section className="terminal">
+          <h2>Command Center</h2>
+          <div className="terminal-output">
+            {terminalLines.map((line, index) => (
+              <p key={index}>{line}</p>
+            ))}
+          </div>
+          <form onSubmit={runCommand}>
+            <span>&gt;</span>
+            <input
+              value={command}
+              onChange={(event) => setCommand(event.target.value)}
+              placeholder="enter command..."
+              autoComplete="off"
+              />
+          </form>
 
         </section>
 
