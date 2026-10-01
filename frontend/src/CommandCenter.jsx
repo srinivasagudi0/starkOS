@@ -16,6 +16,28 @@ function CommandCenter() {
   const [weatherLoading, setWeatherLoading] = useState(false)
   const [weatherError, setWeatherError] = useState("")
 
+  const [command, setCommand] = useState("")
+  const [terminalLines, setTerminalLines] = useState([
+    "StarkOS terminal ready", 
+    "Type help to see commmands"
+  ])
+
+  function runCommand(event) {
+    event.preventDefault()
+
+    const text = command.trim().toLowerCase()
+
+    if(!text) return 
+    setTerminalLines(previous => [
+      ...previous,
+      `>${text}`,
+      text === "help"
+        ? "Available: status, weather, focus 25, refresh"
+        : "Command not recognized."
+    ])
+    setCommand("")
+  }
+
   async function getWeather(event) {
     event.preventDefault()
 
@@ -184,6 +206,10 @@ function CommandCenter() {
             <h1 className="under-dash"></h1>
             <p>{date}</p>
         </div>
+        
+        <section className="terminal">
+
+        </section>
 
         <section className="focus-channel">
           <div className="focus-label">
