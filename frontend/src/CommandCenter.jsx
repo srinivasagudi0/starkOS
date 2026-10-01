@@ -2,6 +2,10 @@ import { useState, useEffect } from "react"
 
 function CommandCenter() {
 
+  const [connected, setConnected] = useState(false)
+  const [statusLoading, setStatusLoading] = useState(true)
+  const [statusError, setStatusError] = useState("")
+  const [codingError, setCodingError] = useState("")
   const [codeHours, setCodeHours] = useState(0)
   const [targetHours, setTargetHours] = useState(0)
   const [hourPercent, setPercentHour] = useState(0)
@@ -218,35 +222,69 @@ function CommandCenter() {
 
   const [streak, setStreak] = useState(0)
 
+  useEffect(() => {
+    setStatusLoading(true)
+    fetch("http://localhost:5000/api/hackatime/status", {
+      credentials: "include"
+    })
+      .then(async response => {
+        if (!response.ok) {
+          throw new Error("Couldn't check Hackatime. Please try again.")
+        }
+        const data = await response.json()
+        setConnected(data.connected === true)
+      })
+      .catch(error => setStatusError(error.message))
+      .finally(() => setStatusLoading(false))
+  }, [])
+
   useEffect(() =>{
+    if (!connected) return
+
     setStreakLoading(true)
     fetch("http://localhost:5000/hackatime/streaks", {
       credentials: "include"
     })
-      .then((response) => response.json())
+      .then(response => {
+        if (response.status === 401) {
+          setConnected(false)
+          throw new Error("Please reconnect Hackatime.")
+        }
+        if (!response.ok) throw new Error("Couldn't load your streak.")
+        return response.json()
+      })
       .then((data) => {
         if (data.ok) {setStreak(data.streak)}
       })
-      .catch((error) => console.error(error))
+      .catch(error => setCodingError(error.message))
       .finally(() => setStreakLoading(false))
-  }, [])
+  }, [connected])
 
   
 
   useEffect(() => {
+    if (!connected) return
+
     setLoading(true)
     fetch('http://localhost:5000/hackatime/hours',{credentials: "include"})
-      .then((response) => response.json())
+      .then(response => {
+        if (response.status === 401) {
+          setConnected(false)
+          throw new Error("Please reconnect Hackatime.")
+        }
+        if (!response.ok) throw new Error("Couldn't load your coding hours.")
+        return response.json()
+      })
       .then((data) => {
         if (data.connected) {
         setCodeHours(data.hours)
         setTargetHours(data.target_hours)
         setPercentHour(data.percent)
       }})
-      .catch((error) => {console.error(error)})
+      .catch(error => setCodingError(error.message))
       .finally(() => setLoading(false))
       
-  }, [])
+  }, [connected])
   const displayMinutes = Math.floor(timeLeft / 60)
   const displaySeconds = timeLeft % 60
 
@@ -283,10 +321,36 @@ function CommandCenter() {
 
   return (
     <main className="command-center">
-        {loading || streakLoading || feedbackLoading ? (
+        {statusLoading ? (
+          <p className="loading-message">Checking your Hackatime connection...</p>
+        ) : statusError ? (
+          <section className="loading-message">
+            <p role="alert">{statusError}</p>
+            <button className="more-button" onClick={() => window.location.reload()}>
+              Try again
+            </button>
+          </section>
+        ) : !connected ? (
+          <section className="loading-message">
+            <p>Hackatime is not connected.</p>
+            <button
+              className="more-button"
+              onClick={() => window.location.assign("http://localhost:5000/api/hackatime/connect")}
+            >
+              Connect Hackatime
+            </button>
+          </section>
+        ) : loading || streakLoading || feedbackLoading ? (
           <p className="loading-message">
             Welcome back — synchronizing your command center...
           </p>
+        ) : codingError ? (
+          <section className="loading-message">
+            <p role="alert">{codingError}</p>
+            <button className="more-button" onClick={() => window.location.reload()}>
+              Try again
+            </button>
+          </section>
         ) : (
         <>
         <div className="title1">

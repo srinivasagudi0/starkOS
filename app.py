@@ -1,4 +1,6 @@
-from flask import Flask, jsonify, request, session, redirect
+from flask import Flask, jsonify, request, session, redirect, abort
+from urllib.parse import urlencode, urlsplit
+import secrets
 from datetime import datetime, timedelta
 import requests
 from flask_cors import CORS
@@ -9,49 +11,79 @@ import random
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
+FRONTEND_URL = os.getenv("FRONTEND_URL", "").rstrip("/")
+CALLBACK_URL = os.getenv("HACKATIME_CALLBACK_URL", "http://localhost:5000/api/hackatime/callback")
+frontend_address = urlsplit(FRONTEND_URL)
+frontend_origin = f"{frontend_address.scheme}://{frontend_address.netloc}"
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SECURE"] = CALLBACK_URL.startswith("https://")
+app.config["SESSION_COOKIE_SAMESITE"] = os.getenv("SESSION_COOKIE_SAMESITE", "Lax")
 CORS(
     app,
-    origins=["http://localhost:5173"],
+    origins=["http://localhost:5173"] + ([frontend_origin] if FRONTEND_URL else []),
     supports_credentials=True
 )
 
 
+@app.route("/api/hackatime/status")
+def hackatime_status():
+    response = jsonify({"connected": bool(session.get("hackatime_token"))})
+    response.headers["Cache-Control"] = "no-store"
+    return response
+
+
 @app.route("/api/hackatime/connect")
 def connect_hackatime():
-    return redirect(
-        "https://hackatime.hackclub.com/oauth/authorize"
-        f"?client_id={os.getenv('HACKATIME_ID')}"
-        "&redirect_uri=http://localhost:5000/api/hackatime/callback"
-        "&response_type=code"
-        "&scope=profile+read"
-    )
+    if not FRONTEND_URL:
+        return jsonify({"message": "Set FRONTEND_URL to your frontend URL."}), 503
+
+    session["oauth_state"] = secrets.token_urlsafe(32)
+    params = urlencode({
+        "client_id": os.getenv("HACKATIME_ID"),
+        "redirect_uri": CALLBACK_URL,
+        "response_type": "code",
+        "scope": "profile read",
+        "state": session["oauth_state"]
+    })
+    return redirect(f"https://hackatime.hackclub.com/oauth/authorize?{params}")
 
 @app.route("/api/hackatime/callback")
 def hackatime_callback():
+    if not FRONTEND_URL:
+        return jsonify({"message": "Set FRONTEND_URL to your frontend URL."}), 503
+
+    expected_state = session.pop("oauth_state", None)
+    if not expected_state or not secrets.compare_digest(expected_state, request.args.get("state", "")):
+        return jsonify({"message": "Login expired. Please connect Hackatime again."}), 400
+
     code = request.args.get("code")
+    if not code:
+        return redirect(FRONTEND_URL)
 
-    redirect_uri = "http://localhost:5000/api/hackatime/callback"
-    response = requests.post(
-        "https://hackatime.hackclub.com/oauth/token",
-
-        data={
-            "client_id": os.getenv("HACKATIME_ID"),
-            "client_secret": os.getenv("HACKATIME_SECRET"),
-            "code": code,
-            "redirect_uri": redirect_uri,
-            "grant_type": "authorization_code"
-        }
-    )
-
-    data = response.json()
+    try:
+        response = requests.post(
+            "https://hackatime.hackclub.com/oauth/token",
+            data={
+                "client_id": os.getenv("HACKATIME_ID"),
+                "client_secret": os.getenv("HACKATIME_SECRET"),
+                "code": code,
+                "redirect_uri": CALLBACK_URL,
+                "grant_type": "authorization_code"
+            },
+            timeout=20
+        )
+        response.raise_for_status()
+        data = response.json()
+    except (requests.RequestException, ValueError):
+        return jsonify({"message": "Hackatime couldn't connect. Please try again."}), 502
     token = data.get("access_token")
 
     if not token:
-        return jsonify({"message": "Hacaktime couldn't connect. Check connection settings"})
+        return jsonify({"message": "Hackatime couldn't connect. Check connection settings."}), 502
 
     session["hackatime_token"] = token
 
-    return jsonify({"message": "Hackatime connected sucesfully."})
+    return redirect(FRONTEND_URL)
 
 def get_hackatime_api():
     access_token = session.get("hackatime_token")
@@ -59,6 +91,10 @@ def get_hackatime_api():
         "https://hackatime.hackclub.com/api/v1/authenticated/api_keys",
         headers={"Authorization": f"Bearer {access_token}"}
     )
+    if key_response.status_code == 401:
+        session.pop("hackatime_token", None)
+        session.pop("api_key", None)
+        abort(401)
     api_key = key_response.json().get("token")
     session["api_key"] = api_key
     return api_key
@@ -70,7 +106,7 @@ def hackatime_hours():
     token = session.get("hackatime_token")
 
     if not token:
-        return jsonify({"connected": False, "hours": 0})
+        return jsonify({"connected": False, "hours": 0}), 401
 
     today = datetime.now().date().isoformat()
 
@@ -84,6 +120,11 @@ def hackatime_hours():
             "end_date": today
         }
     )
+    if hours.status_code == 401:
+        session.pop("hackatime_token", None)
+        session.pop("api_key", None)
+        return jsonify({"connected": False}), 401
+
     get_hackatime_api()
 
     api_key = session.get("api_key")
@@ -92,6 +133,11 @@ def hackatime_hours():
         "https://hackatime.hackclub.com/api/hackatime/v1/users/current/statusbar/today",
         params={"api_key": api_key}
     )
+
+    if target_hours.status_code == 401:
+        session.pop("hackatime_token", None)
+        session.pop("api_key", None)
+        return jsonify({"connected": False}), 401
 
     data = target_hours.json()
     target_seconds = data.get("data", {}).get("goal", {}).get("target_seconds", 0)
@@ -114,7 +160,7 @@ def get_streaks():
         token = session.get("hackatime_token")
 
         if not token:
-            return jsonify({"ok": False, "message": "No hackatime_token found just update the run."})
+            return jsonify({"ok": False, "message": "Hackatime is not connected."}), 401
 
         streak = requests.get(
             "https://hackatime.hackclub.com/api/v1/authenticated/streak",
@@ -122,6 +168,11 @@ def get_streaks():
                 "Authorization": f"Bearer {token}"
             }
         )
+
+        if streak.status_code == 401:
+            session.pop("hackatime_token", None)
+            session.pop("api_key", None)
+            return jsonify({"connected": False}), 401
 
         data = streak.json()
         streak = data.get("streak_days", 0)
