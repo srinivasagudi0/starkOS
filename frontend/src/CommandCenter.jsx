@@ -18,7 +18,8 @@ function CommandCenter() {
     event.preventDefault()
 
     if (!location.trim()) {
-      setWeather("Something went wrong.")
+      setWeather(null)
+      setWeatherError("Please enter a city or ZIP code.")
       return
     }
 
