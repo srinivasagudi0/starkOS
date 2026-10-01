@@ -14,6 +14,46 @@ button {
   cursor: pointer;
 }
 
+.main-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  background: #fff6da;
+  border-bottom: 2px dashed #776347;
+}
+
+.main-nav a {
+  padding: 10px 16px;
+  border: 2px solid #3b3028;
+  border-radius: 8px 16px 6px 12px;
+  background: #ffe16b;
+  color: #3b3028;
+  box-shadow: 3px 3px 0 #3b3028;
+  font-family: "Comic Sans MS", "Chalkboard SE", cursive;
+  font-weight: bold;
+  text-decoration: none;
+  rotate: -3deg;
+}
+
+.main-nav a:nth-child(2) {
+  background: #bce7ff;
+  rotate: 2deg;
+}
+
+.main-nav a:hover,
+.main-nav a:focus-visible {
+  background: #ffc8df;
+  text-decoration: underline wavy;
+  rotate: 0deg;
+}
+
+.main-nav a:focus-visible {
+  outline: 3px dashed #3b3028;
+  outline-offset: 5px;
+}
+
 .loading-message {
   width: fit-content;
   max-width: min(520px, 80vw);
@@ -959,45 +999,102 @@ button {
   font-family: monospace;
 }
 
-@media (min-width: 900px) {
+/* Desktop windows: two columns, with a third column when there is room. */
+@media (min-width: 768px) {
   .command-center {
     display: grid;
-    grid-template-columns:
-      minmax(200px, 340px)
-      minmax(300px, 620px)
-      minmax(240px, 340px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-areas:
-      "title title title"
-      "code terminal weather"
-      "streak focus focus";
+      "title title"
+      "code terminal"
+      "weather focus"
+      "streak focus";
     justify-content: center;
+    align-content: start;
     align-items: start;
-    gap: clamp(24px, 3vw, 48px);
-    padding: 0 clamp(24px, 4vw, 80px) 60px;
+    gap: 28px;
+    padding: 32px max(28px, calc((100% - 1440px) / 2)) 48px;
     box-sizing: border-box;
   }
 
-  .title1 {
-    grid-area: title;
+  .command-center > * {
+    min-width: 0;
+    box-sizing: border-box;
   }
 
-  .todays-code {
+  .command-center > .loading-message {
+    grid-column: 1 / -1;
+  }
+
+  .command-center .title1 {
+    grid-area: title;
+    font-size: inherit;
+  }
+
+  .command-center .title1 h1 {
+    margin: 0 0 12px;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    line-height: 1.15;
+  }
+
+  .command-center .title1 p {
+    margin: 0 0 12px;
+    font: 1rem/1.5 "Courier New", monospace;
+  }
+
+  .command-center .todays-code {
     grid-area: code;
     position: relative;
     margin: 0;
-    rotate: -4deg;
+    padding: 24px;
+    rotate: none;
+    border-radius: 12px;
   }
 
-  .terminal {
+  .command-center .todays-code h1 {
+    margin: 0 0 20px;
+    font-size: clamp(1.5rem, 2.3vw, 2rem);
+  }
+
+  .command-center .todays-code p {
+    margin: 12px 0 0;
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    overflow-wrap: anywhere;
+  }
+
+  .command-center .todays-code .dash {
+    margin: 20px 0;
+    font-size: 0;
+    border-top: 1px solid currentColor;
+  }
+
+  .command-center .todays-code .under-dash {
+    display: none;
+  }
+
+  .command-center .terminal {
     grid-area: terminal;
     position: relative;
     top: auto;
     left: auto;
     width: auto;
+    height: 280px;
+    box-sizing: border-box;
+    border-radius: 12px;
+    overflow-wrap: anywhere;
+  }
+
+  .command-center .terminal-output {
+    min-height: 0;
+  }
+
+  .command-center .terminal input,
+  .command-center .weather-card input {
+    min-width: 0;
     box-sizing: border-box;
   }
 
-  .weather-card {
+  .command-center .weather-card {
     grid-area: weather;
     position: relative;
     top: auto;
@@ -1006,17 +1103,57 @@ button {
     box-sizing: border-box;
   }
 
-  .streak-station {
+  .command-center .streak-station {
     grid-area: streak;
     position: relative;
     bottom: auto;
     left: auto;
-    rotate: -4deg;
+    rotate: none;
+    padding: 20px;
+    border: 1px solid #777;
+    border-radius: 12px;
+    background: #171918;
   }
 
-  .focus-channel {
+  .command-center .streak-title {
+    margin: 0 0 16px;
+    font-size: 1.15rem;
+    color: #b0a3ff;
+  }
+
+  .command-center .streak-number {
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    overflow-wrap: anywhere;
+  }
+
+  .command-center .streak-station .description {
+    display: block;
+    margin: 16px 0 0;
+    font-size: 1rem;
+    color: #f2f2ee;
+  }
+
+  .command-center .focus-channel {
     grid-area: focus;
-    width: min(100%, 620px);
-    margin: 0 auto;
+    width: 100%;
+    margin: 0;
+    padding: 24px;
+    border: 1px solid #777;
+    border-radius: 12px;
+    background: #171918;
+  }
+
+  .command-center .focus-display {
+    font-size: clamp(3rem, 5vw, 4.5rem);
+  }
+}
+
+@media (min-width: 1200px) {
+  .command-center {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) minmax(0, 1fr);
+    grid-template-areas:
+      "title title title"
+      "code terminal weather"
+      "streak focus focus";
   }
 }

@@ -9,8 +9,10 @@ import './App.css'
 function App() {
   return (
     <BrowserRouter>
-      <Link to="/">Home</Link>
-      <Link to="/coding">Coding Intelligence</Link>
+      <nav className="main-nav" aria-label="Main navigation">
+        <Link to="/">Home</Link>
+        <Link to="/coding">Coding Intelligence</Link>
+      </nav>
       <Routes>
         <Route path="/" element={<CommandCenter />} />
         <Route path="/coding" element={<CodingIntel />} />
