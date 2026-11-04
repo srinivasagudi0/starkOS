@@ -2,60 +2,69 @@
 
 StarkOS is my personal coding command center.
 
-I made it to see my coding activity, start focus sessions, check the weather, and look at my projects without opening five different websites.
+I made this because I wanted one place where I could check my coding hours, start focus sessions, check the weather, and see my projects instead of opening like five different websites every time.
 
 ## What it can do
 
-- Show today's Hackatime coding hours
-- Show my coding streak
-- Start 25, 50, or 90 minute focus sessions
-- Save focus timer progress in local storage
-- Send a browser notification when focus ends
-- Check weather by city or ZIP code
-- Show coding activity for the last seven days
-- Show project and language breakdowns
-- Create a story about a project and its GitHub commits
-- Quiz me about the languages I used
-- Use a small terminal on the Command Center
-- Run commands like `help`, `status`, `weather`, and `focus 25`
-- Give weekly coding information
+- Shows today's Hackatime coding hours
+- Shows my coding streak
+- Has 25, 50, and 90 minute focus timers
+- Saves the timer progress even if I refresh the page
+- Sends a notification when the timer ends
+- Checks weather using a city or ZIP code
+- Shows my coding activity from the last 7 days
+- Shows which projects and languages I worked on
+- Makes a story about a project using its GitHub commits
+- Has a quiz about the coding languages I used
+- Has a small terminal inside the Command Center
+- Can run commands like `help`, `status`, `weather`, and `focus 25`
+- Shows weekly coding stats
 
-## Justification of time
+## Why it took 50 hours
 
-It took me 50 hrs because I tried to accomplished all the below:
+This project took me around 50 hours because there was actually a lot more stuff to do than I originally thought.
 
-- React pages and routing
-- Flask backend routes
-- Hackatime OAuth login and coding statistics
-- Focus timer with localStorage
-- Browser notifications
-- Weather API integration
-- Project and language breakdowns
-- GitHub commit and project analysis
-- Weekly reports and quiz logic
-- A working terminal connected to the focus timer
-- Loading, error, and empty states
-- Custom CSS layout, animations, and responsive fixes
-- Debugging authentication, API responses, deployment, and hosting
+I had to work on React pages, Flask backend, Hackatime OAuth, APIs, focus timers, weather, GitHub commits, weekly reports, quizzes, and the terminal.
 
-Also a lot of time went into fixing problems. The polish on the UI looks good too. 
+I also spent a lot of time fixing bugs. Sometimes one feature would work but then something else would stop working. I had problems with authentication, API responses, connecting the frontend and backend, and especially deployment.
 
+I tried different ways to fix these problems, tested them, found more bugs, and kept changing things until they worked.
+
+The CSS also took quite a bit of time because I wanted the dashboard to actually look good and not like some basic website. I worked on the layout, animations, responsiveness, and small UI details.
+
+So yeah, most of the time wasn't just writing code. It was testing, debugging, changing things, and making sure everything worked together.
 
 ## How Hackatime works
 
-StarkOS connects to Hackatime through OAuth. After connecting, Flask stores the access token in the session and uses it to request coding activity.
+StarkOS connects to Hackatime using OAuth. Once I log in, the Flask backend stores the access token in the session and uses it to get my coding activity.
+
+This was also one of the things I had to spend time understanding and debugging.
 
 ## My favorite part
 
-The Command Center is the main page. It has the focus timer, coding information, streak, weather, and a terminal that can control some of the features.
+My favorite part is probably the Command Center itself.
 
-I wanted StarkOS to feel like a personal system that I built for myself instead of another ordinary to-do list.
+It has almost everything I wanted in one place. The focus timer, coding hours, streak, weather, and even a small terminal that can control some features.
 
+I wanted to make something that I would actually use while coding, not just another random to-do list website.
 
 ## AI Usage
 
-Honestly I used AI as little as possible from the start. I needed to use AI help me connect links between two hosting platforms(render(flask backend and vercal frontend). I also used it  for debugging, explaining Flask and React, Hackatime APIs, OAuth, CSS, deployment, and small code suggestions. I wrote, tested, designed, and connected the main project myself. Codex recorded about 53 minutes out of 49 hours of coding, which is under 2% of tracked coding time.
+I tried to do as much as possible myself, but I did use AI when I got stuck on some parts.
 
-## Project status
+I mainly used ChatGPT and Codex for debugging, understanding Flask and React, Hackatime OAuth and APIs, and fixing problems with connecting my Flask backend on Render to my frontend on Vercel.
 
-The main features are working. I think I will come back add more cool new page(and stuff) if this project gets approved.
+I also got some AI help with the loading screen CSS, cloud setup, the language quiz submission function, and writing and improving some of the OpenAI prompts for the project story and weekly summaries.
+
+Some parts were confusing, especially OAuth, API responses, and deployment, so I used AI to understand what was going wrong and get code suggestions or fixes.
+
+I worked on the project features, UI, integrations, and testing myself, with AI helping on certain parts.
+
+Codex recorded around 53 minutes out of 49 hours of tracked coding, which is about 1.8%. This only counts recorded Codex time, not all the times I asked ChatGPT for help.
+
+
+## Project Status
+
+Most of the main features are working now, and I'm pretty happy with how it turned out.
+
+I might come back and add more cool pages and features later, especially if this project gets approved. I still have a few ideas I want to try, but for now I think StarkOS is done.
